@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.ant.AntLaunchConfigurationType">
+<booleanAttribute key="org.eclipse.ant.ui.DEFAULT_VM_INSTALL" value="false"/>
+<stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${project}"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/gov.nasa.jpl.magicdraw.projectUsageIntegrity"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="gov.nasa.jpl.magicdraw.projectUsageIntegrity"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
+<mapAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_PROPERTIES">
+<mapEntry key="buckminster.pdetasks" value="/Users/kerzhner/.yoxoslauncher/instances/4707767771f860d6b9f815680b1fee78/configuration/org.eclipse.osgi/bundles/301/1/.cp/org/eclipse/buckminster/pde/antscripts/build.xml"/>
+<mapEntry key="eclipse.home" value="/Users/kerzhner/.yoxoslauncher/instances/4707767771f860d6b9f815680b1fee78"/>
+<mapEntry key="eclipse.pdebuild.home" value="/Users/kerzhner/.yoxoslauncher/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/./"/>
+<mapEntry key="eclipse.pdebuild.scripts" value="/Users/kerzhner/.yoxoslauncher/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts/"/>
+<mapEntry key="eclipse.pdebuild.templates" value="/Users/kerzhner/.yoxoslauncher/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/templates/"/>
+<mapEntry key="eclipse.running" value="true"/>
+<mapEntry key="md.install.dir" value="${md.install.dir}"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="tests,"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/gov.nasa.jpl.magicdraw.projectUsageIntegrity/build.xml}"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${workspace_loc:/gov.nasa.jpl.magicdraw.projectUsageIntegrity}"/>
+<stringAttribute key="process_factory_id" value="org.eclipse.ant.ui.remoteAntProcessFactory"/>
+</launchConfiguration>

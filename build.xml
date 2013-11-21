@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project xmlns:qvto="http://www.eclipse.org/qvt/1.0.0/Operational" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity" basedir=".">
+
+	<property environment="env"/>
+
+	<property name="memorySize" 		value="-Xmx3076M"/>
+	<property name="maxPermGenSize"	value="-XX:MaxPermSize=1024M" />
+				
+	<import file="${md.install.dir}/data/eclipse/zip.xml"/>
+
+	<property name="md.build.tools.dir" location="${md.install.dir}/data/eclipse/resource/gov.nasa.jpl.imce.md.qvt"/>
+
+	<tstamp>
+		<format property="now" pattern="yyyyMMdd"/>
+		<format property="date" pattern="yyyy-MM-dd"/>
+	</tstamp>
+		
+	<property name="bundle.name" 			value="${md.bundle.prefix}-build${env.BUILD_NUMBER}-${now}"/>
+		
+	<property name="plugin.dir" location="${basedir}"/>
+	<property name="plugin.project" value="${ant.project.name}"/>
+	<property name="plugin.resource" value="/root/data/resourcemanager/MDR_Plugin_MagicDrawProjectUsageIntegrity_75319_descriptor.xml"/>
+	<property name="plugin.archive" value="ProjectUsageIntegrityPlugin"/>
+	<property name="plugin.jar" value="lib/projectUsageIntegrity.jar"/>
+
+	<condition property="all.precondition" value="true">
+		<and>
+			<isset property="md.bundle.prefix"/>
+			<isset property="md.bundle.version"/>
+			<isset property="md.build.tools.dir"/>
+			<available type="dir" file="${md.build.tools.dir}"/>
+			<isset property="md.install.dir"/>
+			<available type="dir" file="${md.install.dir}"/>
+			<or>
+				<os family="mac"/>
+				<and>
+					<os family="unix"/>
+					<isset property="env.DISPLAY"/>
+				</and>
+			</or>
+		</and>
+	</condition>
+		
+	<target name="all" depends="all.error,all.ok"/>
+	
+	<target name="all.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="all.ok" if="all.precondition" depends="build,zip.plugin,install,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+
+	<import file="${md.build.tools.dir}/build.md.plugin.xml"/>
+	
+	<target name="build" depends="build.jar,build.plugin"/>
+		
+	<target name="build.plugin">
+		<md.updatePluginFromClasspath 
+			plugin.dir="${plugin.dir}" 
+			plugin.jar="${plugin.jar}"/>
+		<md.updatePluginDescriptor
+			plugin.dir="${plugin.dir}" 
+			plugin.jar="${plugin.jar}" 
+			plugin.resource="${plugin.resource}"/>
+	</target>
+
+	<fileset id="plugin.profiles" dir="${plugin.dir}/root/profiles" excludes="**"/>
+
+	<fileset id="plugin.modelLibraries" dir="${plugin.dir}/root/modelLibraries" excludes="**"/>
+
+	<fileset id="plugin.samples" dir="${plugin.dir}/root/samples" excludes="**"/>
+
+	<target name="zip.plugin">
+		<md.plugin.zip
+			plugin.dir="${plugin.dir}" 
+			plugin.jar="${plugin.jar}" 
+			plugin.project="${plugin.project}"
+			plugin.resource="${plugin.resource}"
+			plugin.archive="${plugin.archive}"
+			plugin.version="${plugin.version}">
+			<other-includes>
+				<include name="icons/**/*.png"/>
+				<include name="icons/**/*.gif"/>
+				<include name="icons/**/*.jpg"/>
+				<include name="logTraceContracts/**/*.txt"/>
+				<include name="runOpenAuditTests.ant"/>
+				<include name="runOpenAuditTests.README.txt"/>
+			</other-includes>
+		</md.plugin.zip>
+	</target>
+
+	<target name="install">
+		<md.install.zip
+			plugin.dir="${plugin.dir}" 
+			plugin.archive="${plugin.archive}"
+			plugin.version="${plugin.version}"
+			install.dir="${md.install.dir}"/>
+	</target>
+		
+	<target name="zip.bundle">
+		<md.zip.all
+			bundle.dest.dir="${plugin.dir}/artifacts"
+			bundle.name="${bundle.name}"
+			bundle.source.dir="${md.install.dir}"/>
+	</target>
+			
+	<path id="plugin.classpath">
+		<fileset dir="${md.install.dir}/plugins/com.nomagic.magicdraw.automaton">
+			<include name="*.jar"/>
+			<include name="lib/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/com.nomagic.magicdraw.qvt">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/com.nomagic.magicdraw.dependencymatrix">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/com.nomagic.magicdraw.diagramtable">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/com.nomagic.magicdraw.sysml">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/gov.nasa.jpl.magicdraw.qvto.library">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${md.install.dir}/plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- copy SSCAE ProjectUsage Integrity Profile -->
+	
+	<target name="copySSCAE" depends="copySSCAE.error,copySSCAE.ok"/>
+	
+	<target name="copySSCAE.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="copySSCAE.ok" if="all.precondition" depends="run.copySSCAE,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="run.copySSCAE" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${plugin.dir}/dependencies/tmp"
+			dir="${plugin.dir}/dependencies/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="${memorySize}" />
+			<jvmarg value="${maxPermGenSize}" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${plugin.dir}" />
+			<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+
+			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
+			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
+			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
+
+			<classpath>
+				<fileset refid="magicdraw.classpath"/>
+				<path refid="plugin.classpath"/>
+			</classpath>
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.Copy_SSCAEProjectUsageIntegrity_profile"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test> 
+			
+		</junit>		
+	</target>
+	
+	
+	<!-- repair UML -->
+	
+	<target name="repairUML" depends="repairUML.error,repairUML.ok"/>
+	
+	<target name="repairUML.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="repairUML.ok" if="all.precondition" depends="run.repairUML,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="run.repairUML" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${plugin.dir}/dependencies/tmp"
+			dir="${plugin.dir}/dependencies/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="${memorySize}" />
+			<jvmarg value="${maxPermGenSize}" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${plugin.dir}" />
+			<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+
+			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
+			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
+			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
+
+			<classpath>
+				<fileset refid="magicdraw.classpath"/>
+				<path refid="plugin.classpath"/>
+			</classpath>
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.Repair_MD_UML_StandardProfile"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test> 
+			
+		</junit>		
+	</target>
+	
+	<!-- otherRepairs -->
+	
+	<macrodef name="junit.otherRepairs">
+		<attribute name="test.start"/>
+		<attribute name="test.count"/>
+		<sequential>	
+			<junit printsummary="yes" fork="true" 
+				showoutput="true" 
+				tempdir="${plugin.dir}/dependencies/tmp"
+				dir="${plugin.dir}/dependencies/tmp"
+				newenvironment="true">
+				<bootclasspath/>
+	
+				<jvmarg value="${memorySize}" />
+				<jvmarg value="${maxPermGenSize}" />
+				<jvmarg value="${JDWP.DEBUG}"/>
+				<syspropertyset refid="md.developer.property"/>
+	
+				<sysproperty key="project.root"	 				value="${plugin.dir}" />
+				<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+				<sysproperty key="install.root" 					value="${md.install.dir}" />
+				<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+	
+				<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+				<sysproperty key="LOCALCONFIG"					value="true"/>
+				<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+	
+				<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
+				<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
+				<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
+				<sysproperty key="FL_EDITION" 					value="Enterprise"/>
+				
+				<sysproperty key="test.start" 					value="@{test.start}"/>
+				<sysproperty key="test.count" 					value="@{test.count}"/>
+	
+				<classpath>
+					<fileset refid="magicdraw.classpath"/>
+					<path refid="plugin.classpath"/>
+				</classpath>
+				
+				<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.RepairSystemOrStandardProfilesAndLibrariesValidationTest"
+					outfile="RepairSystemOrStandardProfilesAndLibrariesValidationTest-@{test.start}_@{test.count}.xml"
+					todir="${plugin.dir}/generated/results">
+					<formatter type="xml" usefile="true" />
+				</test> 
+				
+			</junit>		
+		</sequential>
+	</macrodef>
+		
+	<target name="otherRepairs" depends="otherRepairs.error,otherRepairs.ok"/>
+	
+	<target name="otherRepairs.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="otherRepairs.ok" if="all.precondition" depends="run.otherRepairs,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="run.otherRepairs" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		<echoproperties prefix="md"/>
+		
+		<junit.otherRepairs test.count="20" test.start="0"/>
+		<junit.otherRepairs test.count="20" test.start="20"/>
+		<junit.otherRepairs test.count="20" test.start="40"/>
+		<junit.otherRepairs test.count="20" test.start="60"/>
+		<junit.otherRepairs test.count="20" test.start="80"/>
+		
+	</target>
+	
+	
+	<!-- check -->
+	
+	<target name="check" depends="check.error,check.ok"/>
+	
+	<target name="check.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="check.ok" if="all.precondition" depends="run.check,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="run.check" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${plugin.dir}/dependencies/tmp"
+			dir="${plugin.dir}/dependencies/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="${memorySize}" />
+			<jvmarg value="${maxPermGenSize}" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${plugin.dir}" />
+			<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+
+			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
+			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
+			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
+
+			<classpath>
+				<fileset refid="magicdraw.classpath"/>
+				<path refid="plugin.classpath"/>
+			</classpath>
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAESystemOrStandardProfileValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test>
+			
+		</junit>		
+	</target>
+	
+	
+	<!-- tests -->
+	
+	<target name="tests" depends="tests.error,tests.ok"/>
+	
+	<target name="tests.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+		
+	<target name="tests.ok" if="all.precondition" depends="run.tests,zip.bundle">
+		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
+			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
+			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
+			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="run.tests" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${plugin.dir}/dependencies/tmp"
+			dir="${plugin.dir}/dependencies/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="${memorySize}" />
+			<jvmarg value="${maxPermGenSize}" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${plugin.dir}" />
+			<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+
+			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
+			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
+			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
+
+			<classpath>
+				<fileset refid="magicdraw.classpath"/>
+				<path refid="plugin.classpath"/>
+			</classpath>
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAEOpenValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test> 
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAECreateValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test>
+		</junit>		
+	</target>
+	
+</project>

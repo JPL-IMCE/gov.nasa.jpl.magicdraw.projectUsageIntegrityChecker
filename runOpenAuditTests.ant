@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="gov.nasa.jpl.magicdraw.projectUsageIntegrity" basedir="." default="all">
+
+	<property environment="env"/>
+	<property name="audit.dir" value="${env.audit.dir}"/>
+	<property name="audit.report" value="${env.audit.report}"/>
+	<property name="md.install.dir" value="${env.md.install.dir}"/>
+	<property name="test.dir" value="${env.test.dir}"/>
+		
+	<condition property="all.precondition" value="true">
+		<and>
+			<isset property="audit.report"/>
+			
+			<isset property="audit.dir"/>
+			<available type="dir" file="${audit.dir}"/>
+				
+			<isset property="md.install.dir"/>
+			<available type="dir" file="${md.install.dir}"/>
+			<available type="dir" file="${md.install.dir}/lib"/>
+			<available type="dir" file="${md.install.dir}/plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity"/>
+				
+			<isset property="test.dir"/>
+			<available type="dir" file="${test.dir}"/>
+			<or>
+				<os family="mac"/>
+				<and>
+					<os family="unix"/>
+					<isset property="env.DISPLAY"/>
+				</and>
+			</or>
+		</and>
+	</condition>
+		
+	<target name="all" depends="all.error,all.ok"/>
+	
+	<target name="all.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<echoproperties prefix="audit"/>
+		<echoproperties prefix="md"/>
+		<echoproperties prefix="test"/>
+		<fail/>
+	</target>
+
+	<target name="all.ok" if="all.precondition"  depends="tests"/>
+		
+	<path id="md.classpath">
+		<fileset dir="${md.install.dir}">
+			<include name="lib/**/*.jar"/>
+			<include name="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/**/*.jar"/>
+		</fileset>
+	</path>
+		
+	<target name="md.developer" depends="md.developer=no,md.developer=yes"/>
+	
+	<target name="md.developer=yes" if="DEVELOPER">
+		<echo message="*** developer mode ***"/>
+		<propertyset id="md.developer.property">
+			<propertyref name="DEVELOPER"/>
+		</propertyset>
+	</target>
+	
+	<target name="md.developer=no" unless="DEVELOPER">
+		<echo message="*** non-developer mode ***"/>
+		<propertyset id="md.developer.property"/>
+	</target>
+
+	<condition property="DEBUG" value="true">
+		<and>
+			<isset property="debug.mode"/>
+			<istrue value="${debug.mode}"/>
+		</and>
+	</condition>
+		
+	<condition property="JDWP.DEBUG" value="-agentlib:jdwp=transport=dt_socket,server=y,address=8000" else="-Dno.debug">
+		<and>
+			<isset property="DEBUG"/>
+			<istrue value="${DEBUG}"/>
+		</and>
+	</condition>
+
+	<condition property="DEVELOPER" value="true">
+		<and>
+			<isset property="developer.mode"/>
+			<istrue value="${developer.mode}"/>
+		</and>
+	</condition>
+	
+	<target name="md.mode" depends="md.debug,md.run"/>
+
+	<target name="md.debug" if="DEBUG">
+		<echo message="*** Run MD in JDWP debug listen mode (port=8000) ***"/>
+	</target>
+
+	<target name="md.run" unless="DEBUG">
+		<echo message="*** Run MD normally (no JDWP debugging) ***"/>
+	</target>
+
+	<target name="tests" depends="md.mode,md.developer">
+		
+		<echo message="md.install.dir=${md.install.dir}"/>
+		<echo message="audit.dir=${audit.dir}"/>
+		<echo message="test.dir=${test.dir}"/>
+			
+		<delete dir="${test.dir}/tmp" failonerror="false"/>
+		<mkdir dir="${test.dir}/tmp/data"/>
+		<copy todir="${test.dir}/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${test.dir}/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="test.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${test.dir}/results" failonerror="false"/>		
+		<mkdir dir="${test.dir}/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${test.dir}/tmp"
+			dir="${test.dir}/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="-Xmx1280m" />
+			<jvmarg value="-XX:MaxPermSize=1024M" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${test.dir}/tmp" />
+			<sysproperty key="tests.resources" 				value="${test.dir}" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+			
+			<sysproperty key="audit.report" 					value="${audit.report}"/>
+			<sysproperty key="audit.dir" 					value="${audit.dir}"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${test.dir}/tmp"/>
+
+			<sysproperty key="FL_FORCE_USAGE"	 	value="true"/>
+			<sysproperty key="FL_SERVER_ADDRESS" 	value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 		value="1101"/>
+			<sysproperty key="FL_EDITION" 			value="Enterprise"/>
+
+			<classpath>
+				<path refid="md.classpath"/>
+			</classpath>
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAEOpenAuditTest"
+				todir="${test.dir}/results">
+				<formatter type="xml" usefile="true" />
+			</test>
+		</junit>		
+	</target>
+	
+</project>
