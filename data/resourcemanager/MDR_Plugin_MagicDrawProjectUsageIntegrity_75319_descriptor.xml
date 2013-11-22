@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resourceDescriptor critical="false" date="2013-04-23" description="SSCAE Project Usage Integrity Checker Plugin" homePage="https://jplwiki.jpl.nasa.gov:8443/display/MBSECoP/SSCAE+Project+Usage+Integrity+Checker" id="75319" mdVersionMax="higher" mdVersionMin="17.0.2" name="SSCAE Project Usage Integrity Checker" product="SSCAE MagicDraw Toolkit" type="Plugin">
-  <version human="17.0.2" internal="1" resource="10"/>
+<resourceDescriptor critical="false" date="2013-04-23" description="SSCAE Project Usage Integrity Checker Plugin" homePage="https://jplwiki.jpl.nasa.gov:8443/display/MBSECoP/SSCAE+Project+Usage+Integrity+Checker" id="75319" mdVersionMax="higher" mdVersionMin="17.0.5" name="SSCAE Project Usage Integrity Checker" product="SSCAE MagicDraw Toolkit" type="Plugin">
+  <version human="17.0.5" internal="1" resource="10"/>
   <provider email="nicolas.f.rouquette@jpl.nasa.gov" homePage="https://jplwiki.jpl.nasa.gov:8443/display/MBSECoP/SSCAE+Project+Usage+Integrity+Checker" name="Jet Propulsion Laboratory, Caltech"/>
   <edition>Reader</edition>
   <edition>Community</edition>
