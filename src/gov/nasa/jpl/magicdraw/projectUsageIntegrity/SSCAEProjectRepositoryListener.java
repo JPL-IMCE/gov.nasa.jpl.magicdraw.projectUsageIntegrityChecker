@@ -22,8 +22,9 @@ import org.eclipse.emf.common.util.URI;
 
 import com.nomagic.ci.persistence.IProject;
 import com.nomagic.ci.persistence.ProjectRepositoryEvent;
-import com.nomagic.ci.persistence.ProjectRepositoryEventType;
+import com.nomagic.ci.persistence.local.ProjectRepositoryEventType;
 import com.nomagic.ci.persistence.ProjectRepositoryListener;
+import com.nomagic.ci.persistence.local.LocalProjectRepositoryEvent;
 
 public class SSCAEProjectRepositoryListener implements ProjectRepositoryListener {
 
@@ -38,14 +39,14 @@ public class SSCAEProjectRepositoryListener implements ProjectRepositoryListener
 		if (!helper.isEnabled())
 			return;
 		
-		ProjectRepositoryEventType evType = ev.getProjectRepositoryEventType();
+		ProjectRepositoryEventType evType = ((LocalProjectRepositoryEvent) ev).getProjectRepositoryEventType();
 	
 		if (evType.isPostEvent()) {
 			helper.hasPostEventNotifications = true;
 		}
 		
-		URI uri = ev.getProjectURI();
-		IProject p = ev.getProject();
+		URI uri =  ((LocalProjectRepositoryEvent) ev).getProjectURI();
+		IProject p =  ((LocalProjectRepositoryEvent) ev).getProject();
 		
 		helper.logger.info(String.format("ProjectRepositoryEvent.notify(%s) project URI=%s has project? %s", evType.name(), uri, (p != null)));
 	}

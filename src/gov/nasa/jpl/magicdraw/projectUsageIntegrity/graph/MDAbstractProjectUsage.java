@@ -21,7 +21,8 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
 import org.jgrapht.graph.DefaultEdge;
 
 import com.nomagic.ci.metamodel.project.ProjectUsage;
-import com.nomagic.ci.metamodel.relocate.UnresolvedProjectUsage;
+// No longer exists
+// import com.nomagic.ci.metamodel.relocate.UnresolvedProjectUsage;
 
 public abstract class MDAbstractProjectUsage extends DefaultEdge {
 
@@ -96,8 +97,10 @@ public abstract class MDAbstractProjectUsage extends DefaultEdge {
 		that.setSource(source);
 		that.setTarget(target);
 		boolean isResolved = true;
-		if (pu instanceof UnresolvedProjectUsage)
-			isResolved = false;
+		
+		// no longer exists
+		//if (pu instanceof UnresolvedProjectUsage)
+		//	isResolved = false;
 
 		if (!SSCAEProjectUsageGraph.getMDRelativeURI(pu.getUsedProjectURI()).equals(target.getLocation()))
 			isResolved = false;

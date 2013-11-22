@@ -26,7 +26,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.nomagic.ci.persistence.IPrimaryProject;
-import com.nomagic.ci.persistence.ProjectConfigurationException;
+import com.nomagic.ci.persistence.local.ProjectConfigurationException;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.ProjectUtilities;
 import com.nomagic.magicdraw.core.proxy.ProxyManager;

@@ -2,7 +2,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
 
 import javax.annotation.Nonnull;
 
-import com.nomagic.ci.persistence.spi.local.ILocalProjectInternal;
+import com.nomagic.ci.persistence.local.spi.localproject.ILocalProjectInternal;
 import com.nomagic.magicdraw.core.Project;
 
 public class MDLocalAttachedProject extends MDLocalProject implements MDAttachedProject {

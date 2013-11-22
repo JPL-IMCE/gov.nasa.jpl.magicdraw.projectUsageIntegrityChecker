@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 
 import org.eclipse.emf.common.util.URI;
 
-import com.nomagic.ci.persistence.spi.local.ILocalProjectInternal;
+import com.nomagic.ci.persistence.local.spi.localproject.ILocalProjectInternal;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.utils.MDLog;
 
