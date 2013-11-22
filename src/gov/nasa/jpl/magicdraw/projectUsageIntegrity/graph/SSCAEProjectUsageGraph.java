@@ -953,7 +953,7 @@ public class SSCAEProjectUsageGraph {
 				// then we may induce a deadlock if the graph analysis is performed during the ProjectEventListenerAdapter#projectOpened() callback.
 				// This happened for OPALS!
 
-				if (null != proxyProject && !proxyProject.isLoaded()) {
+				if (null != proxyProject && !((AbstractAttachedProject) proxyProject).isLoaded()) {
 					proxyUnloadedOkCount++;
 					if (!unloaded2proxiesMap.containsKey(proxyProject)) 
 						unloaded2proxiesMap.put(proxyProject, new TreeSet<Element>(ELEMENT_ID_COMPARATOR));
