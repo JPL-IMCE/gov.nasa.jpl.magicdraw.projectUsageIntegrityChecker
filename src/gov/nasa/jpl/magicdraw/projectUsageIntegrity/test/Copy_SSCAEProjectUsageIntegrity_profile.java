@@ -82,7 +82,7 @@ public class Copy_SSCAEProjectUsageIntegrity_profile extends AbstractSSCAETest {
 	 * @return
 	 */
 	public static List<Plugin> getStartedMDPlugins() {
-		return Application.getInstance().getPluginManager().B();
+		return Application.getInstance().getPluginManager().C();
 	}
 	
 	@Override
