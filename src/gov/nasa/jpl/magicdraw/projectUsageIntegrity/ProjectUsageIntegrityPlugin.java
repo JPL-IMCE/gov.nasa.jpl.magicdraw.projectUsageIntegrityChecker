@@ -232,8 +232,8 @@ implements ResourceDependentPlugin {
 
 			logTraceContractsAppender = new Appender();
 			
-			Logger.getRootLogger().addAppender(logTraceContractsAppender);
-			System.setErr(new PrintStream(new AppendingOutputStream(System.err, logTraceContractsAppender, MDLog.getPluginsLog(), Level.ERROR)));	
+		//	Logger.getRootLogger().addAppender(logTraceContractsAppender);
+		//	System.setErr(new PrintStream(new AppendingOutputStream(System.err, logTraceContractsAppender, MDLog.getPluginsLog(), Level.ERROR)));	
 			
 			File pluginDir = pluginDescriptor.getPluginDirectory();
 			File suffixFile = new File(pluginDir.getAbsolutePath() + File.separator + MD_TEAMWORK_PROJECT_ID_SUFFIXES_FILE);

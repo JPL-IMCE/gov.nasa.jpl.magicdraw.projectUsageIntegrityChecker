@@ -191,12 +191,12 @@
 			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
 			<sysproperty key="LOCALCONFIG"					value="true"/>
 			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
-<!--
+
 			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
 			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
 			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
 			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
--->
+
 			<classpath>
 				<fileset refid="magicdraw.classpath"/>
 				<path refid="plugin.classpath"/>
@@ -436,12 +436,12 @@
 			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
 			<sysproperty key="LOCALCONFIG"					value="true"/>
 			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
-<!--
+
 			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
 			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
 			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
 			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
--->
+
 			<classpath>
 				<fileset refid="magicdraw.classpath"/>
 				<path refid="plugin.classpath"/>
@@ -512,12 +512,12 @@
 			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
 			<sysproperty key="LOCALCONFIG"					value="true"/>
 			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
-<!--
+
 			<sysproperty key="FL_FORCE_USAGE"			 	value="true"/>
 			<sysproperty key="FL_SERVER_ADDRESS" 			value="cae-lic01.jpl.nasa.gov"/>
 			<sysproperty key="FL_SERVER_PORT" 				value="1101"/>
 			<sysproperty key="FL_EDITION" 					value="Enterprise"/>
--->
+
 			<classpath>
 				<fileset refid="magicdraw.classpath"/>
 				<path refid="plugin.classpath"/>

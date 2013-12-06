@@ -150,14 +150,16 @@ public class Appender extends AppenderSkeleton {
 				Application.getInstance().getGUILog().log(e.getLocalizedMessage());
 			}
 		} else if (eventMessage.contains(PROJECT_LOAD_MARKER)){
-			LogSessionWrapper lastWrapper = logSessions.get(logSessions.size()-1);
-			FileAppender sessionFileAppender = fileAppenders.get(lastWrapper.sessionID);
+			if (!logSessions.isEmpty()){
+				LogSessionWrapper lastWrapper = logSessions.get(logSessions.size()-1);
+				FileAppender sessionFileAppender = fileAppenders.get(lastWrapper.sessionID);
 
-			fileAppenders.remove(lastWrapper.sessionID);
-			sessionFileAppender.finalize();
-			activeSessions.remove(lastWrapper.sessionID);
-			lastWrapper.end(true);
-			logSessions.remove(lastWrapper);
+				fileAppenders.remove(lastWrapper.sessionID);
+				sessionFileAppender.finalize();
+				activeSessions.remove(lastWrapper.sessionID);
+				lastWrapper.end(true);
+				logSessions.remove(lastWrapper);
+			}
 			
 		} else if (eventMessage.contains(BEGIN_LOG_SESSION_MARKER)) {
 			int open = eventMessage.indexOf("(");
