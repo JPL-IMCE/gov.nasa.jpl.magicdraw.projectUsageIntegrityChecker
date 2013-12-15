@@ -53,7 +53,7 @@ public class Appender extends AppenderSkeleton {
 	protected LogSessionWrapper currentWrapper = null;
 	
 	public static final String PROJECT_LOAD_START_MARKER = "ProjectLoadService START";
-	public static final String PROJECT_LOAD_MARKER = "ProjectLoadService";
+	public static final String PROJECT_LOAD_DONE_MARKER = "ProjectLoadService DONE";
 
 	public static final String BEGIN_LOG_SESSION_MARKER = "gov.nasa.jpl.logfire.beginSession";
 	public static final String END_LOG_SESSION_MARKER = "gov.nasa.jpl.logfire.endSession";
@@ -149,7 +149,7 @@ public class Appender extends AppenderSkeleton {
 				SessionCounter.markSessionFailed(currentWrapper);
 				Application.getInstance().getGUILog().log(e.getLocalizedMessage());
 			}
-		} else if (eventMessage.contains(PROJECT_LOAD_MARKER)){
+		} else if (eventMessage.contains(PROJECT_LOAD_DONE_MARKER)){
 			if (!logSessions.isEmpty()){
 				LogSessionWrapper lastWrapper = logSessions.get(logSessions.size()-1);
 				FileAppender sessionFileAppender = fileAppenders.get(lastWrapper.sessionID);
