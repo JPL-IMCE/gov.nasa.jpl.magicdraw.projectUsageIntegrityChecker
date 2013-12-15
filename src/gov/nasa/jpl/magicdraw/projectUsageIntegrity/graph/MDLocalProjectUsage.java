@@ -59,7 +59,7 @@ public class MDLocalProjectUsage extends MDAbstractProjectUsage {
 
 	public static void configure(MDLocalProjectUsage that, MDAbstractProject source, MDAbstractProject target, ProjectUsage pu) {
 		MDAbstractProjectUsage.configure(that, source, target, pu);
-		that.setReShared(pu.isReshared() || pu.isResharedAutomatically());
+		that.setReShared(pu.isReshared() || pu.isResharedAutomatically() || pu.isAutomatic());
 		that.setSignature(String.format("{%s, %s}", that.getResharedLabel(), that.getReadOnlyLabel()));
 		that.setLabel(String.format("[%s] {%s, %s%s}", that.getIndex(), that.getResharedLabel(), that.getReadOnlyLabel(), that.getResolvedLabel()));
 	}

@@ -85,7 +85,7 @@ public class MDTeamworkProjectUsage extends MDAbstractProjectUsage {
 		MDAbstractProjectUsage.configure(that, source, target, pu);
 		that.setSticky(pu.isSticky());
 		that.setVersion(pu.getVersion());
-		that.setReShared(pu.isReshared() || pu.isResharedAutomatically());
+		that.setReShared(pu.isReshared() || pu.isResharedAutomatically() || pu.isAutomatic());
 		if (that.isSticky()) {
 			that.setSignature(String.format(
 					"{version=%s [Sticky], %s, %s}", that.getVersion(),
