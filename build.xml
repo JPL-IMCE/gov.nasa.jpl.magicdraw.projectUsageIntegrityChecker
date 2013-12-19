@@ -11,7 +11,7 @@
 	<target name="all" depends="all.error,all.ok"/>
 	
 	<target name="all.error" unless="all.precondition.md">
-		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<echo message="Check the environment variables tested in the target 'all.precondition.md'"/>
 		<fail/>
 	</target>
 	
@@ -107,12 +107,12 @@
 	
 	<target name="copySSCAE" depends="copySSCAE.error,copySSCAE.ok"/>
 	
-	<target name="copySSCAE.error" unless="all.precondition">
+	<target name="copySSCAE.error" unless="all.precondition.md">
 		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
 		<fail/>
 	</target>
 		
-	<target name="copySSCAE.ok" if="all.precondition" depends="run.copySSCAE,zip.bundle">
+	<target name="copySSCAE.ok" if="all.precondition.md" depends="run.copySSCAE,zip.bundle">
 		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
 			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
 			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
@@ -183,12 +183,12 @@
 	
 	<target name="repairUML" depends="repairUML.error,repairUML.ok"/>
 	
-	<target name="repairUML.error" unless="all.precondition">
+	<target name="repairUML.error" unless="all.precondition.md">
 		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
 		<fail/>
 	</target>
 		
-	<target name="repairUML.ok" if="all.precondition" depends="run.repairUML,zip.bundle">
+	<target name="repairUML.ok" if="all.precondition.md" depends="run.repairUML,zip.bundle">
 		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
 			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
 			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
@@ -306,12 +306,12 @@
 		
 	<target name="otherRepairs" depends="otherRepairs.error,otherRepairs.ok"/>
 	
-	<target name="otherRepairs.error" unless="all.precondition">
+	<target name="otherRepairs.error" unless="all.precondition.md">
 		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
 		<fail/>
 	</target>
 		
-	<target name="otherRepairs.ok" if="all.precondition" depends="run.otherRepairs,zip.bundle">
+	<target name="otherRepairs.ok" if="all.precondition.md" depends="run.otherRepairs,zip.bundle">
 		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
 			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
 			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
@@ -352,12 +352,12 @@
 	
 	<target name="check" depends="check.error,check.ok"/>
 	
-	<target name="check.error" unless="all.precondition">
+	<target name="check.error" unless="all.precondition.md">
 		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
 		<fail/>
 	</target>
 		
-	<target name="check.ok" if="all.precondition" depends="run.check,zip.bundle">
+	<target name="check.ok" if="all.precondition.md" depends="run.check,zip.bundle">
 		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
 			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
 			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
@@ -428,12 +428,12 @@
 	
 	<target name="tests" depends="tests.error,tests.ok"/>
 	
-	<target name="tests.error" unless="all.precondition">
+	<target name="tests.error" unless="all.precondition.md">
 		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
 		<fail/>
 	</target>
 		
-	<target name="tests.ok" if="all.precondition" depends="run.tests,zip.bundle">
+	<target name="tests.ok" if="all.precondition.md" depends="run.tests,zip.bundle">
 		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
 			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
 			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
