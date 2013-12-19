@@ -20,7 +20,7 @@
 	<property name="plugin.archive"	value="ProjectUsageIntegrityPlugin"/>
 	<property name="plugin.jar" 		value="lib/projectUsageIntegrity.jar"/>
 		
-	<target name="all.ok" if="all.precondition" depends="build,zip.plugin,install,zip.bundle">
+	<target name="all.ok" if="all.precondition.md" depends="build,zip.plugin,install,zip.bundle">
 		<save.job.properties/>
 	</target>
 
