@@ -2,8 +2,6 @@
 <plugin id="gov.nasa.jpl.magicdraw.projectUsageIntegrity" name="SSCAE Project Usage Integrity Checker" version="17.0.5" internalVersion="1" provider-name="JPL" class="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin">
   <requires>
     <api version="1.0"></api>
-    <required-plugin id="com.nomagic.magicdraw.qvt" name="QVT Operational" version="17.0.5" internalVersion="1702010"></required-plugin>
-    <required-plugin id="gov.nasa.jpl.magicdraw.qvto.library" name="JPL MagicDraw QVTO Library" version="17.0.5" internalVersion="1702016"></required-plugin>
   </requires>
   <runtime>
     <library name="lib/commons-exec-1.1.jar"></library>
