@@ -31,7 +31,11 @@
 	<target name="build.plugin">
 		<md.updatePluginFromClasspath 
 			plugin.dir="${plugin.dir}" 
-			plugin.jar="${plugin.jar}"/>
+			plugin.jar="${plugin.jar}"
+			previous.name="${PREV_JOB.plugin.name}"
+			previous.version="${PREV_JOB.bundle.version.human}"
+			previous.internal="${PREV_JOB.bundle.version.internal}"/>
+		
 		<md.updatePluginDescriptor
 			plugin.dir="${plugin.dir}" 
 			plugin.jar="${plugin.jar}" 
