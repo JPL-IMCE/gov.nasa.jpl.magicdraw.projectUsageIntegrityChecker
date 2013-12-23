@@ -117,11 +117,7 @@
 	</target>
 		
 	<target name="copySSCAE.ok" if="all.precondition.md" depends="run.copySSCAE,zip.bundle">
-		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
-			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
-			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
-			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
-		</propertyfile>
+		<save.job.properties/>
 	</target>
 	
 	<target name="run.copySSCAE" depends="md.developer,md.mode">
@@ -193,11 +189,7 @@
 	</target>
 		
 	<target name="repairUML.ok" if="all.precondition.md" depends="run.repairUML,zip.bundle">
-		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
-			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
-			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
-			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
-		</propertyfile>
+		<save.job.properties/>
 	</target>
 	
 	<target name="run.repairUML" depends="md.developer,md.mode">
@@ -316,11 +308,7 @@
 	</target>
 		
 	<target name="otherRepairs.ok" if="all.precondition.md" depends="run.otherRepairs,zip.bundle">
-		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
-			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
-			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
-			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
-		</propertyfile>
+		<save.job.properties/>
 	</target>
 	
 	<target name="run.otherRepairs" depends="md.developer,md.mode">
@@ -362,11 +350,7 @@
 	</target>
 		
 	<target name="check.ok" if="all.precondition.md" depends="run.check,zip.bundle">
-		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
-			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
-			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
-			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
-		</propertyfile>
+		<save.job.properties/>
 	</target>
 	
 	<target name="run.check" depends="md.developer,md.mode">
@@ -438,11 +422,7 @@
 	</target>
 		
 	<target name="tests.ok" if="all.precondition.md" depends="run.tests,zip.bundle">
-		<propertyfile file="${plugin.dir}/artifacts/${md.bundle.prefix}.properties">
-			<entry key="${md.bundle.prefix}.bundle.version" 		value="${md.bundle.version}"/>
-			<entry key="${md.bundle.prefix}.bundle.prefix" 		value="${md.bundle.prefix}"/>
-			<entry key="${md.bundle.prefix}.bundle.name" 		value="${bundle.name}"/>
-		</propertyfile>
+		<save.job.properties/>
 	</target>
 	
 	<target name="run.tests" depends="md.developer,md.mode">
