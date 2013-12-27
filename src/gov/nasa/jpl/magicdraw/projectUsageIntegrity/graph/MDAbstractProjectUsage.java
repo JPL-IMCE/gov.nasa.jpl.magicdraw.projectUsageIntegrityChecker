@@ -36,7 +36,70 @@ public abstract class MDAbstractProjectUsage extends DefaultEdge {
 	abstract public boolean isReshared();
 	private boolean readOnly;
 	private boolean resolved;
+	private boolean isNew;
+	
+	// MD17.0.5
+	private boolean isAutomatic = false;
+	
+	public boolean isNew() {
+		return isNew;
+	}
 
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
+	public boolean isAutomatic() {
+		return isAutomatic;
+	}
+
+	public void setAutomatic(boolean isAutomatic) {
+		this.isAutomatic = isAutomatic;
+	}
+
+	public boolean isLoadedAutomatically() {
+		return isLoadedAutomatically;
+	}
+
+	public void setLoadedAutomatically(boolean isLoadedAutomatically) {
+		this.isLoadedAutomatically = isLoadedAutomatically;
+	}
+
+	public boolean isResharedAutomatically() {
+		return isResharedAutomatically;
+	}
+
+	public void setResharedAutomatically(boolean isResharedAutomatically) {
+		this.isResharedAutomatically = isResharedAutomatically;
+	}
+
+	public boolean isWithPrivateDependencies() {
+		return isWithPrivateDependencies;
+	}
+
+	public void setWithPrivateDependencies(boolean isWithPrivateDependencies) {
+		this.isWithPrivateDependencies = isWithPrivateDependencies;
+	}
+	
+	// MD17.0.5
+	private boolean isLoadedAutomatically = false;
+	
+	// MD17.0.5
+	private boolean isResharedAutomatically = false;
+	
+	// MD17.0.5
+	private boolean isWithPrivateDependencies = false;
+	
+	private String mdFlags;
+	
+	public String getMDFlags() {
+		return mdFlags;
+	}
+	
+	public void setMDFlags(String mdFlags) {
+		this.mdFlags = mdFlags ;
+	}
+	
 	public MDAbstractProjectUsage() {
 		super();
 	}
@@ -107,8 +170,28 @@ public abstract class MDAbstractProjectUsage extends DefaultEdge {
 
 		that.setReadOnly(pu.isReadonly());
 		that.setResolved(isResolved || SSCAEProjectUsageGraph.RESOLVED_FLAG_OVERRIDE);
+		
+		that.setAutomatic(pu.isAutomatic());
+		that.setLoadedAutomatically(pu.isLoadedAutomatically());
+		that.setNew(pu.isNew());
+		that.setResharedAutomatically(pu.isResharedAutomatically());
+		that.setWithPrivateDependencies(pu.isWithPrivateDependencies());
+		
+		that.setMDFlags(String.format("[isNew=%d, isAutomatic=%d, isLoadedAutomatically=%d, isReadonly=%d, isReshared=%d, isResharedAutomatically=%d, isWithPrivateDependencies=%d, version='%s']",
+				getFlag(pu.isNew()),
+				getFlag(pu.isAutomatic()),
+				getFlag(pu.isLoadedAutomatically()),
+				getFlag(pu.isReadonly()),
+				getFlag(pu.isReshared()),
+				getFlag(pu.isResharedAutomatically()),
+				getFlag(pu.isWithPrivateDependencies()),
+				(pu.getVersion() == null ? "<none>" : pu.getVersion())));
 	}
 
+	public static int getFlag(boolean b) {
+		return (b ? 1 : 0);
+	}
+	
 	protected String getResharedLabel() { return ((this.isReshared()) ? "shared" : "!shared"); }
 	protected String getReadOnlyLabel() { return ((this.readOnly) ? "R/O" : "R/W"); }
 	protected String getResolvedLabel() { return ((this.resolved) ? "" : ", !resolved"); }

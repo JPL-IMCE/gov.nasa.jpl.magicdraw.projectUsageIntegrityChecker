@@ -28,6 +28,8 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleProjectUsageTe
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleThreadedAction;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.SSCAEProjectUsageIntegrityOptions;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.resources.SSCAEProjectUsageIntegrityOptionsResources;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrame;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrameConfigurator;
 import gov.nasa.jpl.magicdraw.qvto.QVTOPlugin;
 
 import java.io.File;
@@ -98,7 +100,9 @@ implements ResourceDependentPlugin {
 		return options.getShowPerformanceStatusProperty();
 	}
 	
-
+	public boolean isShowAdvancedInformationProperty(){
+		return options.getShowAdvancedInformationProperty();
+	}
 	
 	protected ProjectUsageSaveParticipant mSaveParticipant;
 	protected ProjectUsageEventListenerAdapter mProjectEventListener;
@@ -163,6 +167,13 @@ implements ResourceDependentPlugin {
 	
 	public SSCAEProjectUsageIntegrityOptions options;
 	
+	protected final LogFrame logFrame = new LogFrame();
+	protected final LogFrameConfigurator logFrameConfigurator = new LogFrameConfigurator(logFrame);
+	
+	public LogFrame getLogFrame() {
+		return logFrame;
+	}
+	
 	@Override
 	public void init() {
 		MDLog.getPluginsLog().info("INIT: >> " + getPluginName());
@@ -214,7 +225,7 @@ implements ResourceDependentPlugin {
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleTeamworkOrAllGraphAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleGraphLabelAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleThreadedAction));
-
+			manager.addMainMenuConfigurator(logFrameConfigurator);
 
 			final PluginDescriptor pluginDescriptor = this.getDescriptor();
 			final String logTraceContractsDir = pluginDescriptor.getPluginDirectory() + File.separator + "logTraceContracts" + File.separator;

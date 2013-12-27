@@ -22,16 +22,18 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import javax.annotation.Nonnull;
 
 import org.eclipse.emf.common.util.URI;
 
+import com.nomagic.ci.persistence.IProject;
 import com.nomagic.ci.persistence.local.spi.localproject.ILocalProjectInternal;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.utils.MDLog;
 
-public class MDLocalProject extends MDAbstractProject {
+public abstract class MDLocalProject extends MDAbstractProject {
 
 	private boolean isInstallRootRelative;
 	private URI location;
@@ -112,51 +114,9 @@ public class MDLocalProject extends MDAbstractProject {
 		this.isTemplate = isTemplate;
 	}
 
-	public static void configure(MDLocalProject that, @Nonnull Project rootProject, ILocalProjectInternal p, String index) {
+	public static void configure(MDLocalProject that, @Nonnull Project rootProject, ILocalProjectInternal p, String index) throws RemoteException {
 		MDAbstractProject.configure(that, p, "L" + index);
 
-		that.setLocation(SSCAEProjectUsageGraph.getMDRelativeProjectURI(p));
-		that.setInstallRootRelative(SSCAEProjectUsageGraph.isMDRelativeURI(that.getLocation()));
-
-		if (rootProject.getPrimaryProject().equals(p)) {
-			that.setMD5checksum("<not computed for a local project>");
-			that.setMissing(false);
-			that.setRoot(true);
-			that.setTemplate(that.isInstallRootRelative() && "templates".equals(that.getLocation().segment(0)));
-			
-			String id = that.getProjectID();
-			if (that.isTemplate()) {
-				id = "<template>";
-			} 
-			that.setLabel(String.format("[%s] '%s {ID=%s, loc=%s}", that.getIndex(), that.getName(), id, that.getLocation()));
-		} else {
-			that.setRoot(false);
-			that.setTemplate(false);
-			String id = "<not available>";
-			String md5result = "<not available>";
-			String localFile = p.getLocationURI().toFileString();
-			boolean missing = true;
-			try {
-				md5result = SSCAEProjectUsageGraph.getMD5FromFile(localFile);
-				id = that.getProjectID();
-				missing = false;
-			} catch (FileNotFoundException e) {
-				MDLog.getPluginsLog().error(String.format("%s: MDLocalProject(md5 computation) for project '%s': FileNotFound: %s",
-						ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
-						p.getName(), localFile));
-				md5result = "<FileNotFound>";
-			} catch (IOException e) {
-				MDLog.getPluginsLog().error(String.format("%s: MDLocalProject(md5 computation) for project '%s': IOException: %s",
-						ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
-						p.getName(), localFile));
-				md5result = "<IOException>";
-			} finally {
-				that.setMD5checksum(md5result);
-				that.setMissing(missing);
-			}
-			that.setLabel(String.format("[%s] '%s {ID=%s, loc=%s, md5=%s}", that.getIndex(), that.getName(), id, that.getLocation(), that.getMD5checksum()));
-		}
-		
 		// workaround for https://support.nomagic.com/browse/MDUMLCS-10009
 		String projectID = that.getProjectID();
 		for (String teamworkSuffix : ProjectUsageIntegrityPlugin.getInstance().MDTeamworkProjectIDSuffixes) {
@@ -165,8 +125,46 @@ public class MDLocalProject extends MDAbstractProject {
 				break;
 			}
 		}
+		
+		that.refresh(p);
 	}
 
+	
+	@Override
+	public void refresh(IProject p) throws RemoteException {
+		super.refresh(p);
+		
+		this.setLocation(SSCAEProjectUsageGraph.getMDRelativeProjectURI(p));
+		this.setInstallRootRelative(SSCAEProjectUsageGraph.isMDRelativeURI(this.getLocation()));
+		this.setTemplate(this.isInstallRootRelative() && "templates".equals(this.getLocation().segment(0)));
+		
+		ProjectUsageIntegrityPlugin plugin = ProjectUsageIntegrityPlugin.getInstance();
+		assert (p instanceof ILocalProjectInternal);
+		ILocalProjectInternal lp = (ILocalProjectInternal) p;
+
+		this.setTemplate(false);
+		String md5result = "<not available>";
+		String localFile = p.getLocationURI().toFileString();
+		boolean missing = true;
+		try {
+			md5result = SSCAEProjectUsageGraph.getMD5FromFile(localFile);
+			missing = false;
+		} catch (FileNotFoundException e) {
+			MDLog.getPluginsLog().error(String.format("%s: MDLocalProject(md5 computation) for project '%s': FileNotFound: %s",
+					plugin.getPluginName(),
+					p.getName(), localFile));
+			md5result = "<FileNotFound>";
+		} catch (IOException e) {
+			MDLog.getPluginsLog().error(String.format("%s: MDLocalProject(md5 computation) for project '%s': IOException: %s",
+					ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
+					p.getName(), localFile));
+			md5result = "<IOException>";
+		} finally {
+			this.setMD5checksum(md5result);
+			this.setMissing(missing);
+		}
+	}
+	
 	public boolean isProjectMissing() { return this.isMissing; }
 
 	public boolean isRootProject() { return this.isRoot; }

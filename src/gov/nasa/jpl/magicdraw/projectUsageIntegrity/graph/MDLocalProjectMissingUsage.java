@@ -52,7 +52,7 @@ public class MDLocalProjectMissingUsage extends MDAbstractProjectUsage {
 	public static void configure(MDLocalProjectMissingUsage that, MDAbstractProject source, MDAbstractProject target) {
 		MDAbstractProjectUsage.configure(that, source, target);
 		that.setSignature(String.format("{%s, %s}", that.getResharedLabel(), that.getReadOnlyLabel()));
-		that.setLabel(String.format("[%s] {%s, %s%s}", that.getIndex(), that.getResharedLabel(), that.getReadOnlyLabel(), that.getResolvedLabel()));
+		that.setLabel(String.format("[%s] {%s, %s%s, missing}", that.getIndex(), that.getResharedLabel(), that.getReadOnlyLabel(), that.getResolvedLabel()));
 	}
 
 	public String toString() { return this.label; }

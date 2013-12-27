@@ -25,6 +25,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrame;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.ZoomablePanningImagePanel;
 
 import java.awt.event.ActionEvent;
@@ -88,7 +89,8 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 				final Logger pluginLog = MDLog.getPluginsLog();
 				final ProjectUsageIntegrityPlugin plugin = ProjectUsageIntegrityPlugin.getInstance();
 				final String pluginName = plugin.getPluginName();
-
+				final LogFrame logFrame = plugin.getLogFrame();
+				
 				final ProjectUsageIntegrityHelper helper = plugin.getSSCAEProjectUsageIntegrityProfileForProject(project);
 
 				ComputeProjectUsageGraphCommand _c;
@@ -118,15 +120,22 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 								ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
 								getProjectUsageGraphDiagnostic()));
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
-						Application.getInstance().getGUILog().clearLog();
-						Application.getInstance().getGUILog().log(projectUsageGraph.getProjectUsageGraphDiagnostic());
-						Application.getInstance().getGUILog().log(projectUsageGraph.projectUsageInfo);
+						logFrame.clear();
+						logFrame.append(projectUsageGraph.getProjectUsageGraphDiagnostic());
+						logFrame.append(projectUsageGraph.projectUsageInfo);
 						return;
 					}
 				}
 
 				boolean showTeamworkOnly = plugin.toggleTeamworkOrAllGraphAction.getState();
-
+				
+				logFrame.clear();
+				if (plugin.isShowAdvancedInformationProperty()) {
+					logFrame.append(projectUsageGraph.getProjectUsageGraphSerialization());
+				} else {
+					logFrame.append(projectUsageGraph.getProjectUsageGraphDiagnostic());
+				}
+				
 				File dotFile = null;
 				try {
 					if (showTeamworkOnly)
@@ -143,10 +152,7 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 					pluginLog.error(String.format("%s - ShowProjectUsageGraphCommand -- no DOT file!", pluginName));
 					return;
 				}
-
-				Application.getInstance().getGUILog().clearLog();
-				Application.getInstance().getGUILog().log(projectUsageGraph.getProjectUsageGraphDiagnostic());
-
+				
 				if (plugin.isDotDefault()){
 
 					// 1st, try the DOT command converter; if that works, then display the image.
