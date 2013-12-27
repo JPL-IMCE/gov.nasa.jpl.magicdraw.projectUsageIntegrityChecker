@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 
 import org.eclipse.emf.common.util.URI;
 
+import com.nomagic.ci.persistence.IProject;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.teamwork.application.storage.ITeamworkProject;
 
@@ -34,7 +35,6 @@ public abstract class MDTeamworkProject extends MDAbstractProject {
 	private URI location;
 	private List<String> tags;
 	private String label;
-	private boolean isMissing;
 	private boolean isRoot;
 	private String version;
 	private String anonymizedVersion;
@@ -58,14 +58,6 @@ public abstract class MDTeamworkProject extends MDAbstractProject {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public boolean isMissing() {
-		return isMissing;
-	}
-
-	public void setMissing(boolean isMissing) {
-		this.isMissing = isMissing;
 	}
 
 	public boolean isRoot() {
@@ -107,24 +99,31 @@ public abstract class MDTeamworkProject extends MDAbstractProject {
 	public static void configure(MDTeamworkProject that, @Nonnull Project rootProject, ITeamworkProject p, String index) throws RemoteException {
 		MDAbstractProject.configure(that, p, "T" + index);
 
-		that.setLocation(p.getLocationURI());
-		List<String> pTags = p.getTags();
+		that.refresh(p);
+	}
+	
+	@Override
+	public void refresh(IProject p) throws RemoteException {
+		super.refresh(p);
+		assert (p instanceof ITeamworkProject);
+		ITeamworkProject tp = (ITeamworkProject)p;
+		
+		this.setLocation(p.getLocationURI());
+		List<String> pTags = tp.getTags();
 		if (null == pTags || pTags.isEmpty()) {
-			that.setTags(Collections.<String>emptyList());
-			that.setLabel(String.format("[%s] '%s {ID=%s}", that.getIndex(), that.getName(), that.getProjectID()));
+			this.setTags(Collections.<String>emptyList());
+			this.setLabel(String.format("[%s] '%s {ID=%s}", this.getIndex(), this.getName(), this.getProjectID()));
 		} else {
-			that.setTags(pTags);
-			Collections.sort(that.getTags(), String.CASE_INSENSITIVE_ORDER);
-			that.setLabel(String.format("[%s] '%s {ID=%s}", that.getIndex(), that.getName(), that.getProjectID()));
+			this.setTags(pTags);
+			Collections.sort(this.getTags(), String.CASE_INSENSITIVE_ORDER);
+			this.setLabel(String.format("[%s] '%s {ID=%s}", this.getIndex(), this.getName(), this.getProjectID()));
 		}
 
-		that.setMissing(false);
-		that.setRoot(rootProject.getPrimaryProject().equals(p));
 	}
 
 	public URI getLocation() { return this.location; }
 
-	public boolean isProjectMissing() { return this.isMissing; }
+	public boolean isProjectMissing() { return false; }
 
 	public boolean isRootProject() { return this.isRoot; }
 

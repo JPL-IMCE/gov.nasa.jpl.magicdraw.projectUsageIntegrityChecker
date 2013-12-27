@@ -18,9 +18,12 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
  * mailto:SoftwareRelease@jpl.nasa.gov
  */
 
+import java.rmi.RemoteException;
+
 import org.eclipse.emf.common.util.URI;
 
 import com.nomagic.ci.persistence.IProject;
+import com.nomagic.ci.persistence.local.ProjectState;
 
 public abstract class MDAbstractProject implements Comparable<MDAbstractProject> {
 
@@ -29,6 +32,9 @@ public abstract class MDAbstractProject implements Comparable<MDAbstractProject>
 	private boolean isReadOnly;
 	private String name;
 	private ProjectClassification classification;
+	
+	// MD17.0.5
+	private boolean isNew;
 	
 	public MDAbstractProject() {}
 	
@@ -56,6 +62,14 @@ public abstract class MDAbstractProject implements Comparable<MDAbstractProject>
 		this.isReadOnly = isReadOnly;
 	}
 
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -71,7 +85,7 @@ public abstract class MDAbstractProject implements Comparable<MDAbstractProject>
 	public void setClassification(ProjectClassification classification) {
 		this.classification = classification;
 	}
-
+	
 	public boolean isProject() {
 		return this.classification == ProjectClassification.IS_PROJECT ||
 				this.classification == ProjectClassification.IS_PROJECT_WITH_PROXIES_FOR_MISSING_AND_RECOVERED_ELEMENTS ||
@@ -93,6 +107,15 @@ public abstract class MDAbstractProject implements Comparable<MDAbstractProject>
 				this.classification == ProjectClassification.IS_HYBRID_PROJECT_MODULE_WITH_PROXIES_FOR_RECOVERED_ELEMENTS;
 	}
 	
+	public boolean isUnloaded() {
+		return this.classification == ProjectClassification.IS_UNLOADED;
+	}
+	
+
+	public boolean isNotLoaded() {
+		return this.classification == ProjectClassification.IS_NOT_LOADED;
+	}
+	
 	@Override
 	public int compareTo(MDAbstractProject that) {
 		return this.getIndex().compareTo(that.getIndex());
@@ -101,12 +124,25 @@ public abstract class MDAbstractProject implements Comparable<MDAbstractProject>
 	public static void configure(MDAbstractProject that, IProject p, String index) {
 		that.setIndex(index);
 		that.setProjectID(p.getProjectID());
-		that.setReadOnly(p.isReadOnly());
-		that.setName(p.getName());
+		that.setNew(p.isNew());
 	}
 
+	public void refresh(IProject p) throws RemoteException {
+		this.setReadOnly(p.isReadOnly());
+		this.setName(p.getName());
+		this.setNew(p.isNew());
+	}
+	
 	public abstract URI getLocation();
 	public abstract boolean isProjectMissing();
 	public abstract boolean isRootProject();
 	public abstract boolean isLocalTemplate();
+	
+	private String mdInfo;
+	public void setMDInfo(String mdInfo) { this.mdInfo = mdInfo; }
+	public String getMDInfo() { return mdInfo; }
+	
+	public static String asBooleanFlag(String flagName, boolean flag) {
+		return (flag ? flagName : "!" + flagName);
+	}
 }

@@ -2,3 +2,15 @@
 
 Initial version for MD 17.0.5 Release.
 
+17050.1.1 (December 26, 2013)
+
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-862
+https://support.nomagic.com/browse/MDUMLCS-11835
+
+- Added an SECAE Log window to be used as a fast, no-overhead replacement of the MD GUI Console window 
+
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-860
+
+- The PUIC graph shows additional details available in the MD17.0.5 API about MD project vertices.
+
+

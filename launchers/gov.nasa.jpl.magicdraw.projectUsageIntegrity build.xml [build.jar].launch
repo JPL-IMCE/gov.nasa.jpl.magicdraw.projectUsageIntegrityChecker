@@ -3,10 +3,10 @@
 <booleanAttribute key="org.eclipse.ant.ui.DEFAULT_VM_INSTALL" value="false"/>
 <stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${project}"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/gov.nasa.jpl.magicdraw.projectUsageIntegrity"/>
+<listEntry value="/gov.nasa.jpl.magicdraw.projectUsageIntegrity/build.xml"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
+<listEntry value="1"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.ui.externaltools.launchGroup"/>
@@ -23,7 +23,7 @@
 <mapEntry key="eclipse.running" value="true"/>
 <mapEntry key="md.install.dir" value="${md.install.dir}"/>
 </mapAttribute>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="build.plugin,build,"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="build.jar,"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/gov.nasa.jpl.magicdraw.projectUsageIntegrity/build.xml}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${workspace_loc:/gov.nasa.jpl.magicdraw.projectUsageIntegrity}"/>

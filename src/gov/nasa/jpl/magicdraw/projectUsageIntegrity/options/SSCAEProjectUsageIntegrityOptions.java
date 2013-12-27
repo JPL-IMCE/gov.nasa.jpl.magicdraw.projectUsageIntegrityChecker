@@ -50,6 +50,11 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 	public static final String PERFORMANCE_INFORMATION_ID 			= "PERFORMANCE_INFORMATION_ID";
 	public static final String PERFORMANCE_INFORMATION_DEFAULT		= "PERFORMANCE_INFORMATION";
 
+	public static final String ADVANCED_INFORMATION_GROUP		= "ADVANCED_INFORMATION_GROUP";
+	public static final String ADVANCED_INFORMATION_DESC	 		= "ADVANCED_INFORMATION_ID_DESCRIPTION";
+	public static final String ADVANCED_INFORMATION_ID 			= "ADVANCED_INFORMATION_ID";
+	public static final String ADVANCED_INFORMATION_DEFAULT		= "ADVANCED_INFORMATION";
+
 
 
 	public static enum Platform { LINUX, MACOSX, WINDOWS, UNKNOWN };
@@ -129,6 +134,7 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 		setDefaultCommandProperty(DEFAULT_COMMAND_DESC, defaultValues, 1);
 		setStatusRefreshProperty();
 		setShowPerformanceStatsProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(PERFORMANCE_INFORMATION_DEFAULT)));
+		setShowAdvancedInformationProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(ADVANCED_INFORMATION_DEFAULT)));
 	}
 
 	public void setDefaultCommandProperty(String id, List <Object> values, int defaultValue){
@@ -214,6 +220,22 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 
 	public boolean getShowPerformanceStatusProperty(){
 		Property p = getProperty(PERFORMANCE_INFORMATION_ID);
+		if (!(p instanceof BooleanProperty))
+			return false;
+
+		return ((BooleanProperty) p).getBoolean();
+	}
+	
+
+	public void setShowAdvancedInformationProperty(boolean value){
+		BooleanProperty p = new BooleanProperty(ADVANCED_INFORMATION_ID, value);
+		p.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
+		p.setGroup(ADVANCED_INFORMATION_GROUP);
+		addProperty(p, ADVANCED_INFORMATION_DESC);
+	}
+
+	public boolean getShowAdvancedInformationProperty(){
+		Property p = getProperty(ADVANCED_INFORMATION_ID);
 		if (!(p instanceof BooleanProperty))
 			return false;
 

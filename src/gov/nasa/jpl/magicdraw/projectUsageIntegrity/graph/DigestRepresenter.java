@@ -19,10 +19,11 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
  * mailto:SoftwareRelease@jpl.nasa.gov
  */
 
+import com.nomagic.ci.persistence.local.ProjectState;
 import org.eclipse.emf.common.util.URI;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.Tag;
-import  org.yaml.snakeyaml.representer.Represent;
+import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 public class DigestRepresenter extends Representer {
@@ -30,6 +31,7 @@ public class DigestRepresenter extends Representer {
 	public DigestRepresenter() {
 		this.representers.put(URI.class, new RepresentURI());
 		this.representers.put(ProjectClassification.class, new RepresentProjectClassification());
+		this.representers.put(ProjectState.class, new RepresentProjectState());
 		YamlDigestHelper.configureRepresenter(this);
 	}
 
@@ -54,6 +56,19 @@ public class DigestRepresenter extends Representer {
 			ProjectClassification pc = (ProjectClassification) data;
 			String value = pc.name();
 			return representScalar(new Tag("!SSCAE.Classification"), value);
+		}
+		
+	}
+	
+	private class RepresentProjectState implements Represent {
+
+		@Override
+		public Node representData(Object data) {
+			if (!(data instanceof ProjectState))
+				throw new IllegalArgumentException("ProjectStateRepresenter -- data should be a ProjectState");
+			ProjectState ps = (ProjectState) data;
+			String value = ps.name();
+			return representScalar(new Tag("!SSCAE.ProjectState"), value);
 		}
 		
 	}

@@ -82,6 +82,7 @@ import com.nomagic.ci.metamodel.project.ProjectUsage;
 import com.nomagic.ci.persistence.IAttachedProject;
 import com.nomagic.ci.persistence.IPrimaryProject;
 import com.nomagic.ci.persistence.IProject;
+import com.nomagic.ci.persistence.local.ProjectState;
 import com.nomagic.ci.persistence.local.decomposition.IProjectDecompositionManager;
 import com.nomagic.ci.persistence.decomposition.ProjectAttachmentConfiguration;
 import com.nomagic.ci.persistence.local.spi.AbstractAttachedProject;
@@ -1153,6 +1154,18 @@ public class SSCAEProjectUsageGraph {
 							}
 
 						}));
+		
+		if (plugin.isShowAdvancedInformationProperty()) {
+			for (MDAbstractProject v : projectUsageDirectedMultigraph.vertexSet()) {
+				gSerialization.append(String.format("\nV: %s (isNew=%b)", v, v.isNew()));
+			}
+
+			for (MDAbstractProjectUsage e : projectUsageDirectedMultigraph.edgeSet()) {
+				MDAbstractProject eSource = projectUsageDirectedMultigraph.getEdgeSource(e);
+				MDAbstractProject eTarget = projectUsageDirectedMultigraph.getEdgeTarget(e);
+				gSerialization.append(String.format("\nE: %s %s", e, e.getMDFlags()));
+			}
+		}
 	}
 
 	protected boolean createSerialization(final List<IProject> allSortedProjects, boolean notifySSCAE) {
@@ -1486,16 +1499,46 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 			String tvNameLabel = (tv == null) ? "" : ((SSCAEProjectUsageGraph.this.useAnonymousVertexLabels) ? tvAnonymizedVersion : tvFullVersion);
-			String vName = (null == tv) ? vNameLabel : tvNameLabel;
-			if (v.getClassification() != null) {
-				vName = vName + String.format("\\n{classification=%s}", ProjectClassificationShortLabel.get(v.getClassification()));
-			}
 			
 			StringBuffer vertexLabel = new StringBuffer();
-			if (isInconsistentlyUsed || null == usageLabel || usageLabel.isEmpty())	
-				vertexLabel.append(String.format("[%s] %s", v.getIndex(), vName));
-			else 
-				vertexLabel.append(String.format("[%s] %s\\n%s", v.getIndex(), vName, SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v)));
+			vertexLabel.append("<<TABLE COLOR=\"none\" CELLBORDER=\"1\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+			
+			String vName = (null == tv) ? vNameLabel : tvNameLabel;
+			if (v instanceof MDAttachedProject) {
+				MDAttachedProject av = (MDAttachedProject) v;
+				ProjectState avs = av.getState();
+				String color = "black";
+				switch (avs) {
+				case Created:
+					color = "darkorange";
+					break;
+				case NotLoaded:
+					color = "darkred";
+					break;
+				case Loaded:
+					color = "darkgreen";
+					break;
+				case Unloaded:
+					color = "darkred";
+					break;
+				}
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s {state=<FONT COLOR=\"%s\" FACE=\"bold\">%s </FONT>}</TD></TR>", 
+					v.getIndex(), vName, color, avs));
+			} else {
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s</TD></TR>", 
+					v.getIndex(), vName));
+			}
+			
+			if (v.getClassification() != null) {
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{classification=%s}</TD></TR>", 
+					ProjectClassificationShortLabel.get(v.getClassification())));
+			}
+			
+			if (isInconsistentlyUsed) {
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
+					SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v)));
+			}
+			
 			if (v instanceof MDTeamworkProject) {
 				StringBuffer tagBuffer = new StringBuffer();
 				boolean first = true;
@@ -1505,8 +1548,13 @@ public class SSCAEProjectUsageGraph {
 					tag = match.matches() ? "<SSCAE Clean>" : tag;
 					tagBuffer.append(String.format("[%s]", tag));
 				}
-				vertexLabel.append(tagBuffer.toString());
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
+						tagBuffer.toString()));
 			}
+			
+			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">%s</TD></TR>", v.getMDInfo()));
+			
+			vertexLabel.append("\n</TABLE>>");
 			return vertexLabel.toString();
 		}
 	};
@@ -1635,8 +1683,11 @@ public class SSCAEProjectUsageGraph {
 	public MDAbstractProject createVertex(IProject p, int width) throws RemoteException {
 		if (null == p)								throw new IllegalArgumentException("non-null project");
 
-		if (vertexMap.containsKey(p))
-			return vertexMap.get(p);
+		if (vertexMap.containsKey(p)) {
+			MDAbstractProject v = vertexMap.get(p);
+			v.refresh(p);
+			return v;
+		}
 
 		int index = vertexMap.size();
 		MDAbstractProject v = helper.createVertexInternal(p, this, index, width);

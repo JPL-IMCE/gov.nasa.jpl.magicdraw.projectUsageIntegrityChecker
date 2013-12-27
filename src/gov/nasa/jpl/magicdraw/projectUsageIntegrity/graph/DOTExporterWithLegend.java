@@ -87,18 +87,22 @@ public abstract class DOTExporterWithLegend<V, E>  {
 
 	protected void renderAttributes(
 			PrintWriter out,
-			String labelName,
+			String label,
 			Map<String, String> attributes)
 	{
-		if ((labelName == null) && (attributes == null)) {
+		if ((label == null) && (attributes == null)) {
 			return;
 		}
 		out.print(" [ ");
-		if ((labelName == null) && (attributes != null)) {
-			labelName = attributes.get("label");
+		if ((label == null) && (attributes != null)) {
+			label = attributes.get("label");
 		}
-		if (labelName != null) {
-			out.print("label=\"" + labelName + "\" ");
+		if (label != null) {
+			if (label.startsWith("<") && label.endsWith(">")) {
+				out.print("label=" + label + " ");
+			} else {
+				out.print("label=\"" + label + "\" ");
+			}
 		}
 		if (attributes != null) {
 			for (Map.Entry<String, String> entry : attributes.entrySet()) {
