@@ -13,4 +13,11 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-860
 
 - The PUIC graph shows additional details available in the MD17.0.5 API about MD project vertices.
 
+17050.1.2 (December 28, 2013)
+
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
+
+- On opening a local project, the PUIC teamwork/all button update should not cause exceptiosn like this:
+
+	java.lang.Exception: Warning!!! Swing components are accessed not from Event Dispatcher Thread (EDT). This is a potential deadlock case.
 
