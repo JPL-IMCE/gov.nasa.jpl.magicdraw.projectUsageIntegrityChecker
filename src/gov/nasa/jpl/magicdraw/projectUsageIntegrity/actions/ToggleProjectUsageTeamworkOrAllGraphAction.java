@@ -23,6 +23,9 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
 
 import com.nomagic.actions.NMStateAction;
 import com.nomagic.magicdraw.core.Application;
@@ -58,9 +61,14 @@ public class ToggleProjectUsageTeamworkOrAllGraphAction extends NMStateAction {
 	}
 
 	@Override
-	public void setState(boolean newState) {
-		this.iAmSelected = newState;
-		super.setState(newState);
+	public void setState(final boolean newState) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				ToggleProjectUsageTeamworkOrAllGraphAction.this.iAmSelected = newState;
+				ToggleProjectUsageTeamworkOrAllGraphAction.super.setState(newState);
+			}
+		});
 	}
 	
 	@Override
