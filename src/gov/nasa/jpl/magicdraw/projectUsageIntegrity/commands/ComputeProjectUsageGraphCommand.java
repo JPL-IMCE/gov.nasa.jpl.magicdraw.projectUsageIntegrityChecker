@@ -22,7 +22,7 @@ import gov.nasa.jpl.logfire.SessionCounter;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph.DOTImageFormat;
 
@@ -114,16 +114,13 @@ public class ComputeProjectUsageGraphCommand implements Runnable {
 					String.format("%s - Error - ProjectUsage graph is invalid\n%s",
 							ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
 							getProjectUsageGraphDiagnostic()));
-			
-			if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
-				Application.getInstance().getGUILog().clearLog();
-				Application.getInstance().getGUILog().log(projectUsageGraph.projectUsageInfo);
-			}
 		}
 
 		if (this.showProjectUsageDiagnosticModalDialog) {
 			Utilities.invokeOnDispatcherOrLater(new Runnable() {
 				public void run() {
+					Application.getInstance().getGUILog().openMessageWindow();
+					projectUsageGraph.getDigest().showProblems();
 					ProjectUsageIntegrityPlugin.getInstance().checkCurrentProjectStatusAction.refresh(ok);
 					if (ok)
 						Application.getInstance().getGUILog().showMessage(getProjectUsageGraphDiagnostic());

@@ -1103,12 +1103,14 @@ public class SSCAEProjectUsageGraph {
 		notifySSCAE = createSerialization(allSortedProjects, notifySSCAE);
 		
 		if (notifySSCAE) {
-			pluginLog.error(String.format("*** Notify SSCAE ***\n====Diagnostic:\n%s\n====\n\n====Serialization:\n%s\n====\n", 
+			pluginLog.error(String.format("*** Notify SSCAE ***\n====Diagnostic:\n%s\n====\n\n====Serialization:\n%s\n====\n\n====Messages:\n%s\n====\n", 
 					gDiagnostic.toString(),
-					gSerialization.toString()));
+					gSerialization.toString(),
+					gMessages.toString()));
 		}
 
 		gSignature.append(gSerialization.toString());
+		gSignature.append(gMessages.toString());
 
 		final DOTExporterWithLegend<MDAbstractProject, MDAbstractProjectUsage> dotExporter =
 				new DOTExporterWithLegend<MDAbstractProject, MDAbstractProjectUsage>(
@@ -1168,12 +1170,17 @@ public class SSCAEProjectUsageGraph {
 		}
 	}
 
+	protected SSCAEProjectDigest digest;
+	
+	public SSCAEProjectDigest getDigest() { return digest; }
+	
 	protected boolean createSerialization(final List<IProject> allSortedProjects, boolean notifySSCAE) {
 
-		SSCAEProjectDigest digest = new SSCAEProjectDigest();
+		digest = new SSCAEProjectDigest();
 
 		digest.setName(project.getName());
 		digest.setClassification(projectClassification);
+		digest.setProxyCount(proxyCount);
 		digest.setDiagramCount(diagramCount);
 		
 		for (IProject aProject : allSortedProjects) {
@@ -1244,44 +1251,24 @@ public class SSCAEProjectUsageGraph {
 			digest.getShouldBeSystemOrStandardProfile().add(v);
 		}
 
-		if (nonUniqueNamesProfiles.isEmpty()){
-
-		} else {
-			gMessages.append(String.format("\nERROR: %d profiles have non-unique names", nonUniqueNamesProfiles.size()));
-			for (Profile p : nonUniqueNamesProfiles.keySet()){
-				gMessages.append("\nProfiles with the same name:");
-				gMessages.append("\n -" + p.getQualifiedName());
-				gMessages.append("\n -" + nonUniqueNamesProfiles.get(p).getQualifiedName());
+		if (!nonUniqueNamesProfiles.isEmpty()) {
+			for (Profile p : nonUniqueNamesProfiles.keySet()) {
+				Profile c = nonUniqueNamesProfiles.get(p);
+				digest.getProfileNameConflicts().add(new ProfileNameConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID()));
 			}
 		}
 
-		if (nonUniqueURIProfiles.isEmpty()){
-		} else {
-			gMessages.append(String.format("\nERROR: %d profiles have non-unique URIs", nonUniqueURIProfiles.size()));
-			for (Profile p : nonUniqueURIProfiles.keySet()){
-				gMessages.append("\nProfiles with the same URI:");
-				gMessages.append("\n -" + p.getQualifiedName());
-				gMessages.append("\n -" + nonUniqueURIProfiles.get(p).getQualifiedName());
+		if (!nonUniqueURIPackages.isEmpty()) {
+			for (Package p : nonUniqueURIPackages.keySet()) {
+				Package c = nonUniqueURIPackages.get(p);
+				digest.getPackageURIConflicts().add(new URIConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID(), p.getURI()));
 			}
 		}
 		
-		if (nonUniqueURIPackages.isEmpty()){
-		} else {
-			gSerialization.append(String.format("\nERROR: %d packages have non-unique URIs", nonUniqueURIPackages.size()));
-			for (Package p : nonUniqueURIPackages.keySet()){
-				gSerialization.append("\nPackages with the same URI:");
-				gSerialization.append("\n -" + p.getQualifiedName());
-				gSerialization.append("\n -" + nonUniqueURIPackages.get(p).getQualifiedName());
-			}
-		}
-
-		if (nonUniqueURIPackages.isEmpty()){
-		} else {
-			gMessages.append(String.format("\nERROR: %d packages have non-unique URIs", nonUniqueURIPackages.size()));
-			for (Package p : nonUniqueURIPackages.keySet()){
-				gMessages.append("\nPackages with the same URI:");
-				gMessages.append("\n -" + p.getQualifiedName());
-				gMessages.append("\n -" + nonUniqueURIPackages.get(p).getQualifiedName());
+		if (!nonUniqueURIProfiles.isEmpty()) {
+			for (Package p : nonUniqueURIProfiles.keySet()) {
+				Profile c = nonUniqueURIProfiles.get(p);
+				digest.getProfileURIConflicts().add(new URIConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID(), p.getURI()));
 			}
 		}
 

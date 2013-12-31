@@ -1,4 +1,7 @@
 package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
+
+import java.util.List;
+
 /**
  * Copyright 2013, by the California Institute of Technology.
  * ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. 
@@ -20,45 +23,29 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
 
 public class RecoveredElementProxy {
 
-	private String humanName;
-	private String humanType;
-	private String ID;
-	private int ownedProxyCount;
+	private String elementPath;
+	private List<ElementProxyInfo> proxies;
 	
 	public RecoveredElementProxy() {
 	}
 
-	public String getHumanName() {
-		return humanName;
+	public String getElementPath() {
+		return elementPath;
 	}
 
-	public void setHumanName(String humanName) {
-		this.humanName = humanName;
-	}
-
-	public String getHumanType() {
-		return humanType;
-	}
-
-	public void setHumanType(String humanType) {
-		this.humanType = humanType;
-	}
-
-	public String getID() {
-		return ID;
-	}
-
-	public void setID(String iD) {
-		ID = iD;
+	public void setElementPath(String elementPath) {
+		this.elementPath = elementPath;
 	}
 
 	public int getOwnedProxyCount() {
-		return ownedProxyCount;
+		return (proxies == null) ? 0 : proxies.size();
+	}
+	
+	public List<ElementProxyInfo> getOwnedElementProxies() {
+		return proxies;
 	}
 
-	public void setOwnedProxyCount(int ownedProxyCount) {
-		this.ownedProxyCount = ownedProxyCount;
+	public void setOwnedElementProxies(List<ElementProxyInfo> proxies) {
+		this.proxies = proxies;
 	}
-	
-	
 }

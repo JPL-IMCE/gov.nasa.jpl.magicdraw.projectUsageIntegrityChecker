@@ -21,3 +21,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
 
 	java.lang.Exception: Warning!!! Swing components are accessed not from Event Dispatcher Thread (EDT). This is a potential deadlock case.
 
+17050.1.3 (December 28, 2013)
+
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-860
+
+- Show the information about detected proxies and about conflicts related to packages / profile URIs and names.
