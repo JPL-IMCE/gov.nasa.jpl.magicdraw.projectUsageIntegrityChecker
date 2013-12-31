@@ -12,6 +12,8 @@ import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
+import com.nomagic.ci.persistence.local.ProjectState;
+
 public class YamlDigestHelper {
 
 	public static final Map<Class<?>, Tag> YAML_CLASS_TAGS;
@@ -19,10 +21,13 @@ public class YamlDigestHelper {
 	static {
 		YAML_CLASS_TAGS = new HashMap<Class<?>, Tag>();
 		
+		YAML_CLASS_TAGS.put(ProjectState.class, new Tag("!MagicDraw.ProjectState"));
 		YAML_CLASS_TAGS.put(SSCAEProjectDigest.class, new Tag("!SSCAE.Digest"));
 		YAML_CLASS_TAGS.put(ProjectClassification.class, new Tag("!SSCAE.Classification"));
 		YAML_CLASS_TAGS.put(URI.class, new Tag("!emf.URI"));
+		YAML_CLASS_TAGS.put(ElementPathSegment.class, new Tag("!SSCAE.ElementPathSegment"));
 		YAML_CLASS_TAGS.put(ElementProxyInfo.class, new Tag("!SSCAE.Proxy"));
+		YAML_CLASS_TAGS.put(RecoveredElementProxy.class, new Tag("!SSCAE.RecoveredElementProxy"));
 		YAML_CLASS_TAGS.put(MDLocalPrimaryProject.class, new Tag("!SSCAE.LocalPrimaryProjectVertex"));
 		YAML_CLASS_TAGS.put(MDLocalAttachedProject.class, new Tag("!SSCAE.LocalAttachedProjectVertex"));
 		YAML_CLASS_TAGS.put(MDTeamworkPrimaryProject.class, new Tag("!SSCAE.TeamworkPrimaryProjectVertex"));

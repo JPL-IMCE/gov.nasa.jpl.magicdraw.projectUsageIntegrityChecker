@@ -1054,8 +1054,6 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 			eventSupport.setEnableEventFiring(false);
 			try {
 				if (!c.isProjectUsageTopologyValid()) {
-					Application.getInstance().getGUILog().clearLog();
-					Application.getInstance().getGUILog().log(c.getProjectUsageGraphDiagnostic());
 					runSSCAEValidationAndShowResults(String.format("SSCAE Validation('%s')", project.getName()));	
 				}
 			} finally {

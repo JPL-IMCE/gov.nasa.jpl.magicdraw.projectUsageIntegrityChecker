@@ -96,7 +96,7 @@ public class LogFrameConfigurator implements AMConfigurator {
 		});
 
 
-		category.addAction(new NMAction("ADD_SECAE_LOG_DATA", "Add data to SECAE Log window", null, ActionsGroups.PROJECT_OPENED_RELATED)
+		category.addAction(new NMAction("CLEAR_SECAE_LOG", "Clear SECAE Log window", null, ActionsGroups.PROJECT_OPENED_RELATED)
 		{
 			@Override
 			public void updateState() {
@@ -111,8 +111,6 @@ public class LogFrameConfigurator implements AMConfigurator {
 					ProjectWindowsManager projectWindowsManager = Application.getInstance().getMainFrame().getProjectWindowsManager();
 					projectWindowsManager.activateWindow(info.getId());
 
-					final int max = 10000;
-
 					Task task = new Task("Log info")
 					{
 						@Override
@@ -120,17 +118,7 @@ public class LogFrameConfigurator implements AMConfigurator {
 						{
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
-									for (int i = 1; i < max; i++)
-									{
-										logFrame.append("log text log text log text " + i + "\n");
-										if (i % 10 == 0)
-										{
-											if (isCanceled())
-											{
-												return;
-											}
-										}
-									}
+									logFrame.clear();
 								};
 							});
 

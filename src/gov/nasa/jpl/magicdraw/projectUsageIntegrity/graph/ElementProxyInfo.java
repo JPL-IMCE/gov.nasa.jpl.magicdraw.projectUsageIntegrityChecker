@@ -19,45 +19,33 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
  * mailto:SoftwareRelease@jpl.nasa.gov
  */
 
+import java.util.Collections;
+import java.util.List;
+
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.expression.ElementPath;
+
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 
 public class ElementProxyInfo {
 
-	private String humanName;
-	private String humanType;
-	private String ID;
+	private List<ElementPathSegment> elementPath;
 	
 	public ElementProxyInfo() {
 	}
 
-	public ElementProxyInfo(final Element proxy) {
-		this.setHumanName(proxy.getHumanName());
-		this.setHumanType(proxy.getHumanType());
-		this.setID(proxy.getID());
+	public ElementProxyInfo(final Element owner, final Element proxy) {
+		this.setElementPath(ElementPath.getElementPathFrom(owner, proxy));
 	}
 	
-	public String getHumanName() {
-		return humanName;
+	public ElementProxyInfo(final Element proxy) {
+		this.setElementPath(Collections.singletonList(ElementPath.getElementNameSegment(proxy)));
+	}
+	
+	public List<ElementPathSegment> getElementPath() {
+		return elementPath;
 	}
 
-	public void setHumanName(String humanName) {
-		this.humanName = humanName;
+	public void setElementPath(List<ElementPathSegment> elementPath) {
+		this.elementPath = elementPath;
 	}
-
-	public String getHumanType() {
-		return humanType;
-	}
-
-	public void setHumanType(String humanType) {
-		this.humanType = humanType;
-	}
-
-	public String getID() {
-		return ID;
-	}
-
-	public void setID(String iD) {
-		ID = iD;
-	}
-
 }

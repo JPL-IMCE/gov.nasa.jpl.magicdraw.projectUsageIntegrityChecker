@@ -24,6 +24,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrame;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.ZoomablePanningImagePanel;
@@ -119,6 +120,10 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 						String.format("%s - Error - ProjectUsage graph is invalid\n%s",
 								ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
 								getProjectUsageGraphDiagnostic()));
+					
+					Application.getInstance().getGUILog().openMessageWindow();
+					projectUsageGraph.getDigest().showProblems();
+					
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
 						logFrame.clear();
 						logFrame.append(projectUsageGraph.getProjectUsageGraphDiagnostic());
