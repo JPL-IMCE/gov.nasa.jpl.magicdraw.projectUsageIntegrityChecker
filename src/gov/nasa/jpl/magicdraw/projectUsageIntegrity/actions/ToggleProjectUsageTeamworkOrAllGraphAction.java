@@ -62,13 +62,8 @@ public class ToggleProjectUsageTeamworkOrAllGraphAction extends NMStateAction {
 
 	@Override
 	public void setState(final boolean newState) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				ToggleProjectUsageTeamworkOrAllGraphAction.this.iAmSelected = newState;
-				ToggleProjectUsageTeamworkOrAllGraphAction.super.setState(newState);
-			}
-		});
+		this.iAmSelected = newState;
+		super.setState(newState);
 	}
 	
 	@Override
