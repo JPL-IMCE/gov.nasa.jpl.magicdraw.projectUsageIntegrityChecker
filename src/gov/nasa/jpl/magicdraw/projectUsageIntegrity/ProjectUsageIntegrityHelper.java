@@ -144,6 +144,17 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return null;
 	}
 
+	public static Package locateSSCAEProjectUsageValidationSuite(@Nonnull Project project) {
+		Package suite = getSSCAEProjectUsageValidationSuite(project);
+		if (suite == null) {
+			MDLog.getPluginsLog().error(String.format(
+					"ProjectUsageIntegrityHelper.runSSCAEValidationAndShowResults: resolved SSCAE profile & stereotypes but cannot find it by its qualified name: '%s'",
+					SSCAE_PROJECT_USAGE_VALIDATION_SUITE_QNAME));
+			
+		}
+		return suite;
+	}
+	
 	public final static String SSCAE_PROJECT_USAGE_INTEGRITY_PROFILE_PROJECT_FILE = "SSCAEProjectUsageIntegrityProfile.mdzip";
 	public final static String SSCAE_PROJECT_USAGE_INTEGRITY_PROFILE = "SSCAE ProjectUsage Integrity Profile";
 	public final static String SSCAE_ABSTRACT_USAGE_STEREOTYPE_NAME = "AbstractSSCAEProjectUsageGraph";
@@ -983,6 +994,9 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 			return;
 		
 		final Package suite = ProjectUsageIntegrityHelper.getSSCAEProjectUsageValidationSuite(project);
+		if (suite == null)
+			return;
+
 		final Set<Element> elements = new HashSet<Element>();
 		final List<RuleViolationResult> results = new ArrayList<RuleViolationResult>();
 
