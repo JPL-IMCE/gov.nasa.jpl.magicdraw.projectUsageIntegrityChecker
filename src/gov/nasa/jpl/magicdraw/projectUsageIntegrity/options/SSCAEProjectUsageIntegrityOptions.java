@@ -54,6 +54,11 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 	public static final String ADVANCED_INFORMATION_DESC	 		= "ADVANCED_INFORMATION_ID_DESCRIPTION";
 	public static final String ADVANCED_INFORMATION_ID 			= "ADVANCED_INFORMATION_ID";
 	public static final String ADVANCED_INFORMATION_DEFAULT		= "ADVANCED_INFORMATION";
+	
+	public static final String LOAD_DIAGRAMS_GROUP		= "LOAD_DIAGRAMS_GROUP";
+	public static final String LOAD_DIAGRAMS_DESC	 		= "LOAD_DIAGRAMS_ID_DESCRIPTION";
+	public static final String LOAD_DIAGRAMS_ID 			= "LOAD_DIAGRAMS_ID";
+	public static final String LOAD_DIAGRAMS_DEFAULT		= "LOAD_DIAGRAMS";
 
 
 
@@ -135,6 +140,8 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 		setStatusRefreshProperty();
 		setShowPerformanceStatsProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(PERFORMANCE_INFORMATION_DEFAULT)));
 		setShowAdvancedInformationProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(ADVANCED_INFORMATION_DEFAULT)));
+		setLoadDiagramsProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(LOAD_DIAGRAMS_DEFAULT)));
+
 	}
 
 	public void setDefaultCommandProperty(String id, List <Object> values, int defaultValue){
@@ -236,6 +243,21 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 
 	public boolean getShowAdvancedInformationProperty(){
 		Property p = getProperty(ADVANCED_INFORMATION_ID);
+		if (!(p instanceof BooleanProperty))
+			return false;
+
+		return ((BooleanProperty) p).getBoolean();
+	}
+	
+	public void setLoadDiagramsProperty(boolean value){
+		BooleanProperty p = new BooleanProperty(LOAD_DIAGRAMS_ID, value);
+		p.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
+		p.setGroup(LOAD_DIAGRAMS_GROUP);
+		addProperty(p, LOAD_DIAGRAMS_DESC);
+	}
+
+	public boolean getLoadDiagramsProperty(){
+		Property p = getProperty(LOAD_DIAGRAMS_ID);
 		if (!(p instanceof BooleanProperty))
 			return false;
 

@@ -104,6 +104,10 @@ implements ResourceDependentPlugin {
 		return options.getShowAdvancedInformationProperty();
 	}
 	
+	public boolean isLoadDiagarmsProperty(){
+		return options.getLoadDiagramsProperty();
+	}
+	
 	protected ProjectUsageSaveParticipant mSaveParticipant;
 	protected ProjectUsageEventListenerAdapter mProjectEventListener;
 	
