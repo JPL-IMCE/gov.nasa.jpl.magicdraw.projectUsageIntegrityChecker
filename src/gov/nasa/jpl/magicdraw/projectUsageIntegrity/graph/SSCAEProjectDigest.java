@@ -584,58 +584,78 @@ public class SSCAEProjectDigest {
 
 	public static String FIRST_SEGMENT = "=> <A>%s</A>\n";
 	public static String OTHER_SEGMENTS = " . <A>%s</A>\n";
-	
+
 	public void showProblems() {
 		final Application a = Application.getInstance();
 		final Project p = a.getProject();
 		final URI location = p.getLocationUri();
 		final GUILog log = a.getGUILog();
-		
+
 		log.log(String.format("= Project: %s ==========================================\n", ((location == null) ? p.getName() : location)));
-		
+
 		if (!getRecoveredElementProxies().isEmpty()) {
 			log.log(String.format("ERROR: - %s proxies for recovered elements\n", getRecoveredElementProxies().size()));
-			for (RecoveredElementProxy rep : getRecoveredElementProxies()) {
-				log.log(String.format("- %d nested proxies in %s\n", rep.getOwnedProxyCount(), rep.getElementPath()));
-				for (ElementProxyInfo proxy : rep.getOwnedElementProxies()) {
-					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+
+			if (getRecoveredElementProxies().size() < 10){
+
+				for (RecoveredElementProxy rep : getRecoveredElementProxies()) {
+					log.log(String.format("- %d nested proxies in %s\n", rep.getOwnedProxyCount(), rep.getElementPath()));
+					if ( rep.getOwnedElementProxies().size() < 10){
+						for (ElementProxyInfo proxy : rep.getOwnedElementProxies()) {
+							ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+						}
+					}
 				}
 			}
 		}
-		
+
 		if (!getGhostElementProxies().isEmpty()) {
 			log.log(String.format("ERROR: - %s proxies for non-recovered elements (*** Notify SSCAE ***)\n", getGhostElementProxies().size()));
-			for (ElementProxyInfo proxy : getGhostElementProxies()) {
-				ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+			if (getGhostElementProxies().size() < 10){
+
+				for (ElementProxyInfo proxy : getGhostElementProxies()) {
+					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+				}
 			}
 		}
 
 		if (!getMissingElementsInUnloadedModules().isEmpty()) {
 			log.log(String.format("ERROR: - %s proxies for missing elements in loadable modules\n", getMissingElementsInUnloadedModules().size()));
-			for (Map.Entry<MDAbstractProject, List<ElementProxyInfo>> entry : getMissingElementsInUnloadedModules().entrySet()) {
-				MDAbstractProject unloadedProject = entry.getKey();
-				List<ElementProxyInfo> unloadedProxies = entry.getValue();
-				log.log(String.format("- unloaded module '%s' {ID=%s}\n", unloadedProject.getName(), unloadedProject.getProjectID()));
-				for (ElementProxyInfo proxy : unloadedProxies) {
-					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+			if (getGhostElementProxies().size() < 10){
+
+				for (Map.Entry<MDAbstractProject, List<ElementProxyInfo>> entry : getMissingElementsInUnloadedModules().entrySet()) {
+					MDAbstractProject unloadedProject = entry.getKey();
+					List<ElementProxyInfo> unloadedProxies = entry.getValue();
+					log.log(String.format("- unloaded module '%s' {ID=%s}\n", unloadedProject.getName(), unloadedProject.getProjectID()));
+					if (unloadedProxies.size() < 10){
+
+						for (ElementProxyInfo proxy : unloadedProxies) {
+							ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+						}
+					}
 				}
 			}
 		}
-		
+
 		if (!getOtherMissingProxies().isEmpty()) {
 			log.log(String.format("ERROR: - %s proxies for missing elements elsewhere (*** Notify SSCAE ***)\n", getOtherMissingProxies().size()));
-			for (ElementProxyInfo proxy : getOtherMissingProxies()) {
-				ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+			if (getOtherMissingProxies().size() < 10){
+
+				for (ElementProxyInfo proxy : getOtherMissingProxies()) {
+					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+				}
 			}
 		}
 
 		if (!getDiagramProxyUsageProblems().isEmpty()) {
 			log.log(String.format("ERROR: %d / %d diagrams have proxy usage problems\n", 
 					getDiagramProxyUsageProblems().size(), getDiagramCount()));
-			for(DiagramProxyUsageProblems d : getDiagramProxyUsageProblems()) {
-				log.addHyperlinkedText(
-						String.format("- diagram '<A>%s</A>' {ID=%s, type=%s} uses %d proxy elements\n", d.getQualifiedName(), d.getID(), d.getType(), d.getProxyCount()), 
-						Collections.singletonMap(d.getID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(d.getID()))));
+			if (getDiagramProxyUsageProblems().size() < 10){
+				for(DiagramProxyUsageProblems d : getDiagramProxyUsageProblems()) {
+					log.addHyperlinkedText(
+							String.format("- diagram '<A>%s</A>' {ID=%s, type=%s} uses %d proxy elements\n", d.getQualifiedName(), d.getID(), d.getType(), d.getProxyCount()), 
+							Collections.singletonMap(d.getID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(d.getID()))));
+				}
 			}
 		}
 
@@ -678,7 +698,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
 			}
 		}
-		
+
 		log.log(String.format("===========================================\n"));
 	}
 }

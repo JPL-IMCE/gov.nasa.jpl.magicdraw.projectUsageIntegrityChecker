@@ -1103,7 +1103,7 @@ public class SSCAEProjectUsageGraph {
 		notifySSCAE = createSerialization(allSortedProjects, notifySSCAE);
 		
 		if (notifySSCAE) {
-			pluginLog.error(String.format("*** Notify SSCAE ***\n====Diagnostic:\n%s\n====\n\n====Serialization:\n%s\n====\n\n====Messages:\n%s\n====\n", 
+			pluginLog.error(String.format("*** Notify SECAE ***\n====Diagnostic:\n%s\n====\n\n====Serialization:\n%s\n====\n\n====Messages:\n%s\n====\n", 
 					gDiagnostic.toString(),
 					gSerialization.toString(),
 					gMessages.toString()));

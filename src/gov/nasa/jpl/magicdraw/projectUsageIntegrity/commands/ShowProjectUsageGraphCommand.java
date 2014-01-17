@@ -42,6 +42,7 @@ import javax.swing.JTextArea;
 import org.apache.log4j.Logger;
 
 import com.nomagic.magicdraw.core.Application;
+import com.nomagic.magicdraw.core.GUILog;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.utils.MDLog;
 import com.nomagic.ui.Dialog;
@@ -90,7 +91,7 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 				final Logger pluginLog = MDLog.getPluginsLog();
 				final ProjectUsageIntegrityPlugin plugin = ProjectUsageIntegrityPlugin.getInstance();
 				final String pluginName = plugin.getPluginName();
-				final LogFrame logFrame = plugin.getLogFrame();
+				final GUILog log = Application.getInstance().getGUILog();
 				
 				final ProjectUsageIntegrityHelper helper = plugin.getSSCAEProjectUsageIntegrityProfileForProject(project);
 
@@ -125,20 +126,18 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 					projectUsageGraph.getDigest().showProblems();
 					
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
-						logFrame.clear();
-						logFrame.append(projectUsageGraph.getProjectUsageGraphDiagnostic());
-						logFrame.append(projectUsageGraph.projectUsageInfo);
+						log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
+						log.log(projectUsageGraph.projectUsageInfo);
 						return;
 					}
 				}
 
 				boolean showTeamworkOnly = plugin.toggleTeamworkOrAllGraphAction.getState();
 				
-				logFrame.clear();
 				if (plugin.isShowAdvancedInformationProperty()) {
-					logFrame.append(projectUsageGraph.getProjectUsageGraphSerialization());
+					log.log(projectUsageGraph.getProjectUsageGraphSerialization());
 				} else {
-					logFrame.append(projectUsageGraph.getProjectUsageGraphDiagnostic());
+					log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
 				}
 				
 				File dotFile = null;
