@@ -1026,11 +1026,13 @@ public class SSCAEProjectUsageGraph {
 				gDiagnostic.append(String.format("\nERROR: - %s proxies for missing elements elsewhere (*** Notify SSCAE ***)", proxyUnloadedOtherCount.size()));
 				notifySSCAE = true;
 			}
-			if (diagram2proxyUsages.isEmpty()) {
-				gDiagnostic.append(String.format("\n   OK: none of the %d diagrams have proxy usage problems", diagramCount));
-			} else {
-				gDiagnostic.append(String.format("\nERROR: %d / %d diagrams have proxy usage problems", 
-						diagram2proxyUsages.size(), diagramCount));
+			if (plugin.isLoadDiagarmsProperty()){
+				if (diagram2proxyUsages.isEmpty()) {
+					gDiagnostic.append(String.format("\n   OK: none of the %d diagrams have proxy usage problems", diagramCount));
+				} else {
+					gDiagnostic.append(String.format("\nERROR: %d / %d diagrams have proxy usage problems", 
+							diagram2proxyUsages.size(), diagramCount));
+				}
 			}
 		}
 
