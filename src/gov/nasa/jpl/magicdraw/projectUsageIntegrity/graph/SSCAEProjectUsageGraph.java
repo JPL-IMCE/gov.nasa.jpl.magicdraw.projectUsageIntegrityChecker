@@ -739,7 +739,7 @@ public class SSCAEProjectUsageGraph {
 		diagramCount = projectDiagrams.size();
 
 		final ProxyManager proxyManager = project.getProxyManager();
-		if (! proxyManager.getProxies().isEmpty()) {
+		if (! proxyManager.getProxies().isEmpty() && plugin.isLoadDiagarmsProperty()) {
 
 			final Set<DiagramPresentationElement> unloadedDPEs = new HashSet<DiagramPresentationElement>();
 			for (DiagramPresentationElement dpe : projectDiagrams) {
