@@ -166,14 +166,6 @@ implements ResourceDependentPlugin {
 	public final List<String> MDTeamworkProjectIDSuffixes = new ArrayList<String>();
 	
 	public SSCAEProjectUsageIntegrityOptions options;
-	
-	protected final LogFrame logFrame = new LogFrame();
-	protected final LogFrameConfigurator logFrameConfigurator = new LogFrameConfigurator(logFrame);
-	
-	public LogFrame getLogFrame() {
-		return logFrame;
-	}
-	
 	@Override
 	public void init() {
 		MDLog.getPluginsLog().info("INIT: >> " + getPluginName());
@@ -225,7 +217,6 @@ implements ResourceDependentPlugin {
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleTeamworkOrAllGraphAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleGraphLabelAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleThreadedAction));
-			manager.addMainMenuConfigurator(logFrameConfigurator);
 
 			final PluginDescriptor pluginDescriptor = this.getDescriptor();
 			final String logTraceContractsDir = pluginDescriptor.getPluginDirectory() + File.separator + "logTraceContracts" + File.separator;
