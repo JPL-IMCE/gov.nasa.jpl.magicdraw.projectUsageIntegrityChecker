@@ -578,8 +578,11 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 				String.format("MD5 checksum differences for SSCAE Local Project '%s' (expected = project's MD5; actual = computed MD5)", project.getName()),
 				expected, actual);
 		String mismatch = compare.getMessage();
+		if (mismatch.length() > 100)
+			mismatch = mismatch.substring(0, 100) + String.format(" ... (%d long!)", mismatch.length());
+		
 		EnumerationLiteral errorLevel = getValidationWarningLevel();
-		logger.info(mismatch);
+		
 		Annotation a = new Annotation(errorLevel, "SSCAE MD5", mismatch, m);
 		annotations.add(a);
 	}
@@ -832,8 +835,11 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 				String.format("MD5 checksum differences for SSCAE Shared Package '%s' (expected = project's MD5; actual = computed MD5)", p.getQualifiedName()),
 				expected, actual);
 		String mismatch = compare.getMessage();
+		if (mismatch.length() > 100)
+			mismatch = mismatch.substring(0, 100) + String.format(" ... (%d long!)", mismatch.length());
+		
 		EnumerationLiteral errorLevel = getValidationWarningLevel();
-		logger.info(mismatch);
+		
 		Annotation a = new Annotation(errorLevel, "SSCAE MD5", mismatch, p);
 		annotations.add(a);
 	}
