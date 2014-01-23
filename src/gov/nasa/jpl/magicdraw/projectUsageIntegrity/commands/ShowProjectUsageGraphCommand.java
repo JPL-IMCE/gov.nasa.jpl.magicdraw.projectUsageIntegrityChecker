@@ -26,7 +26,6 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrame;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.ZoomablePanningImagePanel;
 
 import java.awt.event.ActionEvent;
