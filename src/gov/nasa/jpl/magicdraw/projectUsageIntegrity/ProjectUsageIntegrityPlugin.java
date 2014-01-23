@@ -28,8 +28,6 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleProjectUsageTe
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleThreadedAction;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.SSCAEProjectUsageIntegrityOptions;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.resources.SSCAEProjectUsageIntegrityOptionsResources;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrame;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.LogFrameConfigurator;
 import gov.nasa.jpl.magicdraw.qvto.QVTOPlugin;
 
 import java.io.File;
