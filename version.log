@@ -26,3 +26,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
 https://jira1.jpl.nasa.gov:8443/browse/SSCAES-860
 
 - Show the information about detected proxies and about conflicts related to packages / profile URIs and names.
+
+17050.1.4 (January 27, 2014)
+
+SSCAES-889: Fix broken resource descriptors that prevent MD from installing JPL-developed resources 
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-889
