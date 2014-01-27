@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resourceDescriptor critical="false" date="2013-12-21" description="SSCAE Project Usage Integrity Checker Plugin" homePage="https://jplwiki.jpl.nasa.gov:8443/display/MBSECoP/SSCAE+Project+Usage+Integrity+Checker" id="75319" mdVersionMax="higher" mdVersionMin="17.0.2" name="SSCAE Project Usage Integrity Checker" product="SSCAE MagicDraw Toolkit" type="Plugin">
-  <version human="17.0.2" internal="17050100" resource="1705010"/>
+  <version human="17.0.5" resource="170500" internal="1705000"/>
   <provider email="nicolas.f.rouquette@jpl.nasa.gov" homePage="https://jplwiki.jpl.nasa.gov:8443/display/MBSECoP/SSCAE+Project+Usage+Integrity+Checker" name="Jet Propulsion Laboratory, Caltech"/>
   <edition>Reader</edition>
   <edition>Community</edition>
@@ -18,14 +18,12 @@
     <minVersion human="17.0" internal="169010"/>
   </requiredResource>
   <installation>
-    <file from="lib/jgrapht-0.8.3-jdk1.6.jar" to="lib/jgrapht-0.8.3-jdk1.6.jar"/>
-    <file from="logTraceContracts/diagramProxyUsageMonitor.txt" to="logTraceContracts/diagramProxyUsageMonitor.txt"/>
-    <file from="MDTeamworkProjectIDSuffices.txt" to="MDTeamworkProjectIDSuffices.txt"/>
-    <file from="runOpenAuditTests.ant" to="runOpenAuditTests.ant"/>
-    <file from="runOpenAuditTests.README.txt" to="runOpenAuditTests.README.txt"/>
-    <file from="root/profiles/MagicDrawProjectUsageIntegrityProfile.mdzip" to="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip"/>
+    <file from="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip" to="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/logTraceContracts/diagramProxyUsageMonitor.txt" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/logTraceContracts/diagramProxyUsageMonitor.txt"/>
+    <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/MDTeamworkProjectIDSuffices.txt" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/MDTeamworkProjectIDSuffices.txt"/>
+    <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.ant" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.ant"/>
+    <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.README.txt" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.README.txt"/>
     <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/commons-exec-1.1.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/commons-exec-1.1.jar"/>
     <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/jgrapht-0.8.3-jdk1.6.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/jgrapht-0.8.3-jdk1.6.jar"/>
-    <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/projectUsageIntegrity.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/projectUsageIntegrity.jar"/>
   </installation>
 </resourceDescriptor>

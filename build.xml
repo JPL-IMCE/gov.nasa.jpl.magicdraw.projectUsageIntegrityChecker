@@ -42,7 +42,9 @@
 			plugin.resource="${plugin.resource}"/>
 	</target>
 
-	<fileset id="plugin.profiles" dir="${plugin.dir}/root/profiles" excludes="**"/>
+	<fileset id="plugin.profiles" dir="${plugin.dir}/profiles">
+		<include name="SSCAEProjectUsageIntegrityProfile.mdzip"/>
+	</fileset>
 
 	<fileset id="plugin.modelLibraries" dir="${plugin.dir}/root/modelLibraries" excludes="**"/>
 
