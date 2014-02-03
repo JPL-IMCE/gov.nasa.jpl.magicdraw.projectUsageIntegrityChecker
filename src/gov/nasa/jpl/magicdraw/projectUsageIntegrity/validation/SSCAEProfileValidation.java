@@ -31,9 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.nomagic.ci.persistence.IProject;
 import com.nomagic.magicdraw.annotation.Annotation;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
+import com.nomagic.magicdraw.core.ProjectUtilities;
 import com.nomagic.magicdraw.core.project.ProjectsManager;
 import com.nomagic.magicdraw.validation.ElementValidationRuleImpl;
 import com.nomagic.magicdraw.validation.SmartListenerConfigurationProvider;
@@ -41,6 +43,7 @@ import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.jmi.smartlistener.SmartListenerConfig;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 
 /**
@@ -110,10 +113,17 @@ implements ElementValidationRuleImpl, SmartListenerConfigurationProvider {
 								continue;
 							
 							if (p.getName().equals(profile.getName())){
-								annotations.add(new Annotation(usageHelper.getValidationErrorLevel(), 
-										String.format("SSCAE %s has non-unique name", p.getName()), 
-										String.format("SSCAE %s has non-unique name: conflict with %s", p.getQualifiedName(), profile.getQualifiedName()),
-										p));								
+								IProject ip = ProjectUtilities.getProject(p);
+								IProject iprofile = ProjectUtilities.getProject(profile);
+								EnumerationLiteral level = 
+										(ProjectUtilities.isStandardSystemProfile(ip) && ProjectUtilities.isStandardSystemProfile(iprofile))
+										? usageHelper.getValidationWarningLevel()
+												: usageHelper.getValidationErrorLevel();
+
+										annotations.add(new Annotation(level, 
+												String.format("SSCAE %s has non-unique name", p.getName()), 
+												String.format("SSCAE %s has non-unique name: conflict with %s", p.getQualifiedName(), profile.getQualifiedName()),
+												p));								
 							}
 							
 							if (!p.getURI().equals("") && !profile.getURI().equals("")){

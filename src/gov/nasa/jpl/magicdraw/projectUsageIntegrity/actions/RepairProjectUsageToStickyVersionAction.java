@@ -18,6 +18,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions;
  * mailto:SoftwareRelease@jpl.nasa.gov
  */
 
+import gov.nasa.jpl.magicdraw.log.Log;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject;
 
@@ -25,7 +26,6 @@ import javax.annotation.Nonnull;
 
 import com.nomagic.ci.persistence.IAttachedProject;
 import com.nomagic.ci.persistence.IPrimaryProject;
-import com.nomagic.magicdraw.core.Application;
 import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model;
 
 /**
@@ -49,7 +49,7 @@ public class RepairProjectUsageToStickyVersionAction extends AbstractSourceTarge
 
 	@Override
 	protected void repair() {
-		Application.getInstance().getGUILog().log(
+		Log.log(
 				String.format("\n\n\n**** Please use the Options | Modules dialog to change the direct use of '%s' to a sticky version\n****\n",
 				targetP.getName()));
 	}

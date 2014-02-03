@@ -23,9 +23,6 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
 
 import com.nomagic.actions.NMStateAction;
 import com.nomagic.magicdraw.core.Application;

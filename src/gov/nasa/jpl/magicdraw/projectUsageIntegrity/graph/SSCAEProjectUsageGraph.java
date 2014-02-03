@@ -400,7 +400,8 @@ public class SSCAEProjectUsageGraph {
 	/**
 	 *  read-only
 	 */
-	public final SortedMap<Profile, Profile> nonUniqueNamesProfiles = new TreeMap<Profile, Profile>();
+	public final SortedMap<Profile, Profile> nonUniqueNamesUserProfiles = new TreeMap<Profile, Profile>();
+	public final SortedMap<Profile, Profile> nonUniqueNamesSSPProfiles = new TreeMap<Profile, Profile>();
 	
 	/**
 	 *  read-only
@@ -434,7 +435,7 @@ public class SSCAEProjectUsageGraph {
 				&& diagram2proxyUsages.isEmpty()
 				&& !isProjectMissingSystemOrStandardProfileFlag()
 				&& missingDirectAttachments.isEmpty()
-				&& nonUniqueNamesProfiles.isEmpty()
+				&& nonUniqueNamesUserProfiles.isEmpty()
 				&& nonUniqueURIProfiles.isEmpty()
 				&& nonUniqueURIPackages.isEmpty();
 	}
@@ -615,7 +616,7 @@ public class SSCAEProjectUsageGraph {
 		
 		for (IProject aProject : allSortedProjects) {
 			MDAbstractProject p2 = lookupVertex(aProject);
-			if (p2.isProjectMissing())
+			if (p2.isProjectMissing() && !(p2 instanceof MDLocalPrimaryProject))
 				missingProjects.add(p2);
 
 			List<MDAbstractProjectUsage> p2UsedBy = vertexUsedByEdges.get(p2);
@@ -816,13 +817,27 @@ public class SSCAEProjectUsageGraph {
 		List <Profile> projectProfiles = StereotypesHelper.getAllProfiles(project);
 		
 		if (!projectProfiles.isEmpty()){
-			HashMap <String, Profile> profileNames = new HashMap <String,Profile>();
+			HashMap <String, Profile> userProfileNames = new HashMap <String,Profile>();
+			HashMap <String, Profile> sspProfileNames = new HashMap <String,Profile>();
 			HashMap <String, Profile> profileURIs = new HashMap <String, Profile>();
 			
-			for (Profile profile : projectProfiles){
+			for (Profile profile : projectProfiles) {
+				IProject iprofile = ProjectUtilities.getProject(profile);
 				String profileURI = profile.getURI();
-				if (profileNames.containsKey(profile.getName())){
-					nonUniqueNamesProfiles.put(profile, profileNames.get(profile.getName()));
+				
+				if (ProjectUtilities.isStandardSystemProfile(iprofile)) {
+					if (sspProfileNames.containsKey(profile.getName())){
+						nonUniqueNamesSSPProfiles.put(profile, sspProfileNames.get(profile.getName()));
+					}
+					sspProfileNames.put(profile.getName(), profile);
+				} else {
+					if (userProfileNames.containsKey(profile.getName())) {
+						nonUniqueNamesUserProfiles.put(profile, userProfileNames.get(profile.getName()));
+					}
+					if (sspProfileNames.containsKey(profile.getName())) {
+						nonUniqueNamesUserProfiles.put(profile, sspProfileNames.get(profile.getName()));
+					}
+					userProfileNames.put(profile.getName(), profile);
 				}
 				
 				if (profileURIs.containsKey(profileURI)){
@@ -852,7 +867,6 @@ public class SSCAEProjectUsageGraph {
 				}
 				
 				
-				profileNames.put(profile.getName(), profile);
 				if (!profileURI.equals("")){
 					profileURIs.put(profileURI, profile);
 				} else {
@@ -1057,11 +1071,18 @@ public class SSCAEProjectUsageGraph {
 					shouldBeSystemOrStandardProfile.size()));
 		}
 		
-		if (nonUniqueNamesProfiles.isEmpty()){
-			gDiagnostic.append(String.format("\n   OK: all profiles have unique names"));
+		if (nonUniqueNamesSSPProfiles.isEmpty()){
+			gDiagnostic.append(String.format("\n   OK: all SSP profiles have unique names"));
 
 		} else {
-			gDiagnostic.append(String.format("\nERROR: %d profiles have non-unique names", nonUniqueNamesProfiles.size()));
+			gDiagnostic.append(String.format("\nWARNING: %d SSP profiles have non-unique names", nonUniqueNamesSSPProfiles.size()));
+		}
+		
+		if (nonUniqueNamesUserProfiles.isEmpty()){
+			gDiagnostic.append(String.format("\n   OK: all user profiles have unique names"));
+
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d user profiles have non-unique names", nonUniqueNamesUserProfiles.size()));
 		}
 		
 		if (nonUniqueURIProfiles.isEmpty()){
@@ -1253,10 +1274,17 @@ public class SSCAEProjectUsageGraph {
 			digest.getShouldBeSystemOrStandardProfile().add(v);
 		}
 
-		if (!nonUniqueNamesProfiles.isEmpty()) {
-			for (Profile p : nonUniqueNamesProfiles.keySet()) {
-				Profile c = nonUniqueNamesProfiles.get(p);
-				digest.getProfileNameConflicts().add(new ProfileNameConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID()));
+		if (!nonUniqueNamesUserProfiles.isEmpty()) {
+			for (Profile p : nonUniqueNamesUserProfiles.keySet()) {
+				Profile c = nonUniqueNamesUserProfiles.get(p);
+				digest.getUserProfileNameConflicts().add(new ProfileNameConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID()));
+			}
+		}
+		
+		if (!nonUniqueNamesSSPProfiles.isEmpty()) {
+			for (Profile p : nonUniqueNamesSSPProfiles.keySet()) {
+				Profile c = nonUniqueNamesSSPProfiles.get(p);
+				digest.getSSPProfileNameConflicts().add(new ProfileNameConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID()));
 			}
 		}
 

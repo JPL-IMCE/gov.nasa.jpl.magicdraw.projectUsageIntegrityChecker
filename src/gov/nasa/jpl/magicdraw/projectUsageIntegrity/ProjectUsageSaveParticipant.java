@@ -21,6 +21,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity;
 import gov.nasa.jpl.logfire.RunnableSessionWrapper;
 import gov.nasa.jpl.logfire.RunnableSessionWrapperWithResult;
 import gov.nasa.jpl.logfire.SessionCounter;
+import gov.nasa.jpl.magicdraw.log.Log;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand;
 
 import org.apache.log4j.Logger;
@@ -82,7 +83,7 @@ public class ProjectUsageSaveParticipant implements SaveParticipant {
 
 					GUILog glog = Application.getInstance().getGUILog();
 					glog.clearLog();
-					glog.log(String.format("\n\n*** Cannot save project '%s' because its ProjectUsage graph is invalid ***\n\n%s",
+					Log.log(String.format("\n\n*** Cannot save project '%s' because its ProjectUsage graph is invalid ***\n\n%s",
 							project.getName(), c.getProjectUsageGraphDiagnostic()));
 					return Boolean.FALSE;
 				}

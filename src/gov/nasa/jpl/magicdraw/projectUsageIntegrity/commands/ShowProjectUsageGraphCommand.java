@@ -20,11 +20,11 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands;
 
 import gov.nasa.jpl.logfire.RunnableSessionWrapper;
 import gov.nasa.jpl.logfire.SessionCounter;
+import gov.nasa.jpl.magicdraw.log.Log;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ui.ZoomablePanningImagePanel;
 
@@ -125,8 +125,8 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 					projectUsageGraph.getDigest().showProblems();
 					
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
-						log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
-						log.log(projectUsageGraph.projectUsageInfo);
+						Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
+						Log.log(projectUsageGraph.projectUsageInfo);
 						return;
 					}
 				}
@@ -134,9 +134,9 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 				boolean showTeamworkOnly = plugin.toggleTeamworkOrAllGraphAction.getState();
 				
 				if (plugin.isShowAdvancedInformationProperty()) {
-					log.log(projectUsageGraph.getProjectUsageGraphSerialization());
+					Log.log(projectUsageGraph.getProjectUsageGraphSerialization());
 				} else {
-					log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
+					Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
 				}
 				
 				File dotFile = null;

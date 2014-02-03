@@ -23,7 +23,6 @@ import java.rmi.RemoteException;
 import org.eclipse.emf.common.util.URI;
 
 import com.nomagic.ci.persistence.IProject;
-import com.nomagic.ci.persistence.local.ProjectState;
 
 public abstract class MDAbstractProject implements Comparable<MDAbstractProject> {
 
