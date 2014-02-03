@@ -22,7 +22,6 @@ import gov.nasa.jpl.logfire.SessionCounter;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.BufferedImageFile;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph.DOTImageFormat;
 

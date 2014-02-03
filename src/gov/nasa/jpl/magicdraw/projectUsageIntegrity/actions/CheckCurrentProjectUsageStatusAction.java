@@ -19,6 +19,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions;
  */
 
 import gov.nasa.jpl.logfire.RunnableSessionWrapper;
+import gov.nasa.jpl.magicdraw.log.Log;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand;
@@ -150,7 +151,7 @@ public class CheckCurrentProjectUsageStatusAction extends NMAction {
 				if (throwable != null) {
 					throwable.fillInStackTrace();
 					throwable.printStackTrace();
-					Application.getInstance().getGUILog().log(throwable.getMessage());
+					Log.log(throwable.getMessage());
 				}
 			} finally {
 				resultOfPreviousCheckIsTopologyValid = false;

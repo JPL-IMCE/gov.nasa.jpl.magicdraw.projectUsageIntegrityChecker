@@ -20,6 +20,7 @@ package gov.nasa.jpl.magicdraw.appenders;
 
 import gov.nasa.jpl.logfire.LogSessionWrapper;
 import gov.nasa.jpl.logfire.SessionCounter;
+import gov.nasa.jpl.magicdraw.log.Log;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -147,7 +148,7 @@ public class Appender extends AppenderSkeleton {
 				fileAppenders.put(currentWrapper.sessionID, sessionFileAppender);
 			} catch (IOException e) {
 				SessionCounter.markSessionFailed(currentWrapper);
-				Application.getInstance().getGUILog().log(e.getLocalizedMessage());
+				Log.log(e.getLocalizedMessage());
 			}
 		} else if (eventMessage.contains(PROJECT_LOAD_DONE_MARKER)){
 			if (!logSessions.isEmpty()){

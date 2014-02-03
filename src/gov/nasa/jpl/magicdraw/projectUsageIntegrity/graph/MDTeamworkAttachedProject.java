@@ -13,7 +13,6 @@ import com.nomagic.magicdraw.core.ProjectUtilities;
 import com.nomagic.magicdraw.core.project.ProjectDescriptor;
 import com.nomagic.magicdraw.core.project.ProjectDescriptorsFactory;
 import com.nomagic.magicdraw.teamwork.application.TeamworkUtils;
-import com.nomagic.magicdraw.teamwork.application.storage.ITeamworkProject;
 import com.nomagic.magicdraw.teamwork.application.storage.TeamworkAttachedProject;
 
 public class MDTeamworkAttachedProject extends MDTeamworkProject implements MDAttachedProject  {

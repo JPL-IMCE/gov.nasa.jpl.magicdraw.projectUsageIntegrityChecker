@@ -2,9 +2,6 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph;
 
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.expression.ElementPath;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +54,8 @@ public class SSCAEProjectDigest {
 	private SortedMap<MDAbstractProject, List<MDAbstractProjectUsage>> allUsedByRelationships;
 	private int proxyCount;
 	private int diagramCount;
-	private List<ProfileNameConflict> profileNameConflicts;
+	private List<ProfileNameConflict> userProfileNameConflicts;
+	private List<ProfileNameConflict> sspProfileNameConflicts;
 	private List<URIConflict> packageURIConflicts;
 	private List<URIConflict> profileURIConflicts;
 
@@ -71,14 +69,22 @@ public class SSCAEProjectDigest {
 	 */
 	private List<MDAbstractProject> missingProjects;
 
-	public List<ProfileNameConflict> getProfileNameConflicts() {
-		return profileNameConflicts;
+	public List<ProfileNameConflict> getUserProfileNameConflicts() {
+		return userProfileNameConflicts;
 	}
 
-
-	public void setProfileNameConflicts(
+	public void setUserProfileNameConflicts(
 			List<ProfileNameConflict> profileNameConflicts) {
-		this.profileNameConflicts = profileNameConflicts;
+		this.userProfileNameConflicts = profileNameConflicts;
+	}
+
+	public List<ProfileNameConflict> getSSPProfileNameConflicts() {
+		return sspProfileNameConflicts;
+	}
+
+	public void setSSPProfileNameConflicts(
+			List<ProfileNameConflict> profileNameConflicts) {
+		this.sspProfileNameConflicts = profileNameConflicts;
 	}
 
 
@@ -167,7 +173,8 @@ public class SSCAEProjectDigest {
 		this.setRecoveredElementProxies(new ArrayList<RecoveredElementProxy>());
 		this.setShouldBeSystemOrStandardProfile(new ArrayList<MDAbstractProject>());
 		this.setUnresolvedUsageEdges(new ArrayList<MDAbstractProjectUsage>());
-		this.setProfileNameConflicts(new ArrayList<ProfileNameConflict>());
+		this.setUserProfileNameConflicts(new ArrayList<ProfileNameConflict>());
+		this.setSSPProfileNameConflicts(new ArrayList<ProfileNameConflict>());
 		this.setPackageURIConflicts(new ArrayList<URIConflict>());
 		this.setProfileURIConflicts(new ArrayList<URIConflict>());
 	}
@@ -686,9 +693,22 @@ public class SSCAEProjectDigest {
 			}
 		}
 
-		if (!getProfileNameConflicts().isEmpty()) {
-			log.log(String.format("ERROR: %d profile name conflicts\n", getProfileNameConflicts().size()));
-			for (ProfileNameConflict conflict : getProfileNameConflicts()) {
+		if (!getUserProfileNameConflicts().isEmpty()) {
+			log.log(String.format("ERROR: %d user profile name conflicts\n", getUserProfileNameConflicts().size()));
+			for (ProfileNameConflict conflict : getUserProfileNameConflicts()) {
+				log.log(String.format("Profile name conflict:\n"));
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A>\n", conflict.getP1()), 
+						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP1ID()))));
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A>\n", conflict.getP2()), 
+						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
+			}
+		}
+		
+		if (!getSSPProfileNameConflicts().isEmpty()) {
+			log.log(String.format("WARNING: %d S/SP profile name conflicts\n", getSSPProfileNameConflicts().size()));
+			for (ProfileNameConflict conflict : getSSPProfileNameConflicts()) {
 				log.log(String.format("Profile name conflict:\n"));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP1()), 

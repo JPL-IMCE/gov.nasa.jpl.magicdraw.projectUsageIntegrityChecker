@@ -20,6 +20,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity;
 
 import gov.nasa.jpl.logfire.RunnableSessionWrapper;
 import gov.nasa.jpl.logfire.SessionReport;
+import gov.nasa.jpl.magicdraw.log.Log;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ApplyAllSSCAERepairs;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ApplyStereotypeAction;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.RepairAddMissingUsageRelationshipAction;
@@ -251,7 +252,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 						this.project.getName(), this.project.getID(), e.getMessage());
 
 				Application.getInstance().getGUILog().clearLog();
-				Application.getInstance().getGUILog().log(message);
+				Log.log(message);
 
 				logger.error(message, e);
 			}
