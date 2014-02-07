@@ -56,12 +56,18 @@ public class ToggleThreadedAction extends NMStateAction {
         updateState();
 	}
 	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */	
 	@Override
 	public void setState(boolean newState) {
 		this.threadedMode = newState;
 		super.setState(newState);
 	}
 
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void updateState() {
 		if (!ProjectUsageIntegrityPlugin.getInstance().isProjectUsageIntegrityCheckerEnabled()) {
