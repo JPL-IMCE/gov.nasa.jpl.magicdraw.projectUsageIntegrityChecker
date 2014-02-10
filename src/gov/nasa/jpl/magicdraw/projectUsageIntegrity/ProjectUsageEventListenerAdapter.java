@@ -40,6 +40,7 @@ import com.nomagic.magicdraw.core.project.RemoteProjectDescriptor;
 import com.nomagic.magicdraw.teamwork.application.TeamworkUtils;
 import com.nomagic.magicdraw.teamwork.application.storage.TeamworkPrimaryProject;
 import com.nomagic.magicdraw.utils.MDLog;
+import com.nomagic.utils.Utilities;
 
 /**
  * @author Nicolas F. Rouquette (JPL)
@@ -70,8 +71,13 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 	protected Map<Project, ProjectUsageIntegrityHelper> mProject2Profile = new HashMap<Project, ProjectUsageIntegrityHelper>();
 
 	public ProjectUsageIntegrityHelper getSSCAEProjectUsageIntegrityProfileForProject(@Nonnull Project project) {
-		if (!project.isRemote())
-			plugin.toggleTeamworkOrAllGraphAction.setState(false);
+		if (!project.isRemote()) {
+			Utilities.invokeOnDispatcherOrLater(new Runnable() {
+				public void run() {
+					plugin.toggleTeamworkOrAllGraphAction.setState(false);
+				}
+			});
+		}
 				
 		if (!mProject2Profile.containsKey(project)) {
 			ProjectUsageIntegrityPlugin plugin = ProjectUsageIntegrityPlugin.getInstance();

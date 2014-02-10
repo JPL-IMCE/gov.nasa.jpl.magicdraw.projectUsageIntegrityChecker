@@ -164,6 +164,9 @@ public class CheckCurrentProjectUsageStatusAction extends NMAction {
 		MDLog.getPluginsLog().error(exception.getMessage(), exception);
 	}
 
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void updateState(){
 		Project project = Application.getInstance().getProject();

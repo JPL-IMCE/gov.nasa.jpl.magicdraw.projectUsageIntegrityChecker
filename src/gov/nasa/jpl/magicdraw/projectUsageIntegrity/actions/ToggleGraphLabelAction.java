@@ -69,12 +69,18 @@ public class ToggleGraphLabelAction extends NMStateAction {
         }
 	}
 	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void setState(boolean newState) {
 		this.showNames = newState;
 		super.setState(newState);
 	}
-
+	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void updateState() {
 		if (!ProjectUsageIntegrityPlugin.getInstance().isProjectUsageIntegrityCheckerEnabled()) {

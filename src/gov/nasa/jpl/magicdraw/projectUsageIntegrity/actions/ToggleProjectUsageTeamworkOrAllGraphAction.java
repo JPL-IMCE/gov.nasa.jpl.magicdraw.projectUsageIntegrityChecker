@@ -57,12 +57,18 @@ public class ToggleProjectUsageTeamworkOrAllGraphAction extends NMStateAction {
         updateState();
 	}
 
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void setState(final boolean newState) {
 		this.iAmSelected = newState;
 		super.setState(newState);
 	}
 	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void updateState() {
 		if (!ProjectUsageIntegrityPlugin.getInstance().isProjectUsageIntegrityCheckerEnabled()) {

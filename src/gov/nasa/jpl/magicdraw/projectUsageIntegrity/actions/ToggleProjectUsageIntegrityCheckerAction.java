@@ -73,12 +73,18 @@ public class ToggleProjectUsageIntegrityCheckerAction extends NMStateAction {
         }
 	}
 	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void setState(boolean newState) {
 		this.iAmSelected = newState;
 		super.setState(newState);
 	}
-
+	
+	/**
+	 * Must be called in on the Swing event thread.
+	 */
 	@Override
 	public void updateState() {
 		setState( iAmSelected );

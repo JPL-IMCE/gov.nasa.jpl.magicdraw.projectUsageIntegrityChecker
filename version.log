@@ -31,3 +31,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-860
 
 SSCAES-889: Fix broken resource descriptors that prevent MD from installing JPL-developed resources 
 https://jira1.jpl.nasa.gov:8443/browse/SSCAES-889
+
+17050.1.5 (February 7, 2014)
+
+SSCAES-872: PUIC: java.lang.Exception: Warning!!! Swing components are accessed not from Event Dispatcher Thread (EDT).
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
