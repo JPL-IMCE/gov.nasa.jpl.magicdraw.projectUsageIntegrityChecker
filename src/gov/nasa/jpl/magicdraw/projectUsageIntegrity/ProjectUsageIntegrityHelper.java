@@ -213,18 +213,28 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		this.projectDigest = digest;
 	}
 
+	protected boolean isDisposed = false;
+	
 	public void dispose() {
-		project = null;
+		isDisposed = true;
+		
+		pProject.removeProjectListener(this);
+		
+		if (prListener != null) {
+			ProjectRepositoryRegistry prr = ProjectRepositoryRegistry.getInstance();
+			IPrimaryProject pp = project.getPrimaryProject();
+			URI uri = pp.getLocationURI();
+			IProjectRepository pr = prr.getProjectRepository(uri);
+			if (pr != null) {
+				pr.removeListener(prListener);
+			}
+			prListener = null;
+		}
+		
 		if (projectDigest != null) {
 			projectDigest.dispose();
 			projectDigest = null;
 		}
-		if (prListener != null) {
-			prListener.dispose();
-			prListener = null;
-		}
-		
-		pProject = null;
 		
 		errorLevel = null;
 		warningLevel = null;
@@ -257,7 +267,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		attachedProjectMountedPackages.clear();
 	}
 
-	public Project project;
+	public final Project project;
 	public SSCAEProjectDigest projectDigest;
 	
 	public MDAbstractProject getPreviousProjectVertexMatching(MDAbstractProject v) {
@@ -274,7 +284,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return null;
 	}
 	
-	public IPrimaryProject pProject;
+	public final IPrimaryProject pProject;
 	public final Logger logger;
 	protected final ToggleProjectUsageIntegrityCheckerAction checkerState;
 	
@@ -1128,6 +1138,9 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 
 	@Override
 	public void notify(ProjectEvent ev) {
+		if (isDisposed)
+			return;
+		
 		ProjectEventType evType = ev.getEventType();
 		logger.info(String.format("ProjectUsageIntegrity.notify(%s)", evType.name()));
 		
