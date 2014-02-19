@@ -254,7 +254,7 @@ public class SSCAEProjectUsageGraph {
 	protected final ProjectUsageIntegrityHelper helper;
 	protected final Logger pluginLog = MDLog.getPluginsLog();
 	protected final ProjectUsageIntegrityPlugin plugin;
-	public final List<Package> managedSharedPackages;
+	public List<Package> managedSharedPackages;
 	
 	
 	/**
@@ -2059,8 +2059,9 @@ public class SSCAEProjectUsageGraph {
 	}
 
 	public void dispose() {
-		managedSharedPackages.clear();
-		excludedProjectNames.clear();
+		if (managedSharedPackages != null) {
+			managedSharedPackages = null;
+		}
 		projectUsageDirectedMultigraph.removeAllEdges(projectUsageDirectedMultigraph.edgeSet());
 		projectUsageDirectedMultigraph.removeAllVertices(projectUsageDirectedMultigraph.vertexSet());
 		gSignature.setLength(0);
