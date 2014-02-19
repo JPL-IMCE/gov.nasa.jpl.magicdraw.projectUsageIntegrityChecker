@@ -2062,8 +2062,14 @@ public class SSCAEProjectUsageGraph {
 		if (managedSharedPackages != null) {
 			managedSharedPackages = null;
 		}
-		projectUsageDirectedMultigraph.removeAllEdges(projectUsageDirectedMultigraph.edgeSet());
-		projectUsageDirectedMultigraph.removeAllVertices(projectUsageDirectedMultigraph.vertexSet());
+		Set<MDAbstractProjectUsage> allEdges = new HashSet<MDAbstractProjectUsage>();
+		allEdges.addAll(projectUsageDirectedMultigraph.edgeSet());
+		projectUsageDirectedMultigraph.removeAllEdges(allEdges);
+		
+		Set<MDAbstractProject> allVertices = new HashSet<MDAbstractProject>();
+		allVertices.addAll(projectUsageDirectedMultigraph.vertexSet());
+		projectUsageDirectedMultigraph.removeAllVertices(allVertices);
+		
 		gSignature.setLength(0);
 		gMessages.setLength(0);
 		gSerialization.setLength(0);
