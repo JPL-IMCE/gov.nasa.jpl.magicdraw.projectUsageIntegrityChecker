@@ -28,7 +28,7 @@ import com.nomagic.ci.persistence.local.LocalProjectRepositoryEvent;
 
 public class SSCAEProjectRepositoryListener implements ProjectRepositoryListener {
 
-	protected final ProjectUsageIntegrityHelper helper;
+	protected ProjectUsageIntegrityHelper helper;
 	
 	public SSCAEProjectRepositoryListener(ProjectUsageIntegrityHelper projectUsageIntegrityHelper) {
 		this.helper = projectUsageIntegrityHelper;
@@ -49,6 +49,10 @@ public class SSCAEProjectRepositoryListener implements ProjectRepositoryListener
 		IProject p =  ((LocalProjectRepositoryEvent) ev).getProject();
 		
 		helper.logger.info(String.format("ProjectRepositoryEvent.notify(%s) project URI=%s has project? %s", evType.name(), uri, (p != null)));
+	}
+
+	public void dispose() {
+		helper = null;
 	}
 
 }

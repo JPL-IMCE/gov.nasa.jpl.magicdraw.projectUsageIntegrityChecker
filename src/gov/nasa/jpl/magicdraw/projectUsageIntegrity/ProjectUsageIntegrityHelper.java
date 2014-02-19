@@ -178,7 +178,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return checkerState.getState();
 	}
 
-	public final SSCAEProjectRepositoryListener prListener;
+	public SSCAEProjectRepositoryListener prListener;
 			
 	public ProjectUsageIntegrityHelper(@Nonnull Project project, ToggleProjectUsageIntegrityCheckerAction checkerState) {
 		this.project = project;
@@ -214,10 +214,51 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	}
 
 	public void dispose() {
+		project = null;
+		if (projectDigest != null) {
+			projectDigest.dispose();
+			projectDigest = null;
+		}
+		if (prListener != null) {
+			prListener.dispose();
+			prListener = null;
+		}
+		
+		pProject = null;
+		
+		errorLevel = null;
+		warningLevel = null;
+		
+		sscaeProjectUsageIntegrityProfile = null;
+		sscaeAbstractUsageStereotype = null;
+		sscaeProjectModelStereotype = null;
+		
+		sscaeProjectUsageValidationSuite = null;
+		validationSuiteConstraints.clear();
+		
+		sscaeProjectUsageRelationshipConstraint = null;
+		sscaeProjectUsageRelationshipRule = null;
+		
+		sscaeValidProjectUsageGraphConstraint = null;
+		sscaeValidProjectUsageGraphRule = null;
+		
+		sscaeProjectStereotypeValidationConstraint = null;
+		sscaeProjectStereotypeValidationRule = null;
+		
+		sscaeProjectMD5ChecksumMismatchConstraint = null;
+		sscaeProjectMD5ChecksumMismatchRule = null;
+		
+		if (latestProjectUsageGraph != null) {
+			latestProjectUsageGraph.dispose();
+			latestProjectUsageGraph = null;
+		}
+		
+		attachedProjectInfo.clear();
+		attachedProjectMountedPackages.clear();
 	}
 
-	public final Project project;
-	public final SSCAEProjectDigest projectDigest;
+	public Project project;
+	public SSCAEProjectDigest projectDigest;
 	
 	public MDAbstractProject getPreviousProjectVertexMatching(MDAbstractProject v) {
 		if (projectDigest == null)
@@ -233,7 +274,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return null;
 	}
 	
-	public final IPrimaryProject pProject;
+	public IPrimaryProject pProject;
 	public final Logger logger;
 	protected final ToggleProjectUsageIntegrityCheckerAction checkerState;
 	
@@ -261,8 +302,8 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return _pClassification;
 	}
 	
-	protected final EnumerationLiteral errorLevel;
-	protected final EnumerationLiteral warningLevel;
+	protected EnumerationLiteral errorLevel;
+	protected EnumerationLiteral warningLevel;
 
 	public EnumerationLiteral getValidationErrorLevel() {
 		return errorLevel;
@@ -1254,8 +1295,8 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return sscaeCleanTag;
 	}
 	
-	private WeakHashMap<IProject, MDAbstractProject> attachedProjectInfo = new WeakHashMap<IProject, MDAbstractProject>();
-	private WeakHashMap<MDAbstractProject, List<Package>> attachedProjectMountedPackages = new WeakHashMap<MDAbstractProject, List<Package>>();
+	private final WeakHashMap<IProject, MDAbstractProject> attachedProjectInfo = new WeakHashMap<IProject, MDAbstractProject>();
+	private final WeakHashMap<MDAbstractProject, List<Package>> attachedProjectMountedPackages = new WeakHashMap<MDAbstractProject, List<Package>>();
 	
 	public MDAbstractProject createVertexInternal(IProject p, SSCAEProjectUsageGraph pug, int index, int width) throws RemoteException {
 		String idFormat = "%0" + width + "d";

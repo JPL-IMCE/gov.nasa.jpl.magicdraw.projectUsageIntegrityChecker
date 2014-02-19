@@ -270,8 +270,12 @@ implements ResourceDependentPlugin {
 	public boolean close() {
 		MDLog.getPluginsLog().info("CLOSE: >> " + getPluginName());
 		try {
-			Application.getInstance().removeProjectEventListener(this.mProjectEventListener);
+			Application a = Application.getInstance();
+			a.removeProjectEventListener(this.mProjectEventListener);
 			this.mProjectEventListener = null;
+			
+			a.removeSaveParticipant(this.mSaveParticipant);
+			this.mSaveParticipant = null;
 
 			return true;
 		} finally {
