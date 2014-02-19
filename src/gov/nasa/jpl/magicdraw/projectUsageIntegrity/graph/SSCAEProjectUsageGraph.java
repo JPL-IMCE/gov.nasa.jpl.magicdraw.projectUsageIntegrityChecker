@@ -2057,4 +2057,53 @@ public class SSCAEProjectUsageGraph {
 		packages.addAll(addPackages);
 		return packages;
 	}
+
+	public void dispose() {
+		managedSharedPackages.clear();
+		excludedProjectNames.clear();
+		projectUsageDirectedMultigraph.removeAllEdges(projectUsageDirectedMultigraph.edgeSet());
+		projectUsageDirectedMultigraph.removeAllVertices(projectUsageDirectedMultigraph.vertexSet());
+		gSignature.setLength(0);
+		gMessages.setLength(0);
+		gSerialization.setLength(0);
+		gDiagnostic.setLength(0);
+		
+		proxyCount = 0;
+		proxyUnloadedOkCount = 0;
+		proxyUnloadedOtherCount.clear();
+		proxyGhostOkCount = 0;
+		proxyGhostOtherCount.clear();
+		diagramCount = 0;
+		
+		owner2proxiesMap.clear();
+		unloaded2proxiesMap.clear();
+		diagram2proxyUsages.clear();
+		diagram2sessionReport.clear();
+		localModulesWithTeamworkIDs.clear();
+		moduleWithMissingShares.clear();
+		missingProjects.clear();
+		vertexMap.clear();
+		edgeMap.clear();
+		vertexUsageEdges.clear();
+		vertexUsedByEdges.clear();
+		vertexUsageConsistencyLabel.clear();
+		stronglyConnectedVertices.clear();
+		stronglyConnectedEdges.clear();
+		unresolvedUsageEdges.clear();
+		inconsistentUsageEdges.clear();
+		inconsistentlyUsedVertices.clear();
+		shouldBeSystemOrStandardProfile.clear();
+		invalidUsageEdges.clear();
+		missingDirectAttachments.clear();
+		nonUniqueNamesUserProfiles.clear();
+		nonUniqueNamesSSPProfiles.clear();
+		nonUniqueURIProfiles.clear();
+		nonUniqueURIPackages.clear();
+		
+		if (digest != null) {
+			digest.dispose();
+			digest = null;
+		}
+		
+	}
 }

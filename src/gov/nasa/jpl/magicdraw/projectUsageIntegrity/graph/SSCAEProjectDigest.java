@@ -59,6 +59,61 @@ public class SSCAEProjectDigest {
 	private List<URIConflict> packageURIConflicts;
 	private List<URIConflict> profileURIConflicts;
 
+	
+	public void dispose() {
+		classification = ProjectClassification.INVALID;
+		proxyCount = 0;
+		diagramCount = 0;
+		if (allSortedProjects != null) {
+			allSortedProjects.clear();
+			allSortedProjects = null;
+		}
+		if (allSortedUsages != null) {
+			allSortedUsages.clear();
+			allSortedUsages = null;
+		}
+		if (stronglyConnectedVertices != null) {
+			stronglyConnectedVertices.clear();
+			stronglyConnectedVertices = null;
+		}
+		if (stronglyConnectedEdges != null) {
+			stronglyConnectedEdges.clear();
+			stronglyConnectedEdges = null;
+		}
+		if (inconsistentlyUsedVertices != null) {
+			inconsistentlyUsedVertices.clear();
+			inconsistentlyUsedVertices = null;
+		}
+		if (inconsistentUsageEdges != null) {
+			inconsistentUsageEdges.clear();
+			inconsistentUsageEdges = null;
+		}
+		if (invalidUsageEdges != null) {
+			invalidUsageEdges.clear();
+			invalidUsageEdges = null;
+		}
+		if (allUsedByRelationships != null) {
+			allUsedByRelationships.clear();
+			allUsedByRelationships = null;
+		}
+		if (userProfileNameConflicts != null) {
+			userProfileNameConflicts.clear();
+			userProfileNameConflicts = null;
+		}
+		if (sspProfileNameConflicts != null) {
+			sspProfileNameConflicts.clear();
+			sspProfileNameConflicts = null;
+		}
+		if (packageURIConflicts != null) {
+			packageURIConflicts.clear();
+			packageURIConflicts = null;
+		}
+		if (profileURIConflicts != null) {
+			profileURIConflicts.clear();
+			profileURIConflicts = null;
+		}
+	}
+	
 	/**
 	 * should be false
 	 */
@@ -721,4 +776,5 @@ public class SSCAEProjectDigest {
 
 		log.log(String.format("===========================================\n"));
 	}
+
 }
