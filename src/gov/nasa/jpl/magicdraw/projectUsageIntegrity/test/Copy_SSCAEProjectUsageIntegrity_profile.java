@@ -20,6 +20,7 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.test;
 
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
+import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +28,6 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.ApplicationEnvironment;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectDescriptor;
@@ -82,7 +82,7 @@ public class Copy_SSCAEProjectUsageIntegrity_profile extends AbstractSSCAETest {
 	 * @return
 	 */
 	public static List<Plugin> getStartedMDPlugins() {
-		return Application.getInstance().getPluginManager().C();
+		return QVTOUtils.getStartedMDPlugins();
 	}
 	
 	@Override

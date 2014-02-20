@@ -36,3 +36,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-889
 
 SSCAES-872: PUIC: java.lang.Exception: Warning!!! Swing components are accessed not from Event Dispatcher Thread (EDT).
 https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
+
+17050.1.6 (February 19, 2014)
+
+SSCAES-903: Update to MD17.0.5 SP1 for MD and SysML
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-903
