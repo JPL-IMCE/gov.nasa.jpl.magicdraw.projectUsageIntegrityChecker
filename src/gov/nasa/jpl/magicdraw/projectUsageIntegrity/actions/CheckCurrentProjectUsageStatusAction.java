@@ -146,16 +146,16 @@ public class CheckCurrentProjectUsageStatusAction extends NMAction {
 
 		@Override
 		public void uncaughtException(Thread thread, Throwable throwable) {
-			Application.getInstance().getGUILog().log("ERROR: PUI Checker error. Notify SSCAE and restart MagicDraw");
 			try {
 				if (throwable != null) {
 					throwable.fillInStackTrace();
 					throwable.printStackTrace();
-					Log.log(throwable.getMessage());
+					MDLog.getPluginsLog().error(throwable.getMessage(), throwable);
 				}
 			} finally {
 				resultOfPreviousCheckIsTopologyValid = false;
 			}
+			Application.getInstance().getGUILog().log("ERROR: JPL Project Usage Integrity Checker: uncaught exception! Notify JPL SSCAE and restart MagicDraw (see MD log)");
 		}
 
 	}

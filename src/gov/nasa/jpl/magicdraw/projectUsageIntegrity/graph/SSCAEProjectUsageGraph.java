@@ -1004,6 +1004,9 @@ public class SSCAEProjectUsageGraph {
 		} else {
 			gDiagnostic.append(String.format("\nWARNING: %d local modules have a teamwork project ID",
 					localModulesWithTeamworkIDs.size()));
+			for (MDAbstractProject localModuleWithTeamworkID : localModulesWithTeamworkIDs) {
+				gMessages.append(String.format("\nlocal module with teamwork ID: %s", localModuleWithTeamworkID.getName()));
+			}
 		}
 		
 		if (missingDirectAttachments.isEmpty()) {
@@ -1055,6 +1058,9 @@ public class SSCAEProjectUsageGraph {
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d projects are missing",
 					missingProjects.size()));
+			for (MDAbstractProject missingProject : missingProjects) {
+				gMessages.append(String.format("\n missing project: %s", missingProject.getName()));
+			}
 		}
 
 		if (moduleWithMissingShares.isEmpty()) {
@@ -1062,6 +1068,9 @@ public class SSCAEProjectUsageGraph {
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d projects have missing shares",
 					moduleWithMissingShares.size()));
+			for (MDAbstractProject missingShares : moduleWithMissingShares) {
+				gMessages.append(String.format("\n module with missing shares: %s", missingShares.getName()));
+			}
 		}
 
 		if (shouldBeSystemOrStandardProfile.isEmpty()) {
@@ -1069,6 +1078,9 @@ public class SSCAEProjectUsageGraph {
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d projects used from MD's install folder do not have the Standard/System Profile flag set",
 					shouldBeSystemOrStandardProfile.size()));
+			for (MDAbstractProject shouldBeSSP : shouldBeSystemOrStandardProfile) {
+				gMessages.append(String.format("\n missing Standard/System Profile flag for module in MD's install folder: %s", shouldBeSSP.getName()));
+			}
 		}
 		
 		if (nonUniqueNamesSSPProfiles.isEmpty()){
@@ -1076,6 +1088,9 @@ public class SSCAEProjectUsageGraph {
 
 		} else {
 			gDiagnostic.append(String.format("\nWARNING: %d SSP profiles have non-unique names", nonUniqueNamesSSPProfiles.size()));
+			for (Profile p : nonUniqueNamesSSPProfiles.keySet()) {
+				gMessages.append(String.format("\n SSP profile with non-unique name: %s", p.getQualifiedName()));
+			}
 		}
 		
 		if (nonUniqueNamesUserProfiles.isEmpty()){
@@ -1083,18 +1098,27 @@ public class SSCAEProjectUsageGraph {
 
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d user profiles have non-unique names", nonUniqueNamesUserProfiles.size()));
+			for (Profile p : nonUniqueNamesUserProfiles.keySet()) {
+				gMessages.append(String.format("\n user profile with non-unique name: %s", p.getQualifiedName()));
+			}
 		}
 		
 		if (nonUniqueURIProfiles.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all profiles have unique URIs"));
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d profiles have non-unique URIs", nonUniqueURIProfiles.size()));
+			for (Profile p : nonUniqueURIProfiles.keySet()) {
+				gMessages.append(String.format("\n profile with non-unique URI: %s (URI=%s)", p.getQualifiedName(), p.getURI()));
+			}
 		}
 		
 		if (nonUniqueURIPackages.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all packages have unique URIs"));
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d packages have non-unique URIs", nonUniqueURIPackages.size()));
+			for (Package p : nonUniqueURIPackages.keySet()) {
+				gMessages.append(String.format("\n package with non-unique URI: %s (URI=%s)", p.getQualifiedName(), p.getURI()));
+			}
 		}
 
 		if (stronglyConnectedVertices.isEmpty()) {

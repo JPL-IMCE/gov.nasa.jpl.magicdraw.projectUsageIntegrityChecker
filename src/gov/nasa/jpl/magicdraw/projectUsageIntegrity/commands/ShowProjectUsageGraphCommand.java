@@ -126,6 +126,7 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 					
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
 						Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
+						Log.log(projectUsageGraph.getProjectUsageGraphMessages());
 						Log.log(projectUsageGraph.projectUsageInfo);
 						return;
 					}
@@ -134,10 +135,9 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 				boolean showTeamworkOnly = plugin.toggleTeamworkOrAllGraphAction.getState();
 				
 				if (plugin.isShowAdvancedInformationProperty()) {
-					Log.log(projectUsageGraph.getProjectUsageGraphSerialization());
-				} else {
-					Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
+					pluginLog.info(projectUsageGraph.getProjectUsageGraphSerialization());
 				}
+				Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());
 				
 				File dotFile = null;
 				try {
