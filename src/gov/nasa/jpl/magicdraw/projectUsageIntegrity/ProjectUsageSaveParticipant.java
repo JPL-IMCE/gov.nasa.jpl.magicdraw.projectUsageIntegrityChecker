@@ -81,10 +81,14 @@ public class ProjectUsageSaveParticipant implements SaveParticipant {
 									plugin.getPluginName(),
 									c.getProjectUsageGraphDiagnostic()));
 
+					Logger log = MDLog.getGeneralLog();
+					log.error(String.format("JPL Project Usage Integrity Appender (isReadyForSave): Cannot save project '%s' because its ProjectUsage graph is invalid\n%s", 
+							project.getName(),
+							c.getProjectUsageGraphDiagnostic()));
 					GUILog glog = Application.getInstance().getGUILog();
 					glog.clearLog();
-					Log.log(String.format("\n\n*** Cannot save project '%s' because its ProjectUsage graph is invalid ***\n\n%s",
-							project.getName(), c.getProjectUsageGraphDiagnostic()));
+					Log.log(String.format("*** Cannot save project '%s' because its ProjectUsage graph is invalid (See MD's log) ***",
+							project.getName()));
 					return Boolean.FALSE;
 				}
 			}

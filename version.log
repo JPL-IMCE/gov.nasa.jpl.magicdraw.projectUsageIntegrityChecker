@@ -41,3 +41,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-872
 
 SSCAES-903: Update to MD17.0.5 SP1 for MD and SysML
 https://jira1.jpl.nasa.gov:8443/browse/SSCAES-903
+
+17050.1.7 (February 26, 2014)
+
+SSCAES-909: If there is a configuration problem, the PUIC may try to dump the graph to the MD notification window; thereby exacerbating performance problems with that window
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-909

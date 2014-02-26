@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
-import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.ApplicationEnvironment;
 import com.nomagic.magicdraw.utils.MDLog;
 
@@ -83,7 +82,7 @@ public class Appender extends AppenderSkeleton {
 			try {
 				logTraceContractsDir.mkdir();
 			} catch (SecurityException e) {
-				log.fatal(String.format("%s: Cannot create the logTraceContracts directory at: %s", name, logTraceContractsDir), e);
+				log.fatal(String.format("JPL Project Usage Integrity Appender %s: Cannot create the logTraceContracts directory at: %s", name, logTraceContractsDir), e);
 			}
 			return;
 		}
@@ -99,18 +98,18 @@ public class Appender extends AppenderSkeleton {
 			}
 		});
 		
-		log.info(String.format("%s: Cleanup - Begin deleting %d old logTraceContract files in: %s", name, oldLogFiles.length, logTraceContractsDir));
+		log.info(String.format("JPL Project Usage Integrity Appender %s: Cleanup - Begin deleting %d old logTraceContract files in: %s", name, oldLogFiles.length, logTraceContractsDir));
 		
 		for (File oldLogFile : oldLogFiles) {
 			try {
-				log.info(String.format("%s: Cleanup - Deleting old logTraceContract file: %s", name, oldLogFile.getName()));
+				log.info(String.format("JPL Project Usage Integrity Appender %s: Cleanup - Deleting old logTraceContract file: %s", name, oldLogFile.getName()));
 				oldLogFile.delete();
 			} catch (SecurityException e) {
-				log.error(String.format("%s: Cleanup - Cannot delete old logTraceContracts file: %s", name, oldLogFile), e);
+				log.error(String.format("JPL Project Usage Integrity Appender %s: Cleanup - Cannot delete old logTraceContracts file: %s", name, oldLogFile), e);
 			}
 		}
 		
-		log.info(String.format("%s: Cleanup - Finished deleting %d old logTraceContract files in: %s", name, oldLogFiles.length, logTraceContractsDir));
+		log.info(String.format("JPL Project Usage Integrity Appender %s: Cleanup - Finished deleting %d old logTraceContract files in: %s", name, oldLogFiles.length, logTraceContractsDir));
 		
 	}
 	
@@ -148,7 +147,11 @@ public class Appender extends AppenderSkeleton {
 				fileAppenders.put(currentWrapper.sessionID, sessionFileAppender);
 			} catch (IOException e) {
 				SessionCounter.markSessionFailed(currentWrapper);
-				Log.log(e.getLocalizedMessage());
+				
+				Logger log = MDLog.getGeneralLog();
+				String message = String.format("JPL Project Usage Integrity Appender (PROJECT_LOAD_START_MARKER): %s", e.getLocalizedMessage());
+				log.error(message, e);
+				Log.log(message);
 			}
 		} else if (eventMessage.contains(PROJECT_LOAD_DONE_MARKER)){
 			if (!logSessions.isEmpty()){
@@ -177,7 +180,10 @@ public class Appender extends AppenderSkeleton {
 					FileAppender sessionFileAppender = new FileAppender(new PatternLayout("%d [%t] %-5p %c - %m%n"), fileLocation);
 					fileAppenders.put(session, sessionFileAppender);
 				} catch (IOException e) {
-					Application.getInstance().getGUILog().log(e.getLocalizedMessage());
+					Logger log = MDLog.getGeneralLog();
+					String message = String.format("JPL Project Usage Integrity Appender (BEGIN_LOG_SESSION_MARKER) %s", e.getLocalizedMessage());
+					log.error(message, e);
+					Log.log(message);
 				}				
 			}
 			
@@ -202,7 +208,7 @@ public class Appender extends AppenderSkeleton {
 				FileAppender appender = fileAppenders.get(session);
 				appender.append(event);
 			} else {
-				Application.getInstance().getGUILog().log("Active session file appender missing: " + session);
+				Log.log("Active session file appender missing: " + session);
 			}
 		}
 		
