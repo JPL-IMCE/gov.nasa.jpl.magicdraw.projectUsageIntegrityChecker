@@ -121,8 +121,8 @@ public class ShowProjectUsageGraphCommand implements Runnable {
 								ProjectUsageIntegrityPlugin.getInstance().getPluginName(),
 								getProjectUsageGraphDiagnostic()));
 					
-					Application.getInstance().getGUILog().openMessageWindow();
-					projectUsageGraph.getDigest().showProblems();
+					log.openMessageWindow();
+					projectUsageGraph.showProblems();
 					
 					if (projectUsageGraph.projectClassification == ProjectClassification.INVALID) {
 						Log.log(projectUsageGraph.getProjectUsageGraphDiagnostic());

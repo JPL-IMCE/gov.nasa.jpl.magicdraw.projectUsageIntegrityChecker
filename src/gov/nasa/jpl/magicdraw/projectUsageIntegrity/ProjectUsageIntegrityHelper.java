@@ -52,6 +52,8 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectUsage
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEValidProjectUsageGraphValidation;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -116,11 +118,17 @@ import com.nomagic.uml2.ext.jmi.EventSupport;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model;
+import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.utils.Utilities;
@@ -158,12 +166,35 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	
 	public final static String SSCAE_PROJECT_USAGE_INTEGRITY_PROFILE_PROJECT_FILE = "SSCAEProjectUsageIntegrityProfile.mdzip";
 	public final static String SSCAE_PROJECT_USAGE_INTEGRITY_PROFILE = "SSCAE ProjectUsage Integrity Profile";
+	
 	public final static String SSCAE_ABSTRACT_USAGE_STEREOTYPE_NAME = "AbstractSSCAEProjectUsageGraph";
-	public final static String SSCAE_SHARED_PACKAGE_STEREOTYPE_NAME = "SSCAESharedPackage";
-	public final static String SSCAE_PROJECT_MODEL_STEREOTYPE_NAME = "SSCAEProjectModel";
-
 	public final static String SSCAE_PROJECT_STEREOTYPE_GRAPH_VERSION = "_sscaeProjectUsageGraphVersion";
 	public final static String SSCAE_PROJECT_STEREOTYPE_GRAPH_SERIALIZATION = "_sscaeProjectUsageGraphSerialization";
+	
+	public final static String SSCAE_PROJECT_MODEL_STEREOTYPE_NAME = "SSCAEProjectModel";
+
+	public final static String SSCAE_SHARED_PACKAGE_STEREOTYPE_NAME = "SSCAESharedPackage";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_PROPERTY_NAME = "this package usage classification";
+	public final static String SSCAE_SHARED_PACKAGE_DEPRECATED_CONSTRAINT_PROPERTY_NAME = "constraint on DEPRECATED usage dependencies";
+	public final static String SSCAE_SHARED_PACKAGE_INCUBATOR_CONSTRAINT_PROPERTY_NAME = "constraint on INCUBATOR usage dependencies";
+	public final static String SSCAE_SHARED_PACKAGE_RECOMMENDED_CONSTRAINT_PROPERTY_NAME = "constraint on RECOMMENDED usage dependencies";
+	
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_STEREOTYPE_NAME = "SSCAESharedPackageUsageConstraint";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_LEVEL_PROPERTY_NAME = "usageDependencyConstraint";
+	
+	public final static String SSCAE_SHARED_PACKAGE_REFERENCE_STEREOTYPE_NAME = "SSCAESharedPackageReference";
+	public final static String SSCAE_SHARED_PACKAGE_REFERENCE_ID_PROPERTY_NAME = "sharedPackageID";
+	
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_ENUMERATION_NAME = "SSCAESharedPackageUsageClassification";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_DEPRECATED_ENUM_LITERAL_NAME = "DEPRECATED";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_INCUBATOR_ENUM_LITERAL_NAME = "INCUBATOR";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_RECOMMENDED_ENUM_LITERAL_NAME = "RECOMMENDED";
+	
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_ENUMERATION_NAME = "SSCAESharedPackageUsageConstraintLevel";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_OK_ENUM_LITERAL_NAME = "OK";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_WARNING_ENUM_LITERAL_NAME = "WARNING";
+	public final static String SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_ERROR_ENUM_LITERAL_NAME = "ERROR";
+	
 
 	public void enable() {
 		checkerState.setState(true);
@@ -240,8 +271,32 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		warningLevel = null;
 		
 		sscaeProjectUsageIntegrityProfile = null;
+		
 		sscaeAbstractUsageStereotype = null;
+		
 		sscaeProjectModelStereotype = null;
+		
+		sscaeSharedPackageStereotype = null;
+		sscaeSharedPackage_thisPackageUsageClassification = null;
+		sscaeSharedPackage_DEPRECATED_constraint = null;
+		sscaeSharedPackage_INCUBATOR_constraint = null;
+		sscaeSharedPackage_RECOMMENDED_constraint = null;
+		
+		sscaeSharedPackageUsageConstraintStereotype = null;
+		sscaeSharedPackageUsageConstraint_level = null;
+		
+		sscaeSharedPackageReferenceStereotype = null;
+		sscaeSharedPackageReference_sharedPackageID = null;
+		
+		sscaeSharedPackageUsageClassificationEnum = null;
+		sscaeSharedPackageUsageClassification_DEPRECATED = null;
+		sscaeSharedPackageUsageClassification_INCUBATOR = null;
+		sscaeSharedPackageUsageClassification_RECOMMENDED = null;
+	
+		sscaeSharedPackageUsageConstraintLevelEnum = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_OK = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_WARNING = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_ERROR = null;
 		
 		sscaeProjectUsageValidationSuite = null;
 		validationSuiteConstraints.clear();
@@ -327,9 +382,31 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	public boolean hasSSCAEProjectUsageIntegrityProfile() { return sscaeProjectUsageIntegrityProfile != null; }
 	
 	protected Stereotype sscaeAbstractUsageStereotype;
-	protected Stereotype sscaeSharedPackageStereotype;
+	
 	protected Stereotype sscaeProjectModelStereotype;
-
+	
+	protected Stereotype sscaeSharedPackageStereotype;
+	protected Property sscaeSharedPackage_thisPackageUsageClassification;
+	protected Property sscaeSharedPackage_DEPRECATED_constraint;
+	protected Property sscaeSharedPackage_INCUBATOR_constraint;
+	protected Property sscaeSharedPackage_RECOMMENDED_constraint;
+	
+	protected Stereotype sscaeSharedPackageUsageConstraintStereotype;
+	protected Property sscaeSharedPackageUsageConstraint_level;
+	
+	protected Stereotype sscaeSharedPackageReferenceStereotype;
+	protected Property sscaeSharedPackageReference_sharedPackageID;
+	
+	protected Enumeration sscaeSharedPackageUsageClassificationEnum;
+	public EnumerationLiteral sscaeSharedPackageUsageClassification_DEPRECATED;
+	public EnumerationLiteral sscaeSharedPackageUsageClassification_INCUBATOR;
+	public EnumerationLiteral sscaeSharedPackageUsageClassification_RECOMMENDED;
+	
+	protected Enumeration sscaeSharedPackageUsageConstraintLevelEnum;
+	public EnumerationLiteral sscaeSharedPackageUsageConstraintLevelEnum_OK;
+	public EnumerationLiteral sscaeSharedPackageUsageConstraintLevelEnum_WARNING;
+	public EnumerationLiteral sscaeSharedPackageUsageConstraintLevelEnum_ERROR;
+	
 	public static String SSCAE_PROJECT_USAGE_VALIDATION_SUITE_NAME = "ProjectUsage Validation Suite";
 	protected Package sscaeProjectUsageValidationSuite;
 
@@ -461,7 +538,26 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 			sscaeSharedPackageStereotype = StereotypesHelper.getStereotype(project, SSCAE_SHARED_PACKAGE_STEREOTYPE_NAME, sscaeProjectUsageIntegrityProfile);
 			resolved &= (null != sscaeSharedPackageStereotype);
 		}
-
+		
+		if (null != sscaeSharedPackageStereotype) {
+			if (null == sscaeSharedPackage_thisPackageUsageClassification) {
+				sscaeSharedPackage_thisPackageUsageClassification = StereotypesHelper.getPropertyByName(sscaeSharedPackageStereotype, SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_PROPERTY_NAME);
+				resolved &= (null != sscaeSharedPackage_thisPackageUsageClassification);
+			}
+			if (null == sscaeSharedPackage_DEPRECATED_constraint) {
+				sscaeSharedPackage_DEPRECATED_constraint = StereotypesHelper.getPropertyByName(sscaeSharedPackageStereotype, SSCAE_SHARED_PACKAGE_DEPRECATED_CONSTRAINT_PROPERTY_NAME);
+				resolved &= (null != sscaeSharedPackage_DEPRECATED_constraint);
+			}
+			if (null == sscaeSharedPackage_INCUBATOR_constraint) {
+				sscaeSharedPackage_INCUBATOR_constraint = StereotypesHelper.getPropertyByName(sscaeSharedPackageStereotype, SSCAE_SHARED_PACKAGE_INCUBATOR_CONSTRAINT_PROPERTY_NAME);
+				resolved &= (null != sscaeSharedPackage_INCUBATOR_constraint);
+			}
+			if (null == sscaeSharedPackage_RECOMMENDED_constraint) {
+				sscaeSharedPackage_RECOMMENDED_constraint = StereotypesHelper.getPropertyByName(sscaeSharedPackageStereotype, SSCAE_SHARED_PACKAGE_RECOMMENDED_CONSTRAINT_PROPERTY_NAME);
+				resolved &= (null != sscaeSharedPackage_RECOMMENDED_constraint);
+			}
+		}
+		
 		if (null == sscaeProjectModelStereotype) {
 			sscaeProjectModelStereotype = StereotypesHelper.getStereotype(project, SSCAE_PROJECT_MODEL_STEREOTYPE_NAME, sscaeProjectUsageIntegrityProfile);
 			resolved &= (null != sscaeProjectModelStereotype);
@@ -525,6 +621,69 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 				resolved = false;		
 		}
 
+		if (null == sscaeSharedPackageUsageConstraintStereotype) {
+			sscaeSharedPackageUsageConstraintStereotype = StereotypesHelper.getStereotype(project, SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_STEREOTYPE_NAME, sscaeProjectUsageIntegrityProfile);
+			resolved &= (null != sscaeSharedPackageUsageConstraintStereotype);
+		}
+		
+		if (null != sscaeSharedPackageUsageConstraintStereotype && null == sscaeSharedPackageUsageConstraint_level) {
+			sscaeSharedPackageUsageConstraint_level = StereotypesHelper.getPropertyByName(sscaeSharedPackageUsageConstraintStereotype, SSCAE_SHARED_PACKAGE_USAGE_LEVEL_PROPERTY_NAME);
+			resolved &= (null != sscaeSharedPackageUsageConstraint_level);
+		}
+		
+		if (null == sscaeSharedPackageReferenceStereotype) {
+			sscaeSharedPackageReferenceStereotype = StereotypesHelper.getStereotype(project, SSCAE_SHARED_PACKAGE_REFERENCE_STEREOTYPE_NAME, sscaeProjectUsageIntegrityProfile);
+			resolved &= (null != sscaeSharedPackageReferenceStereotype);
+		}
+		
+		if (null != sscaeSharedPackageReferenceStereotype && null == sscaeSharedPackageReference_sharedPackageID) {
+			sscaeSharedPackageReference_sharedPackageID = StereotypesHelper.getPropertyByName(sscaeSharedPackageReferenceStereotype, SSCAE_SHARED_PACKAGE_REFERENCE_ID_PROPERTY_NAME);
+			resolved &= (null != sscaeSharedPackageReference_sharedPackageID);
+		}
+			
+		for (Type type : sscaeProjectUsageIntegrityProfile.getOwnedType()) {
+			String typeName = type.getName();
+			if (SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_ENUMERATION_NAME.equals(typeName) && (type instanceof Enumeration)) {
+				sscaeSharedPackageUsageClassificationEnum = (Enumeration) type;
+				for (EnumerationLiteral lit : sscaeSharedPackageUsageClassificationEnum.getOwnedLiteral()) {
+					String litName = lit.getName();
+					if (SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_DEPRECATED_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageClassification_DEPRECATED = lit;
+					} else if (SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_INCUBATOR_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageClassification_INCUBATOR = lit;
+					} else if (SSCAE_SHARED_PACKAGE_USAGE_CLASSIFICATION_RECOMMENDED_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageClassification_RECOMMENDED = lit;
+					} else {
+						// ignore
+					}
+				}
+			} else if (SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_ENUMERATION_NAME.equals(typeName) && (type instanceof Enumeration)) {
+				sscaeSharedPackageUsageConstraintLevelEnum = (Enumeration) type;
+				for (EnumerationLiteral lit : sscaeSharedPackageUsageConstraintLevelEnum.getOwnedLiteral()) {
+					String litName = lit.getName();
+					if (SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_OK_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageConstraintLevelEnum_OK = lit;
+					} else if (SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_WARNING_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageConstraintLevelEnum_WARNING = lit;
+					} else if (SSCAE_SHARED_PACKAGE_USAGE_CONSTRAINT_LEVEL_ERROR_ENUM_LITERAL_NAME.equals(litName)) {
+						sscaeSharedPackageUsageConstraintLevelEnum_ERROR = lit;
+					} else {
+						// ignore
+					}
+				}
+			}	
+		}
+		
+		resolved &= (null != sscaeSharedPackageUsageClassificationEnum);
+		resolved &= (null != sscaeSharedPackageUsageClassification_DEPRECATED);
+		resolved &= (null != sscaeSharedPackageUsageClassification_INCUBATOR);
+		resolved &= (null != sscaeSharedPackageUsageClassification_RECOMMENDED);
+		
+		resolved &= (null != sscaeSharedPackageUsageConstraintLevelEnum);
+		resolved &= (null != sscaeSharedPackageUsageConstraintLevelEnum_OK);
+		resolved &= (null != sscaeSharedPackageUsageConstraintLevelEnum_WARNING);
+		resolved &= (null != sscaeSharedPackageUsageConstraintLevelEnum_ERROR);
+	
 		return resolved;
 	}
 
@@ -796,6 +955,26 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		return this.sscaeSharedPackageStereotype;
 	}
 
+	public Property getSharedPackageThisPackageUsageClassificationProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackage_thisPackageUsageClassification;
+	}
+	
+	public Property getSharedPackage_DEPRECATED_ConstraintProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackage_DEPRECATED_constraint;
+	}
+	
+	public Property getSharedPackage_INCUBATOR_ConstraintProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackage_INCUBATOR_constraint;
+	}
+	
+	public Property getSharedPackage_RECOMMENDED_ConstraintProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackage_RECOMMENDED_constraint;
+	}
+	
 	public boolean hasSSCAESharedPackageStereotypeApplied(@Nonnull Package p) {
 		if (!resolvedSSCAEProfileAndStereotypes())
 			return false;
@@ -846,7 +1025,113 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 
 		StereotypesHelper.setStereotypePropertyValue(p, this.sscaeSharedPackageStereotype, ProjectUsageIntegrityHelper.SSCAE_PROJECT_STEREOTYPE_GRAPH_VERSION, new Integer(versionNumber));
 	}
+ 
+	public EnumerationLiteral getSSCAESharedPackageClassification(@Nonnull Package p) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			throw new IllegalArgumentException("No SSCAE SharedPackage Stereotype");
+		
+		Object value = StereotypesHelper.getStereotypePropertyFirst(p, this.sscaeSharedPackageStereotype, sscaeSharedPackage_thisPackageUsageClassification.getName());
+		if (value instanceof EnumerationLiteral)
+			return (EnumerationLiteral) value;
+		
+		return null;
+	}
+	
+	public EnumerationLiteral getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(@Nonnull Package p) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			throw new IllegalArgumentException("No SSCAE SharedPackage Stereotype");
+		
+		Object value = StereotypesHelper.getStereotypePropertyFirst(p, this.sscaeSharedPackageStereotype, sscaeSharedPackage_DEPRECATED_constraint.getName());
+		if (value instanceof EnumerationLiteral)
+			return (EnumerationLiteral) value;
+		
+		return null;
+	}
+	
+	public EnumerationLiteral getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(@Nonnull Package p) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			throw new IllegalArgumentException("No SSCAE SharedPackage Stereotype");
+		
+		Object value = StereotypesHelper.getStereotypePropertyFirst(p, this.sscaeSharedPackageStereotype, sscaeSharedPackage_INCUBATOR_constraint.getName());
+		if (value instanceof EnumerationLiteral)
+			return (EnumerationLiteral) value;
+		
+		return null;
+	}
+	
+	public EnumerationLiteral getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(@Nonnull Package p) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			throw new IllegalArgumentException("No SSCAE SharedPackage Stereotype");
+		
+		Object value = StereotypesHelper.getStereotypePropertyFirst(p, this.sscaeSharedPackageStereotype, sscaeSharedPackage_RECOMMENDED_constraint.getName());
+		if (value instanceof EnumerationLiteral)
+			return (EnumerationLiteral) value;
+		
+		return null;
+	}
+	
+	// SSCAESharedPackageUsageConstraint
 
+	public Stereotype getSharedPackageUsageConstraintStereotype(){
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackageUsageConstraintStereotype;
+	}
+
+	public Property getSharedPackageUsageConstraintLevelProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackageUsageConstraint_level;
+	}
+	
+	public boolean hasSSCAESharedPackageUsageConstraintStereotypeApplied(@Nonnull Usage u) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			return false;
+
+		return StereotypesHelper.hasStereotypeOrDerived(u, this.sscaeSharedPackageUsageConstraintStereotype);
+	}
+
+	public EnumerationLiteral getSSCAESharedPackageUsageConstraintLevel(@Nonnull Usage u) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			return null;
+		
+		List<?> l = StereotypesHelper.getStereotypePropertyValue(u, this.sscaeSharedPackageUsageConstraintStereotype, this.sscaeSharedPackageUsageConstraint_level, false);
+		if (null != l && l.size() == 1 && l.get(0) instanceof EnumerationLiteral) {
+			return (EnumerationLiteral) l.get(0);
+		}
+		return null;
+	}
+	
+	// SSCAESharedPackageReference
+
+	public Stereotype getSharedPackageReferenceStereotype(){
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackageReferenceStereotype;
+	}
+
+	public Property getSharedPackageReferenceIDProperty() {
+		resolvedSSCAEProfileAndStereotypes();
+		return this.sscaeSharedPackageReference_sharedPackageID;
+	}
+	
+	public boolean hasSSCAESharedPackageReferenceStereotypeApplied(@Nonnull InstanceSpecification is) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			return false;
+
+		return StereotypesHelper.hasStereotypeOrDerived(is, this.sscaeSharedPackageReferenceStereotype);
+	}
+
+	public String getSSCAESharedPackageReferenceID(@Nonnull InstanceSpecification is) {
+		if (!resolvedSSCAEProfileAndStereotypes())
+			return null;
+		
+		List<String> values = StereotypesHelper.getStereotypePropertyValueAsString(is, this.sscaeSharedPackageReferenceStereotype, this.sscaeSharedPackageReference_sharedPackageID.getName());
+		if (null == values || values.size() != 1)
+			return null;
+		
+		return values.get(0);
+	}
+	
+	// --------------
+	
 	protected boolean ranOnceMD5Validation = false;
 
 	public boolean alreadyRanMD5Validation() {
@@ -1429,7 +1714,12 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 					}
 				} catch (YAMLException ye) {
 					ye.fillInStackTrace();
-					ye.printStackTrace(System.out);	
+					if (ProjectUsageIntegrityPlugin.getInstance().isShowAdvancedInformationProperty()) {
+						final StringWriter sw = new StringWriter();
+						final PrintWriter pw = new PrintWriter(sw);
+						ye.printStackTrace(pw);
+						buff.append(sw.toString());
+					}
 				}
 			}
 			
