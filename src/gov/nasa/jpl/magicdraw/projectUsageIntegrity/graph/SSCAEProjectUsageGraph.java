@@ -2350,7 +2350,6 @@ public class SSCAEProjectUsageGraph {
 
 	public void dispose() {
 		if (managedSharedPackages != null) {
-			managedSharedPackages.clear();
 			managedSharedPackages = null;
 		}
 		
