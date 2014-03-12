@@ -209,74 +209,74 @@ public class SSCAEProjectUsageGraph {
 		}
 		this.managedSharedPackages = Collections.unmodifiableList(_managedSharedPackages);
 
-		for (Package managedSharedPackage : allSharedPackages) {
-			id2sharedPackage.put(managedSharedPackage.getID(), managedSharedPackage);
-			sharedPackage2references.put(managedSharedPackage, new HashSet<InstanceSpecification>());
-			sharedPackage2usageConstraints.put(managedSharedPackage, new HashSet<Usage>());
+		for (Package sharedPackage: allSharedPackages) {
+			id2sharedPackage.put(sharedPackage.getID(), sharedPackage);
+			sharedPackage2references.put(sharedPackage, new HashSet<InstanceSpecification>());
+			sharedPackage2usageConstraints.put(sharedPackage, new HashSet<Usage>());
 
-			sharedPackages_constrainedAs_WARNING_fromUsages.put(managedSharedPackage, new HashSet<Usage>());
-			sharedPackages_constrainedAs_ERROR_fromUsages.put(managedSharedPackage, new HashSet<Usage>());
+			sharedPackages_constrainedAs_WARNING_fromUsages.put(sharedPackage, new HashSet<Usage>());
+			sharedPackages_constrainedAs_ERROR_fromUsages.put(sharedPackage, new HashSet<Usage>());
 			
 			{
-				EnumerationLiteral classification = helper.getSSCAESharedPackageClassification(managedSharedPackage);
+				EnumerationLiteral classification = helper.getSSCAESharedPackageClassification(sharedPackage);
 				if (null == classification) {
-					sharedPackages_classified_NONE.add(managedSharedPackage);
+					sharedPackages_classified_NONE.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageClassification_DEPRECATED.equals(classification)) {
-					sharedPackages_classified_DEPRECATED.add(managedSharedPackage);
+					sharedPackages_classified_DEPRECATED.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageClassification_INCUBATOR.equals(classification)) {
-					sharedPackages_classified_INCUBATOR.add(managedSharedPackage);
+					sharedPackages_classified_INCUBATOR.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageClassification_RECOMMENDED.equals(classification)) {
-					sharedPackages_classified_RECOMMENDED.add(managedSharedPackage);
+					sharedPackages_classified_RECOMMENDED.add(sharedPackage);
 				} else {
-					buff.append(String.format("unrecognized classification for shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), classification.toString()));
+					buff.append(String.format("unrecognized classification for shared package '%s' {ID=%s} : '%s'", sharedPackage.getQualifiedName(), sharedPackage.getID(), classification.toString()));
 					errors = true;
 				}
 			}
 
 			{
-				EnumerationLiteral deprecatedLevel = helper.getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(managedSharedPackage);
+				EnumerationLiteral deprecatedLevel = helper.getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(sharedPackage);
 				if (null == deprecatedLevel) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(deprecatedLevel)) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(deprecatedLevel)) {
-					sharedPackages_constraining_DEPRECATED_packages_as_WARNING.add(managedSharedPackage);
+					sharedPackages_constraining_DEPRECATED_packages_as_WARNING.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(deprecatedLevel)) {
-					sharedPackages_constraining_DEPRECATED_packages_as_ERROR.add(managedSharedPackage);
+					sharedPackages_constraining_DEPRECATED_packages_as_ERROR.add(sharedPackage);
 				} else {
-					buff.append(String.format("unrecognized constraint on DEPRECATED usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), deprecatedLevel.toString()));
+					buff.append(String.format("unrecognized constraint on DEPRECATED usage dependencies in shared package '%s' {ID=%s} : '%s'", sharedPackage.getQualifiedName(), sharedPackage.getID(), deprecatedLevel.toString()));
 					errors = true;
 				}
 			}
 			
 			{
-				EnumerationLiteral INCUBATORLevel = helper.getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(managedSharedPackage);
+				EnumerationLiteral INCUBATORLevel = helper.getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(sharedPackage);
 				if (null == INCUBATORLevel) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(INCUBATORLevel)) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(INCUBATORLevel)) {
-					sharedPackages_constraining_INCUBATOR_packages_as_WARNING.add(managedSharedPackage);
+					sharedPackages_constraining_INCUBATOR_packages_as_WARNING.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(INCUBATORLevel)) {
-					sharedPackages_constraining_INCUBATOR_packages_as_ERROR.add(managedSharedPackage);
+					sharedPackages_constraining_INCUBATOR_packages_as_ERROR.add(sharedPackage);
 				} else {
-					buff.append(String.format("unrecognized constraint on INCUBATOR usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), INCUBATORLevel.toString()));
+					buff.append(String.format("unrecognized constraint on INCUBATOR usage dependencies in shared package '%s' {ID=%s} : '%s'", sharedPackage.getQualifiedName(), sharedPackage.getID(), INCUBATORLevel.toString()));
 					errors = true;
 				}
 			}
 			
 			{
-				EnumerationLiteral RECOMMENDEDLevel = helper.getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(managedSharedPackage);
+				EnumerationLiteral RECOMMENDEDLevel = helper.getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(sharedPackage);
 				if (null == RECOMMENDEDLevel) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(RECOMMENDEDLevel)) {
 					// ignore
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(RECOMMENDEDLevel)) {
-					sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.add(managedSharedPackage);
+					sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.add(sharedPackage);
 				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(RECOMMENDEDLevel)) {
-					sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.add(managedSharedPackage);
+					sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.add(sharedPackage);
 				} else {
-					buff.append(String.format("unrecognized constraint on RECOMMENDED usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), RECOMMENDEDLevel.toString()));
+					buff.append(String.format("unrecognized constraint on RECOMMENDED usage dependencies in shared package '%s' {ID=%s} : '%s'", sharedPackage.getQualifiedName(), sharedPackage.getID(), RECOMMENDEDLevel.toString()));
 					errors = true;
 				}
 			}
@@ -443,6 +443,9 @@ public class SSCAEProjectUsageGraph {
 	public Set<Package> sharedPackages_constraining_RECOMMENDED_packages_as_WARNING = new HashSet<Package>();
 	public Set<Package> sharedPackages_constraining_RECOMMENDED_packages_as_ERROR = new HashSet<Package>();
 
+	public Map<MDAbstractProject, Set<Package>> moduleOrProject2SharedPackages = new HashMap<MDAbstractProject, Set<Package>>();
+	public Set<MDAbstractProject> moduleOrProjectWithInconsistentlyClassifiedSharedPackages = new HashSet<MDAbstractProject>();
+	
 	protected final boolean noSharedPackage_constrainedAs_WARNING_fromUsages;
 	protected final boolean noSharedPackage_constrainedAs_ERROR_fromUsages;
 	protected final boolean no_DEPRECATED_WARNING_constraintViolations;
@@ -725,18 +728,38 @@ public class SSCAEProjectUsageGraph {
 		Long previousTime = System.currentTimeMillis();
 
 		MDAbstractProject vPrimary = createVertex(this.primaryProject, width);
+		moduleOrProject2SharedPackages.put(vPrimary, new HashSet<Package>());
+		
 		this.isTemplate = vPrimary.isLocalTemplate();
 		for (IProject aProject : allSortedProjects) {
-			createVertex(aProject, width);
+			MDAbstractProject vAttached = createVertex(aProject, width);
+			moduleOrProject2SharedPackages.put(vAttached, new HashSet<Package>());
 		}
 
+		for (Package sharedPackage : sharedPackage2references.keySet()) {
+			IProject ip = ProjectUtilities.getProject(sharedPackage);
+			MDAbstractProject v = vertexMap.get(ip);
+			moduleOrProject2SharedPackages.get(v).add(sharedPackage);
+		}
 
+		for (MDAbstractProject v : moduleOrProject2SharedPackages.keySet()) {
+			boolean hasDeprecated = false;
+			boolean hasIncubator = false;
+			boolean hasRecommended = false;
+			for (Package vSharedPackage : moduleOrProject2SharedPackages.get(v)) {
+				hasDeprecated |= sharedPackages_classified_DEPRECATED.contains(vSharedPackage);
+				hasIncubator |= sharedPackages_classified_INCUBATOR.contains(vSharedPackage);
+				hasRecommended |= sharedPackages_classified_RECOMMENDED.contains(vSharedPackage);	
+			}
+			if ((hasDeprecated && hasIncubator) || (hasDeprecated && hasRecommended) || (hasIncubator && hasRecommended))
+				moduleOrProjectWithInconsistentlyClassifiedSharedPackages.add(v);
+		}
+		
 		if (performanceLoggingEnabled){ 
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Create Graph: " + (currentTime-previousTime) + " (ms)"); 
 			previousTime = System.currentTimeMillis();
 		};
-
 
 		for (IProject aProject : allSortedProjects) {
 			MDAbstractProject p1 = lookupVertex(aProject);
@@ -1348,22 +1371,32 @@ public class SSCAEProjectUsageGraph {
 		if (noSharedPackage_constrainedAs_WARNING_fromUsages) {
 			gDiagnostic.append(String.format("\n   OK: no WARNING shared package usage constraints"));
 		} else {
-			gDiagnostic.append(String.format("\n WARN: %d shared packages have WARNING usage constraints",  sharedPackages_constrainedAs_WARNING_fromUsages.size()));
+			int count = 0;
 			for (Package p : sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
 				Set<Usage> usages = sharedPackages_constrainedAs_WARNING_fromUsages.get(p);
+				if (usages.isEmpty())
+					continue;
+				count++;
 				gMessages.append(String.format("\n shared package '%s' {URI=%s} has %d WARNING usage constraints from other shared packages", 
 						p.getQualifiedName(), p.getURI(), usages.size()));
-			}		}
+			}	
+			gDiagnostic.append(String.format("\n WARN: %d shared packages have WARNING usage constraints",  count));	
+		}
 	
 		if (noSharedPackage_constrainedAs_ERROR_fromUsages) {
 			gDiagnostic.append(String.format("\n   OK: no ERROR shared package usage constraints"));
 		} else {
-			gDiagnostic.append(String.format("\nERROR: %d shared packages have ERROR usage constraints",  sharedPackages_constrainedAs_ERROR_fromUsages.size()));
+			int count = 0;
 			for (Package p : sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
 				Set<Usage> usages = sharedPackages_constrainedAs_ERROR_fromUsages.get(p);
+				if (usages.isEmpty())
+					continue;
+				count++;
 				gMessages.append(String.format("\n shared package '%s' {URI=%s} has %d ERROR usage constraints from other shared packages", 
 						p.getQualifiedName(), p.getURI(), usages.size()));
 			}
+			gDiagnostic.append(String.format("\nERROR: %d shared packages have ERROR usage constraints",  count));
+			
 		}
 		
 		if (no_DEPRECATED_WARNING_constraintViolations) {
@@ -1818,8 +1851,89 @@ public class SSCAEProjectUsageGraph {
 			}
 			String tvNameLabel = (tv == null) ? "" : ((SSCAEProjectUsageGraph.this.useAnonymousVertexLabels) ? tvAnonymizedVersion : tvFullVersion);
 
+			String icon = null;
+			
+			if (moduleOrProjectWithInconsistentlyClassifiedSharedPackages.contains(v)) {
+				icon = "INCONSISTENT.png";
+			} else {
+				boolean deprecated_ok_maybe = false;
+				boolean deprecated_warn = false;
+				boolean deprecated_as_warn = ! sharedPackages_constraining_DEPRECATED_packages_as_WARNING.isEmpty();
+				boolean deprecated_err = false;
+				boolean deprecated_as_err = ! sharedPackages_constraining_DEPRECATED_packages_as_ERROR.isEmpty();
+				
+				boolean incubator_ok_maybe = false;
+				boolean incubator_warn = false;
+				boolean incubator_as_warn = ! sharedPackages_constraining_INCUBATOR_packages_as_WARNING.isEmpty();
+				boolean incubator_err = false;
+				boolean incubator_as_err = ! sharedPackages_constraining_INCUBATOR_packages_as_ERROR.isEmpty();
+				
+				boolean recommended_ok_maybe = false;
+				boolean recommended_warn = false;
+				boolean recommended_as_warn = ! sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.isEmpty();
+				boolean recommended_err = false;
+				boolean recommended_as_err = ! sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.isEmpty();
+				
+				for (Package p : moduleOrProject2SharedPackages.get(v)) {
+					if (sharedPackages_classified_DEPRECATED.contains(p)) {
+						deprecated_ok_maybe = true;
+						if (deprecated_as_warn || ! sharedPackages_constrainedAs_WARNING_fromUsages.get(p).isEmpty()) {
+							deprecated_warn = true;
+						}
+						if (deprecated_as_err || ! sharedPackages_constrainedAs_ERROR_fromUsages.get(p).isEmpty()) {
+							deprecated_err = true;
+						}
+					} else if (sharedPackages_classified_INCUBATOR.contains(p)) {
+						incubator_ok_maybe = true;
+						if (incubator_as_warn || ! sharedPackages_constrainedAs_WARNING_fromUsages.get(p).isEmpty()) {
+							incubator_warn = true;
+						}
+						if (incubator_as_err || ! sharedPackages_constrainedAs_ERROR_fromUsages.get(p).isEmpty()) {
+							incubator_err = true;
+						}
+					} else if (sharedPackages_classified_RECOMMENDED.contains(p)) {
+						recommended_ok_maybe = true;
+						if (recommended_as_warn || ! sharedPackages_constrainedAs_WARNING_fromUsages.get(p).isEmpty()) {
+							recommended_warn = true;
+						}
+						if (recommended_as_err || ! sharedPackages_constrainedAs_ERROR_fromUsages.get(p).isEmpty()) {
+							recommended_err = true;
+						}
+					}
+				}
+				
+				if (deprecated_err) {
+					icon = "DEPRECATED-ERROR.png";
+				} else if (deprecated_warn) {
+					icon = "DEPRECATED-WARNING.png";
+				} else if (deprecated_ok_maybe) {
+					icon = "DEPRECATED.png";
+				}
+				
+				if (incubator_err) {
+					icon = "INCUBATOR-ERROR.png";
+				} else if (incubator_warn) {
+					icon = "INCUBATOR-WARNING.png";
+				} else if (incubator_ok_maybe) {
+					icon = "INCUBATOR.png";
+				}
+				
+				if (recommended_err) {
+					icon = "RECOMMENDED-ERROR.png";
+				} else if (recommended_warn) {
+					icon = "RECOMMENDED-WARNING.png";
+				} else if (recommended_ok_maybe) {
+					icon = "RECOMMENDED.png";
+				}
+			}
+			
+			String labelColSpan = (icon == null) ? "3" : "2";
+			String labelIconTD = (icon == null) ? "" : 
+				String.format("<TD ROWSPAN=\"2\"><IMG SRC=\"%s%s\"/></TD>",
+					plugin.sscaeProjectUsageIntegrityIconsFolderPath, icon);
+			
 			StringBuffer vertexLabel = new StringBuffer();
-			vertexLabel.append("<<TABLE COLOR=\"none\" CELLBORDER=\"1\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+			vertexLabel.append("<<TABLE COLOR=\"none\" CELLBORDER=\"1\" CELLPADDING=\"1\" CELLSPACING=\"0\" COLUMNS=\"3\">");
 
 			String vName = (null == tv) ? vNameLabel : tvNameLabel;
 			if (v instanceof MDAttachedProject) {
@@ -1840,20 +1954,20 @@ public class SSCAEProjectUsageGraph {
 					color = "darkred";
 					break;
 				}
-				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s {state=<FONT COLOR=\"%s\" FACE=\"bold\">%s </FONT>}</TD></TR>", 
-						v.getIndex(), vName, color, avs));
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"%s\">[%s] %s {state=<FONT COLOR=\"%s\" FACE=\"bold\">%s </FONT>}</TD>%s</TR>", 
+						labelColSpan, v.getIndex(), vName, color, avs, labelIconTD));
 			} else {
-				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s</TD></TR>", 
-						v.getIndex(), vName));
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"%s\">[%s] %s</TD>%s</TR>", 
+						labelColSpan, v.getIndex(), vName, labelIconTD));
 			}
 
 			if (v.getClassification() != null) {
-				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{classification=%s}</TD></TR>", 
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"2\">{classification=%s}</TD></TR>", 
 						ProjectClassificationShortLabel.get(v.getClassification())));
 			}
 
 			if (isInconsistentlyUsed) {
-				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\">{%s}</TD></TR>", 
 						SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v)));
 			}
 
@@ -1866,11 +1980,11 @@ public class SSCAEProjectUsageGraph {
 					tag = match.matches() ? "<SSCAE Clean>" : tag;
 					tagBuffer.append(String.format("[%s]", tag));
 				}
-				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\">{%s}</TD></TR>", 
 						tagBuffer.toString()));
 			}
 
-			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">%s</TD></TR>", v.getMDInfo()));
+			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\">%s</TD></TR>", v.getMDInfo()));
 
 			vertexLabel.append("\n</TABLE>>");
 			return vertexLabel.toString();
@@ -2451,6 +2565,17 @@ public class SSCAEProjectUsageGraph {
 		if (sharedPackages_constraining_RECOMMENDED_packages_as_ERROR != null) {
 			sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.clear();
 			sharedPackages_constraining_RECOMMENDED_packages_as_ERROR = null;
+		}
+		
+		if (moduleOrProject2SharedPackages != null) {
+			for (MDAbstractProject v : moduleOrProject2SharedPackages.keySet()) { moduleOrProject2SharedPackages.get(v).clear(); }
+			moduleOrProject2SharedPackages.clear();
+			moduleOrProject2SharedPackages = null;
+		}
+		
+		if (moduleOrProjectWithInconsistentlyClassifiedSharedPackages != null) {
+			moduleOrProjectWithInconsistentlyClassifiedSharedPackages.clear();
+			moduleOrProjectWithInconsistentlyClassifiedSharedPackages = null;
 		}
 		
 		Set<MDAbstractProjectUsage> allEdges = new HashSet<MDAbstractProjectUsage>();
