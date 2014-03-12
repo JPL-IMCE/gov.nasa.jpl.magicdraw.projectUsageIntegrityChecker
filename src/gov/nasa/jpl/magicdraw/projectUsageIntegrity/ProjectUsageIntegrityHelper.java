@@ -271,8 +271,32 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		warningLevel = null;
 		
 		sscaeProjectUsageIntegrityProfile = null;
+		
 		sscaeAbstractUsageStereotype = null;
+		
 		sscaeProjectModelStereotype = null;
+		
+		sscaeSharedPackageStereotype = null;
+		sscaeSharedPackage_thisPackageUsageClassification = null;
+		sscaeSharedPackage_DEPRECATED_constraint = null;
+		sscaeSharedPackage_INCUBATOR_constraint = null;
+		sscaeSharedPackage_RECOMMENDED_constraint = null;
+		
+		sscaeSharedPackageUsageConstraintStereotype = null;
+		sscaeSharedPackageUsageConstraint_level = null;
+		
+		sscaeSharedPackageReferenceStereotype = null;
+		sscaeSharedPackageReference_sharedPackageID = null;
+		
+		sscaeSharedPackageUsageClassificationEnum = null;
+		sscaeSharedPackageUsageClassification_DEPRECATED = null;
+		sscaeSharedPackageUsageClassification_INCUBATOR = null;
+		sscaeSharedPackageUsageClassification_RECOMMENDED = null;
+	
+		sscaeSharedPackageUsageConstraintLevelEnum = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_OK = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_WARNING = null;
+		sscaeSharedPackageUsageConstraintLevelEnum_ERROR = null;
 		
 		sscaeProjectUsageValidationSuite = null;
 		validationSuiteConstraints.clear();

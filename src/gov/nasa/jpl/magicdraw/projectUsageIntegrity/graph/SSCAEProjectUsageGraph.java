@@ -2350,8 +2350,99 @@ public class SSCAEProjectUsageGraph {
 
 	public void dispose() {
 		if (managedSharedPackages != null) {
+			managedSharedPackages.clear();
 			managedSharedPackages = null;
 		}
+		
+		if (id2sharedPackage != null) {
+			id2sharedPackage.clear();
+			id2sharedPackage = null;
+		}
+		
+		if (reference2sharedPackage != null) {
+			reference2sharedPackage.clear();
+			reference2sharedPackage = null;
+		}
+		
+		if (sharedPackage2references != null) {
+			for (Package p : sharedPackage2references.keySet()) { sharedPackage2references.get(p).clear(); }
+			sharedPackage2references.clear();
+			sharedPackage2references = null;
+		}
+		
+		if (sharedPackage2usageConstraints != null) {
+			for (Package p : sharedPackage2usageConstraints.keySet()) { sharedPackage2usageConstraints.get(p).clear(); }
+			sharedPackage2usageConstraints.clear();
+			sharedPackage2usageConstraints = null;
+		}
+		
+		if (usageConstraint2sharedPackage != null) {
+			usageConstraint2sharedPackage.clear();
+			usageConstraint2sharedPackage = null;
+		}
+		
+		if (sharedPackages_constrainedAs_WARNING_fromUsages != null) {
+			for (Package p : sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) { sharedPackages_constrainedAs_WARNING_fromUsages.get(p).clear(); }
+			sharedPackages_constrainedAs_WARNING_fromUsages.clear();
+			sharedPackages_constrainedAs_WARNING_fromUsages = null;
+		}
+		
+		if (sharedPackages_constrainedAs_ERROR_fromUsages != null) {
+			for (Package p : sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) { sharedPackages_constrainedAs_ERROR_fromUsages.get(p).clear(); }
+			sharedPackages_constrainedAs_ERROR_fromUsages.clear();
+			sharedPackages_constrainedAs_ERROR_fromUsages = null;
+		}
+		
+		if (sharedPackages_classified_NONE != null) {
+			sharedPackages_classified_NONE.clear();
+			sharedPackages_classified_NONE = null;
+		}
+		
+		if (sharedPackages_classified_DEPRECATED != null) {
+			sharedPackages_classified_DEPRECATED.clear();
+			sharedPackages_classified_DEPRECATED = null;
+		}
+		
+		if (sharedPackages_classified_INCUBATOR != null) {
+			sharedPackages_classified_INCUBATOR.clear();
+			sharedPackages_classified_INCUBATOR = null;
+		}
+		
+		if (sharedPackages_classified_RECOMMENDED != null) {
+			sharedPackages_classified_RECOMMENDED.clear();
+			sharedPackages_classified_RECOMMENDED = null;
+		}
+		
+		if (sharedPackages_constraining_DEPRECATED_packages_as_WARNING != null) {
+			sharedPackages_constraining_DEPRECATED_packages_as_WARNING.clear();
+			sharedPackages_constraining_DEPRECATED_packages_as_WARNING = null;
+		}
+		
+		if (sharedPackages_constraining_DEPRECATED_packages_as_ERROR != null) {
+			sharedPackages_constraining_DEPRECATED_packages_as_ERROR.clear();
+			sharedPackages_constraining_DEPRECATED_packages_as_ERROR = null;
+		}
+		
+		if (sharedPackages_constraining_INCUBATOR_packages_as_WARNING != null) {
+			sharedPackages_constraining_INCUBATOR_packages_as_WARNING.clear();
+			sharedPackages_constraining_INCUBATOR_packages_as_WARNING = null;
+		}
+		
+		if (sharedPackages_constraining_INCUBATOR_packages_as_ERROR != null) {
+			sharedPackages_constraining_INCUBATOR_packages_as_ERROR.clear();
+			sharedPackages_constraining_INCUBATOR_packages_as_ERROR = null;
+		}
+		
+		if (sharedPackages_constraining_RECOMMENDED_packages_as_WARNING != null) {
+			sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.clear();
+			sharedPackages_constraining_RECOMMENDED_packages_as_WARNING = null;
+		}
+		
+		if (sharedPackages_constraining_RECOMMENDED_packages_as_ERROR != null) {
+			sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.clear();
+			sharedPackages_constraining_RECOMMENDED_packages_as_ERROR = null;
+		}
+		
 		Set<MDAbstractProjectUsage> allEdges = new HashSet<MDAbstractProjectUsage>();
 		allEdges.addAll(projectUsageDirectedMultigraph.edgeSet());
 		projectUsageDirectedMultigraph.removeAllEdges(allEdges);
