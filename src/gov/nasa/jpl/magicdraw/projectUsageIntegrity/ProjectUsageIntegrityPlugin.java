@@ -168,9 +168,19 @@ implements ResourceDependentPlugin {
 	public final List<String> MDTeamworkProjectIDSuffixes = new ArrayList<String>();
 	
 	public SSCAEProjectUsageIntegrityOptions options;
+	
+	public String sscaeProjectUsageIntegrityIconsFolderPath;
+	
 	@Override
 	public void init() {
 		MDLog.getPluginsLog().info("INIT: >> " + getPluginName());
+		
+		final PluginDescriptor pluginDescriptor = this.getDescriptor();
+
+		File pluginDir = pluginDescriptor.getPluginDirectory();
+		
+		sscaeProjectUsageIntegrityIconsFolderPath = pluginDir.getAbsolutePath() + File.separator + "icons" + File.separator;
+				
 		try {
 			String javaSpecificationVersion = System.getProperty("java.specification.version");
 			if (!"1.6".equals(javaSpecificationVersion) && !"1.7".equals(javaSpecificationVersion)) {
@@ -220,7 +230,6 @@ implements ResourceDependentPlugin {
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleGraphLabelAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleThreadedAction));
 
-			final PluginDescriptor pluginDescriptor = this.getDescriptor();
 			final String logTraceContractsDir = pluginDescriptor.getPluginDirectory() + File.separator + "logTraceContracts" + File.separator;
 			logTraceContractsFolder = new File(logTraceContractsDir);
 			if (!logTraceContractsFolder.exists() || !logTraceContractsFolder.isDirectory() || !logTraceContractsFolder.canRead()) {
@@ -239,7 +248,6 @@ implements ResourceDependentPlugin {
 			Logger.getRootLogger().addAppender(logTraceContractsAppender);
 			System.setErr(new PrintStream(new AppendingOutputStream(System.err, logTraceContractsAppender, MDLog.getPluginsLog(), Level.ERROR)));	
 			
-			File pluginDir = pluginDescriptor.getPluginDirectory();
 			File suffixFile = new File(pluginDir.getAbsolutePath() + File.separator + MD_TEAMWORK_PROJECT_ID_SUFFIXES_FILE);
 			if (suffixFile.exists() && suffixFile.canRead()) {
 				try {
