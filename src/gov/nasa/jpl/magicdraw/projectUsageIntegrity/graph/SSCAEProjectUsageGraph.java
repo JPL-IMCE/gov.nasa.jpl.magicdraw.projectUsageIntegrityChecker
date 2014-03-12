@@ -191,21 +191,25 @@ public class SSCAEProjectUsageGraph {
 		StringBuffer buff = new StringBuffer();
 		boolean errors = false;
 
+		Long previousTime = System.currentTimeMillis();
+
 		Collection<Resource> projectManagedResources = this.primaryProject.getManagedResources();
 
 		Stereotype S = helper.getSharedPackageStereotype();
 		List<Element> sharedElementPackages = StereotypesHelper.getExtendedElements(S);
 
 		List<Package> _managedSharedPackages = new ArrayList<Package>();
+		List<Package> allSharedPackages = new ArrayList<Package>();
 		for (Element e : sharedElementPackages) {
 			Package pkg = (Package) e;
+			allSharedPackages.add(pkg);
 			Resource pkgR = pkg.eResource();
 			if (projectManagedResources.contains(pkgR))
 				_managedSharedPackages.add((Package) e);
 		}
 		this.managedSharedPackages = Collections.unmodifiableList(_managedSharedPackages);
 
-		for (Package managedSharedPackage : managedSharedPackages) {
+		for (Package managedSharedPackage : allSharedPackages) {
 			id2sharedPackage.put(managedSharedPackage.getID(), managedSharedPackage);
 			sharedPackage2references.put(managedSharedPackage, new HashSet<InstanceSpecification>());
 			sharedPackage2usageConstraints.put(managedSharedPackage, new HashSet<Usage>());
@@ -352,6 +356,13 @@ public class SSCAEProjectUsageGraph {
 				&& no_DEPRECATED_ERROR_constraintViolations
 				&& no_INCUBATOR_ERROR_constraintViolations
 				&& no_RECOMMENDED_ERROR_constraintViolations;
+		
+		boolean performanceLoggingEnabled = ProjectUsageIntegrityPlugin.getInstance().isPerformanceLoggingEnabled();
+		if (performanceLoggingEnabled){ 
+			Long currentTime = System.currentTimeMillis();
+			pluginLog.info("PUIC -- Check shared package classification & usage constraints: " + (currentTime-previousTime) + " (ms)"); 
+			previousTime = System.currentTimeMillis();
+		};
 		
 		final IProjectUsageManager projectUsageManager = this.primaryProject.getService(IProjectUsageManager.class);
 		List<ProjectUsage> brokenUsages = new ArrayList<ProjectUsage>();
