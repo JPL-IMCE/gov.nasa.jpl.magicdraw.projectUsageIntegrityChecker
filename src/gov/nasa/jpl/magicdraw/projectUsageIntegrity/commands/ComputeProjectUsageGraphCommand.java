@@ -119,7 +119,7 @@ public class ComputeProjectUsageGraphCommand implements Runnable {
 			Utilities.invokeOnDispatcherOrLater(new Runnable() {
 				public void run() {
 					Application.getInstance().getGUILog().openMessageWindow();
-					projectUsageGraph.getDigest().showProblems();
+					projectUsageGraph.showProblems();
 					ProjectUsageIntegrityPlugin.getInstance().checkCurrentProjectStatusAction.refresh(ok);
 					if (ok)
 						Application.getInstance().getGUILog().showMessage(getProjectUsageGraphDiagnostic());

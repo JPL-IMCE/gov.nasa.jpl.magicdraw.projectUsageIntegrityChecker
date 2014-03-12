@@ -17,6 +17,7 @@ import com.nomagic.magicdraw.core.GUILog;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.uml.actions.SelectInContainmentTreeRunnable;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 
 /**
  * Copyright 2013, by the California Institute of Technology.
@@ -647,13 +648,13 @@ public class SSCAEProjectDigest {
 	public static String FIRST_SEGMENT = "=> <A>%s</A>\n";
 	public static String OTHER_SEGMENTS = " . <A>%s</A>\n";
 
-	public void showProblems() {
+	public void showProblems(SSCAEProjectUsageGraph g) {
 		final Application a = Application.getInstance();
-		final Project p = a.getProject();
-		final URI location = p.getLocationUri();
+		final Project project = a.getProject();
+		final URI location = project.getLocationUri();
 		final GUILog log = a.getGUILog();
 
-		log.log(String.format("= Project: %s ==========================================\n", ((location == null) ? p.getName() : location)));
+		log.log(String.format("= Project: %s ==========================================\n", ((location == null) ? project.getName() : location)));
 
 		if (!getRecoveredElementProxies().isEmpty()) {
 			log.log(String.format("ERROR: - %s proxies for recovered elements\n", getRecoveredElementProxies().size()));
@@ -664,7 +665,7 @@ public class SSCAEProjectDigest {
 					log.log(String.format("- %d nested proxies in %s\n", rep.getOwnedProxyCount(), rep.getElementPath()));
 					if ( rep.getOwnedElementProxies().size() < 10){
 						for (ElementProxyInfo proxy : rep.getOwnedElementProxies()) {
-							ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+							ElementPath.showElementPath(project, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
 						}
 					}
 				}
@@ -676,7 +677,7 @@ public class SSCAEProjectDigest {
 			if (getGhostElementProxies().size() < 10){
 
 				for (ElementProxyInfo proxy : getGhostElementProxies()) {
-					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+					ElementPath.showElementPath(project, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
 				}
 			}
 		}
@@ -692,7 +693,7 @@ public class SSCAEProjectDigest {
 					if (unloadedProxies.size() < 10){
 
 						for (ElementProxyInfo proxy : unloadedProxies) {
-							ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+							ElementPath.showElementPath(project, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
 						}
 					}
 				}
@@ -704,7 +705,7 @@ public class SSCAEProjectDigest {
 			if (getOtherMissingProxies().size() < 10){
 
 				for (ElementProxyInfo proxy : getOtherMissingProxies()) {
-					ElementPath.showElementPath(p, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
+					ElementPath.showElementPath(project, log, FIRST_SEGMENT, OTHER_SEGMENTS, proxy.getElementPath());
 				}
 			}
 		}
@@ -716,7 +717,7 @@ public class SSCAEProjectDigest {
 				for(DiagramProxyUsageProblems d : getDiagramProxyUsageProblems()) {
 					log.addHyperlinkedText(
 							String.format("- diagram '<A>%s</A>' {ID=%s, type=%s} uses %d proxy elements\n", d.getQualifiedName(), d.getID(), d.getType(), d.getProxyCount()), 
-							Collections.singletonMap(d.getID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(d.getID()))));
+							Collections.singletonMap(d.getID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(d.getID()))));
 				}
 			}
 		}
@@ -727,10 +728,10 @@ public class SSCAEProjectDigest {
 				log.log(String.format("Package URI conflict: %s\n", conflict.getURI()));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP1()), 
-						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP1ID()))));
+						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP1ID()))));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP2()), 
-						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
+						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP2ID()))));
 			}
 		}
 
@@ -741,10 +742,10 @@ public class SSCAEProjectDigest {
 				log.log(String.format("Profile URI conflict: %s\n", conflict.getURI()));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP1()), 
-						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP1ID()))));
+						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP1ID()))));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP2()), 
-						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
+						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP2ID()))));
 			}
 		}
 
@@ -754,10 +755,10 @@ public class SSCAEProjectDigest {
 				log.log(String.format("Profile name conflict:\n"));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP1()), 
-						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP1ID()))));
+						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP1ID()))));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP2()), 
-						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
+						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP2ID()))));
 			}
 		}
 		
@@ -767,13 +768,85 @@ public class SSCAEProjectDigest {
 				log.log(String.format("Profile name conflict:\n"));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP1()), 
-						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP1ID()))));
+						Collections.singletonMap(conflict.getP1ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP1ID()))));
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", conflict.getP2()), 
-						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(p.getElementByID(conflict.getP2ID()))));
+						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP2ID()))));
 			}
 		}
 
+		if (!g.noSharedPackage_constrainedAs_WARNING_fromUsages) {
+			log.log(String.format(" WARN: %d shared packages have WARNING usage constraints\n",  g.sharedPackages_constrainedAs_WARNING_fromUsages.size()));
+			for (Package p : g.sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.noSharedPackage_constrainedAs_ERROR_fromUsages) {
+			log.log(String.format(" WARN: %d shared packages have ERROR usage constraints\n",  g.sharedPackages_constrainedAs_ERROR_fromUsages.size()));
+			for (Package p : g.sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_DEPRECATED_WARNING_constraintViolations) {
+			log.log(String.format(" WARN: %d DEPRECATED shared packages violate WARNING constraints", g.sharedPackages_classified_DEPRECATED.size()));
+			for (Package p : g.sharedPackages_classified_DEPRECATED) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is DEPRECATED but violates WARNING constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_DEPRECATED_ERROR_constraintViolations) {
+			log.log(String.format(" WARN: %d DEPRECATED shared packages violate ERROR constraints", g.sharedPackages_classified_DEPRECATED.size()));
+			for (Package p : g.sharedPackages_classified_DEPRECATED) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is DEPRECATED but violates ERROR constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_INCUBATOR_WARNING_constraintViolations) {
+			log.log(String.format(" WARN: %d INCUBATOR shared packages violate WARNING constraints", g.sharedPackages_classified_INCUBATOR.size()));
+			for (Package p : g.sharedPackages_classified_INCUBATOR) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is INCUBATOR but violates WARNING constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_INCUBATOR_ERROR_constraintViolations) {
+			log.log(String.format(" WARN: %d INCUBATOR shared packages violate ERROR constraints", g.sharedPackages_classified_INCUBATOR.size()));
+			for (Package p : g.sharedPackages_classified_INCUBATOR) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is INCUBATOR but violates ERROR constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_RECOMMENDED_WARNING_constraintViolations) {
+			log.log(String.format(" WARN: %d RECOMMENDED shared packages violate WARNING constraints", g.sharedPackages_classified_RECOMMENDED.size()));
+			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is RECOMMENDED but violates WARNING constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
+		if (!g.no_RECOMMENDED_ERROR_constraintViolations) {
+			log.log(String.format(" WARN: %d RECOMMENDED shared packages violate ERROR constraints", g.sharedPackages_classified_RECOMMENDED.size()));
+			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
+				log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is RECOMMENDED but violates ERROR constraints\n", p.getQualifiedName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
+			}
+		}
+		
 		log.log(String.format("===========================================\n"));
 	}
 

@@ -106,7 +106,11 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.utils.MDLog;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
+import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
@@ -159,7 +163,7 @@ public class SSCAEProjectUsageGraph {
 	}
 
 	public static Set<String> MD_EXCLUDE_URI_CHECK_PROFILES_AND_PACKAGES = new HashSet<String>();
-	
+
 	static {
 		MD_EXCLUDE_URI_CHECK_PROFILES_AND_PACKAGES.add("UML Standard Profile::UML2 Metamodel");
 		MD_EXCLUDE_URI_CHECK_PROFILES_AND_PACKAGES.add("UML Standard Profile::StandardProfileL3");
@@ -181,13 +185,17 @@ public class SSCAEProjectUsageGraph {
 		this.useAnonymousVertexLabels = anonymousVertexLabels;
 		this.includeLocalEdges = includeLocalEdges;
 		this.excludedProjectNames = ((null == excludedProjectNames) ? Collections.<String>emptySet() : Collections.unmodifiableSet(excludedProjectNames));
-		
+
 		this.primaryProject = p.getPrimaryProject();
+
+		StringBuffer buff = new StringBuffer();
+		boolean errors = false;
+
 		Collection<Resource> projectManagedResources = this.primaryProject.getManagedResources();
-		
+
 		Stereotype S = helper.getSharedPackageStereotype();
 		List<Element> sharedElementPackages = StereotypesHelper.getExtendedElements(S);
-		
+
 		List<Package> _managedSharedPackages = new ArrayList<Package>();
 		for (Element e : sharedElementPackages) {
 			Package pkg = (Package) e;
@@ -196,7 +204,154 @@ public class SSCAEProjectUsageGraph {
 				_managedSharedPackages.add((Package) e);
 		}
 		this.managedSharedPackages = Collections.unmodifiableList(_managedSharedPackages);
+
+		for (Package managedSharedPackage : managedSharedPackages) {
+			id2sharedPackage.put(managedSharedPackage.getID(), managedSharedPackage);
+			sharedPackage2references.put(managedSharedPackage, new HashSet<InstanceSpecification>());
+			sharedPackage2usageConstraints.put(managedSharedPackage, new HashSet<Usage>());
+
+			sharedPackages_constrainedAs_WARNING_fromUsages.put(managedSharedPackage, new HashSet<Usage>());
+			sharedPackages_constrainedAs_ERROR_fromUsages.put(managedSharedPackage, new HashSet<Usage>());
+			
+			{
+				EnumerationLiteral classification = helper.getSSCAESharedPackageClassification(managedSharedPackage);
+				if (null == classification) {
+					sharedPackages_classified_NONE.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageClassification_DEPRECATED.equals(classification)) {
+					sharedPackages_classified_DEPRECATED.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageClassification_INCUBATOR.equals(classification)) {
+					sharedPackages_classified_INCUBATOR.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageClassification_RECOMMENDED.equals(classification)) {
+					sharedPackages_classified_RECOMMENDED.add(managedSharedPackage);
+				} else {
+					buff.append(String.format("unrecognized classification for shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), classification.toString()));
+					errors = true;
+				}
+			}
+
+			{
+				EnumerationLiteral deprecatedLevel = helper.getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(managedSharedPackage);
+				if (null == deprecatedLevel) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(deprecatedLevel)) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(deprecatedLevel)) {
+					sharedPackages_constraining_DEPRECATED_packages_as_WARNING.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(deprecatedLevel)) {
+					sharedPackages_constraining_DEPRECATED_packages_as_ERROR.add(managedSharedPackage);
+				} else {
+					buff.append(String.format("unrecognized constraint on DEPRECATED usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), deprecatedLevel.toString()));
+					errors = true;
+				}
+			}
+			
+			{
+				EnumerationLiteral INCUBATORLevel = helper.getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(managedSharedPackage);
+				if (null == INCUBATORLevel) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(INCUBATORLevel)) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(INCUBATORLevel)) {
+					sharedPackages_constraining_INCUBATOR_packages_as_WARNING.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(INCUBATORLevel)) {
+					sharedPackages_constraining_INCUBATOR_packages_as_ERROR.add(managedSharedPackage);
+				} else {
+					buff.append(String.format("unrecognized constraint on INCUBATOR usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), INCUBATORLevel.toString()));
+					errors = true;
+				}
+			}
+			
+			{
+				EnumerationLiteral RECOMMENDEDLevel = helper.getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(managedSharedPackage);
+				if (null == RECOMMENDEDLevel) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(RECOMMENDEDLevel)) {
+					// ignore
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(RECOMMENDEDLevel)) {
+					sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.add(managedSharedPackage);
+				} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(RECOMMENDEDLevel)) {
+					sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.add(managedSharedPackage);
+				} else {
+					buff.append(String.format("unrecognized constraint on RECOMMENDED usage dependencies in shared package '%s' {ID=%s} : '%s'", managedSharedPackage.getQualifiedName(), managedSharedPackage.getID(), RECOMMENDEDLevel.toString()));
+					errors = true;
+				}
+			}
+		}
+
+		Stereotype R = helper.getSharedPackageReferenceStereotype();
+		List<Element> sharedPackageReferences = StereotypesHelper.getExtendedElements(R);
+		for (Element sharedPackageReference : sharedPackageReferences) {
+			if (sharedPackageReference instanceof InstanceSpecification) {
+				String rid = helper.getSSCAESharedPackageReferenceID((InstanceSpecification) sharedPackageReference);
+				if (null != rid) {
+					if (id2sharedPackage.containsKey(rid)) {
+						Package r = id2sharedPackage.get(rid);
+						sharedPackage2references.get(r).add((InstanceSpecification) sharedPackageReference);
+						reference2sharedPackage.put((InstanceSpecification) sharedPackageReference, r);
+					}
+				}
+			}
+		}
+
+		Stereotype U = helper.getSharedPackageUsageConstraintStereotype();
+		List<Element> usageConstraints = StereotypesHelper.getExtendedElements(U);
+		for (Element e : usageConstraints) {
+			if (e instanceof Usage) {
+				Usage usageConstraint = (Usage) e;
+				Collection<NamedElement> clientSources = usageConstraint.getClient();
+				Collection<NamedElement> supplierTargets = usageConstraint.getSupplier();
+				if (clientSources.size() == 1 && supplierTargets.size() == 1) {
+					NamedElement clientSource = clientSources.iterator().next();
+					NamedElement supplierTarget = supplierTargets.iterator().next();
+					if (clientSource instanceof Package && supplierTarget instanceof InstanceSpecification) {
+						Package source = (Package) clientSource;
+						InstanceSpecification target = (InstanceSpecification) supplierTarget;
+						if (sharedPackage2usageConstraints.containsKey(source) && helper.hasSSCAESharedPackageReferenceStereotypeApplied(target)) {
+							String constrainedID = helper.getSSCAESharedPackageReferenceID(target);
+							EnumerationLiteral level = helper.getSSCAESharedPackageUsageConstraintLevel(usageConstraint);
+							if (id2sharedPackage.containsKey(constrainedID)) {
+								Package constrainedP = id2sharedPackage.get(constrainedID);
+								sharedPackage2usageConstraints.get(source).add(usageConstraint);
+								usageConstraint2sharedPackage.put(usageConstraint, constrainedP);
+								if (level == null || helper.sscaeSharedPackageUsageConstraintLevelEnum_OK.equals(level)) {
+									// ignore
+								} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_WARNING.equals(level)) {
+									sharedPackages_constrainedAs_WARNING_fromUsages.get(constrainedP).add(usageConstraint);
+								} else if (helper.sscaeSharedPackageUsageConstraintLevelEnum_ERROR.equals(level)) {
+									sharedPackages_constrainedAs_ERROR_fromUsages.get(constrainedP).add(usageConstraint);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		boolean _noSharedPackage_constrainedAs_WARNING_fromUsages = true;
+		for (Package sharedPackage : sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
+			_noSharedPackage_constrainedAs_WARNING_fromUsages &= sharedPackages_constrainedAs_WARNING_fromUsages.get(sharedPackage).isEmpty();
+		}
+		this.noSharedPackage_constrainedAs_WARNING_fromUsages = _noSharedPackage_constrainedAs_WARNING_fromUsages;
 		
+		boolean _noSharedPackage_constrainedAs_ERROR_fromUsages = true;
+		for (Package sharedPackage : sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
+			_noSharedPackage_constrainedAs_ERROR_fromUsages &= sharedPackages_constrainedAs_ERROR_fromUsages.get(sharedPackage).isEmpty();
+		}
+		this.noSharedPackage_constrainedAs_ERROR_fromUsages = _noSharedPackage_constrainedAs_ERROR_fromUsages;
+		
+		this.no_DEPRECATED_WARNING_constraintViolations = (sharedPackages_constraining_DEPRECATED_packages_as_WARNING.isEmpty() || sharedPackages_classified_DEPRECATED.isEmpty());
+		this.no_DEPRECATED_ERROR_constraintViolations = (sharedPackages_constraining_DEPRECATED_packages_as_ERROR.isEmpty() || sharedPackages_classified_DEPRECATED.isEmpty());
+		
+		this.no_INCUBATOR_WARNING_constraintViolations = (sharedPackages_constraining_INCUBATOR_packages_as_WARNING.isEmpty() || sharedPackages_classified_INCUBATOR.isEmpty());
+		this.no_INCUBATOR_ERROR_constraintViolations = (sharedPackages_constraining_INCUBATOR_packages_as_ERROR.isEmpty() || sharedPackages_classified_INCUBATOR.isEmpty());
+
+		this.no_RECOMMENDED_WARNING_constraintViolations = (sharedPackages_constraining_RECOMMENDED_packages_as_WARNING.isEmpty() || sharedPackages_classified_RECOMMENDED.isEmpty());
+		this.no_RECOMMENDED_ERROR_constraintViolations = (sharedPackages_constraining_RECOMMENDED_packages_as_ERROR.isEmpty() || sharedPackages_classified_RECOMMENDED.isEmpty());
+
+		this.usageClassificationValid = noSharedPackage_constrainedAs_ERROR_fromUsages
+				&& no_DEPRECATED_ERROR_constraintViolations
+				&& no_INCUBATOR_ERROR_constraintViolations
+				&& no_RECOMMENDED_ERROR_constraintViolations;
 		
 		final IProjectUsageManager projectUsageManager = this.primaryProject.getService(IProjectUsageManager.class);
 		List<ProjectUsage> brokenUsages = new ArrayList<ProjectUsage>();
@@ -206,11 +361,10 @@ public class SSCAEProjectUsageGraph {
 					brokenUsages.add(projectUsage);
 			}
 		}
-		
-		if (brokenUsages.isEmpty()) {
+
+		if (brokenUsages.isEmpty() && !errors) {
 			this.projectUsageInfo = "OK";
 		} else {
-			StringBuffer buff = new StringBuffer();
 			int brokenCount = brokenUsages.size();
 			buff.append(String.format("Found %d ProjectUsages without projects in %s %s\n", 
 					brokenCount,
@@ -236,17 +390,17 @@ public class SSCAEProjectUsageGraph {
 					buff.append(String.format("\n-- mount point: %s", (mountPointURI == null) ? "<N/A>" : mountPointURI));					
 				}
 			}
-			
+
 			this.projectUsageInfo = buff.toString();
 		} 
 
 		if (projectClassification == ProjectClassification.INVALID) {
 			return;
 		}
-		
+
 		createGraph();
 	}
-	
+
 	public final Project project;
 	protected final IPrimaryProject primaryProject;
 	protected final String pluginName;
@@ -255,7 +409,39 @@ public class SSCAEProjectUsageGraph {
 	protected final Logger pluginLog = MDLog.getPluginsLog();
 	protected final ProjectUsageIntegrityPlugin plugin;
 	public List<Package> managedSharedPackages;
+	public Map<String, Package> id2sharedPackage = new HashMap<String, Package>();
+	public Map<InstanceSpecification, Package> reference2sharedPackage = new HashMap<InstanceSpecification, Package>();
+	public Map<Package, Set<InstanceSpecification>> sharedPackage2references = new HashMap<Package, Set<InstanceSpecification>>();
+	public Map<Package, Set<Usage>> sharedPackage2usageConstraints = new HashMap<Package, Set<Usage>>();
+	public Map<Usage, Package> usageConstraint2sharedPackage = new HashMap<Usage, Package>();
+
+	public Map<Package, Set<Usage>> sharedPackages_constrainedAs_WARNING_fromUsages = new HashMap<Package, Set<Usage>>();
+	public Map<Package, Set<Usage>> sharedPackages_constrainedAs_ERROR_fromUsages = new HashMap<Package, Set<Usage>>();
+
+	public Set<Package> sharedPackages_classified_NONE = new HashSet<Package>();
+	public Set<Package> sharedPackages_classified_DEPRECATED = new HashSet<Package>();
+	public Set<Package> sharedPackages_classified_INCUBATOR = new HashSet<Package>();
+	public Set<Package> sharedPackages_classified_RECOMMENDED = new HashSet<Package>();
+
+	public Set<Package> sharedPackages_constraining_DEPRECATED_packages_as_WARNING = new HashSet<Package>();
+	public Set<Package> sharedPackages_constraining_DEPRECATED_packages_as_ERROR = new HashSet<Package>();
+
+	public Set<Package> sharedPackages_constraining_INCUBATOR_packages_as_WARNING = new HashSet<Package>();
+	public Set<Package> sharedPackages_constraining_INCUBATOR_packages_as_ERROR = new HashSet<Package>();
+
+	public Set<Package> sharedPackages_constraining_RECOMMENDED_packages_as_WARNING = new HashSet<Package>();
+	public Set<Package> sharedPackages_constraining_RECOMMENDED_packages_as_ERROR = new HashSet<Package>();
+
+	protected final boolean noSharedPackage_constrainedAs_WARNING_fromUsages;
+	protected final boolean noSharedPackage_constrainedAs_ERROR_fromUsages;
+	protected final boolean no_DEPRECATED_WARNING_constraintViolations;
+	protected final boolean no_DEPRECATED_ERROR_constraintViolations;
+	protected final boolean no_INCUBATOR_WARNING_constraintViolations;
+	protected final boolean no_INCUBATOR_ERROR_constraintViolations;
+	protected final boolean no_RECOMMENDED_WARNING_constraintViolations;
+	protected final boolean no_RECOMMENDED_ERROR_constraintViolations;
 	
+	protected final boolean usageClassificationValid;
 	
 	/**
 	 * false = the names of the projects will be included in the DOT graph
@@ -402,18 +588,18 @@ public class SSCAEProjectUsageGraph {
 	 */
 	public final SortedMap<Profile, Profile> nonUniqueNamesUserProfiles = new TreeMap<Profile, Profile>();
 	public final SortedMap<Profile, Profile> nonUniqueNamesSSPProfiles = new TreeMap<Profile, Profile>();
-	
+
 	/**
 	 *  read-only
 	 */
 	public final SortedMap<Profile, Profile> nonUniqueURIProfiles = new TreeMap<Profile, Profile>();
-	
+
 	/**
 	 *  read-only
 	 */
 	public final SortedMap<Package, Package> nonUniqueURIPackages = new TreeMap<Package, Package>();
-	
-	
+
+
 	public boolean isProjectMissingSystemOrStandardProfileFlag() {
 		return shouldBeSystemOrStandardProfile.contains(vertexMap.get(primaryProject));
 	}
@@ -437,7 +623,8 @@ public class SSCAEProjectUsageGraph {
 				&& missingDirectAttachments.isEmpty()
 				&& nonUniqueNamesUserProfiles.isEmpty()
 				&& nonUniqueURIProfiles.isEmpty()
-				&& nonUniqueURIPackages.isEmpty();
+				&& nonUniqueURIPackages.isEmpty()
+				&& usageClassificationValid;
 	}
 
 	protected boolean isTemplate;
@@ -446,17 +633,17 @@ public class SSCAEProjectUsageGraph {
 
 	public final ProjectClassification projectClassification;
 	public final String projectUsageInfo;
-	
+
 	public String getProjectClassificationLabel() { 
 		if (null == projectClassification)
 			return "";
-				
+
 		return ProjectClassificationLabel.get(projectClassification);
 	}
-	
+
 	public static Map<ProjectClassification, String> ProjectClassificationLabel;
 	public static Map<ProjectClassification, String> ProjectClassificationShortLabel;
-	
+
 	static {
 		ProjectClassificationLabel = new HashMap<ProjectClassification, String>();
 		ProjectClassificationLabel.put(ProjectClassification.INVALID, 
@@ -485,7 +672,7 @@ public class SSCAEProjectUsageGraph {
 				"project/module hybrid (private data; shared packages) - missing elements!");				
 		ProjectClassificationLabel.put(ProjectClassification.IS_HYBRID_PROJECT_MODULE_WITH_PROXIES_FOR_MISSING_AND_RECOVERED_ELEMENTS,
 				"project/module hybrid (private data; shared packages) - recovered and missing elements!");				
-		
+
 		ProjectClassificationShortLabel = new HashMap<ProjectClassification, String>();
 		ProjectClassificationShortLabel.put(ProjectClassification.INVALID, 
 				"INVALID");
@@ -522,24 +709,24 @@ public class SSCAEProjectUsageGraph {
 		Collections.sort(allSortedProjects, IPROJECT_COMPARATOR);
 		boolean performanceLoggingEnabled = ProjectUsageIntegrityPlugin.getInstance().isPerformanceLoggingEnabled();
 		int width = Integer.toString(allSortedProjects.size()).length();
-	
+
 		Long currentTime;
 		Long previousTime = System.currentTimeMillis();
-				
+
 		MDAbstractProject vPrimary = createVertex(this.primaryProject, width);
 		this.isTemplate = vPrimary.isLocalTemplate();
 		for (IProject aProject : allSortedProjects) {
 			createVertex(aProject, width);
 		}
-		
-		
+
+
 		if (performanceLoggingEnabled){ 
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Create Graph: " + (currentTime-previousTime) + " (ms)"); 
 			previousTime = System.currentTimeMillis();
 		};
-		
-		
+
+
 		for (IProject aProject : allSortedProjects) {
 			MDAbstractProject p1 = lookupVertex(aProject);
 			List<MDAbstractProjectUsage> p1Usages = new ArrayList<MDAbstractProjectUsage>();
@@ -574,31 +761,31 @@ public class SSCAEProjectUsageGraph {
 					}
 				}
 			}
-			
+
 			Collections.sort(p1Usages, PROJECT_USAGE_EDGE_COMPARATOR);
 			vertexUsageEdges.put(p1, p1Usages);
-	
+
 		}
-		
-		
+
+
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Assign type of nodes: " + (currentTime-previousTime) + " (ms)"); 
 			previousTime = System.currentTimeMillis();
 		};
-		
+
 		StrongConnectivityInspector<MDAbstractProject, MDAbstractProjectUsage> detector =
 				new StrongConnectivityInspector<MDAbstractProject, MDAbstractProjectUsage>(projectUsageDirectedMultigraph);
 		List<DirectedSubgraph<MDAbstractProject, MDAbstractProjectUsage>> stronglyConnectedSubgraphs = detector.stronglyConnectedSubgraphs();
 
-		
+
 		if (performanceLoggingEnabled){ 
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check circular dependencies: " + (currentTime-previousTime) + " (ms)");
 			previousTime = System.currentTimeMillis();
 		};
-		
-		
+
+
 		for (DirectedSubgraph<MDAbstractProject, MDAbstractProjectUsage> stronglyConnectedSubgraph : stronglyConnectedSubgraphs) {
 			Set<MDAbstractProject> vertexSubset = stronglyConnectedSubgraph.vertexSet();
 			Set<MDAbstractProjectUsage> edgeSubset = stronglyConnectedSubgraph.edgeSet();
@@ -607,13 +794,13 @@ public class SSCAEProjectUsageGraph {
 			for (MDAbstractProject v : vertexSubset) stronglyConnectedVertices.add(v);
 			for (MDAbstractProjectUsage e : edgeSubset) stronglyConnectedEdges.add(e);
 		}
-		
+
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Record circular dependencies: " + (currentTime-previousTime) + " (ms)");
 			previousTime = System.currentTimeMillis();
 		};
-		
+
 		for (IProject aProject : allSortedProjects) {
 			MDAbstractProject p2 = lookupVertex(aProject);
 			if (p2.isProjectMissing() && !(p2 instanceof MDLocalPrimaryProject))
@@ -670,14 +857,14 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
-		
+
+
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check consistency of usages: " + (currentTime-previousTime) + " (ms)"); 
 			previousTime = System.currentTimeMillis();
 		};
-		
+
 
 		IPrimaryProject sourceP = this.primaryProject;
 		Set<IAttachedProject> missingDirectProjectUsages = new HashSet<IAttachedProject>();
@@ -694,14 +881,14 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
+
 
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check missing usages: " + (currentTime-previousTime) + " (ms)");
 			previousTime = System.currentTimeMillis();
 		};
-		
+
 
 		if (!missingDirectProjectUsages.isEmpty()) {
 			MDAbstractProject u = lookupVertex(sourceP);
@@ -715,7 +902,7 @@ public class SSCAEProjectUsageGraph {
 							ProjectAttachmentConfiguration config = attachingProjectsMap.values().iterator().next();
 							missingDirectAttachments.put(missingP, config);
 							MDAbstractProjectUsage e = null;
-								
+
 							if (missingP instanceof LocalAttachedProject) {
 								e = createLocalMissingEdge(u, v, (LocalAttachedProject) missingP);
 							} else if (missingP instanceof TeamworkAttachedProject) {
@@ -728,13 +915,13 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
+
 		if (performanceLoggingEnabled){ 
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check missing direct attachments: " + (currentTime-previousTime) + " (ms)");
 			previousTime = System.currentTimeMillis();
 		};
-		
+
 		// force loading all diagrams only if there are proxies so that the user can find the proxy usage references in the diagrams.
 		final Collection<DiagramPresentationElement> projectDiagrams = project.getDiagrams();
 		diagramCount = projectDiagrams.size();
@@ -805,26 +992,26 @@ public class SSCAEProjectUsageGraph {
 				diagram2proxyUsages.put(dpe, dpeProxies);
 			}
 		}
-		
+
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check proxies: " + (currentTime-previousTime) + " (ms)"); 
 			previousTime = System.currentTimeMillis();
 
 		};
-		
+
 		// Check profiles (This could be slow so need to be careful)
 		List <Profile> projectProfiles = StereotypesHelper.getAllProfiles(project);
-		
+
 		if (!projectProfiles.isEmpty()){
 			HashMap <String, Profile> userProfileNames = new HashMap <String,Profile>();
 			HashMap <String, Profile> sspProfileNames = new HashMap <String,Profile>();
 			HashMap <String, Profile> profileURIs = new HashMap <String, Profile>();
-			
+
 			for (Profile profile : projectProfiles) {
 				IProject iprofile = ProjectUtilities.getProject(profile);
 				String profileURI = profile.getURI();
-				
+
 				if (ProjectUtilities.isStandardSystemProfile(iprofile)) {
 					if (sspProfileNames.containsKey(profile.getName())){
 						nonUniqueNamesSSPProfiles.put(profile, sspProfileNames.get(profile.getName()));
@@ -839,20 +1026,20 @@ public class SSCAEProjectUsageGraph {
 					}
 					userProfileNames.put(profile.getName(), profile);
 				}
-				
+
 				if (profileURIs.containsKey(profileURI)){
 					nonUniqueURIProfiles.put(profile, profileURIs.get(profileURI));
 				}
-				
+
 				for (String URI : profileURIs.keySet()){
 					if (profileURI.length() == 0){
 						break;
 					}
-					
+
 					if (URI.length() == 0){
 						continue;
 					}
-					
+
 					if (URI.length() <= profileURI.length()){
 						if (SSCAEProfileValidation.appendSeparator(profileURI).startsWith(SSCAEProfileValidation.appendSeparator(URI))){
 							nonUniqueURIProfiles.put(profile, profileURIs.get(URI));
@@ -865,8 +1052,8 @@ public class SSCAEProjectUsageGraph {
 						}
 					}
 				}
-				
-				
+
+
 				if (!profileURI.equals("")){
 					profileURIs.put(profileURI, profile);
 				} else {
@@ -874,7 +1061,7 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
+
 		if (performanceLoggingEnabled){  
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check uniqueness of profiles: " + (currentTime-previousTime) + " (ms)"); 
@@ -884,23 +1071,23 @@ public class SSCAEProjectUsageGraph {
 		// Check packages (This will be slow, need to be very careful)		
 		if (!this.managedSharedPackages.isEmpty()){
 			HashMap <String, Package> packageURIs = new HashMap <String, Package>();
-			
+
 			for (Package pack : this.managedSharedPackages){
 				String packageURI = pack.getURI();
-				
+
 				if (packageURIs.containsKey(packageURI)){
 					nonUniqueURIPackages.put(pack, packageURIs.get(packageURI));
 				}
-				
+
 				for (String URI : packageURIs.keySet()){
 					if (packageURI.length() == 0){
 						break;
 					}
-					
+
 					if (URI.length() == 0){
 						continue;
 					}
-					
+
 					if (URI.length() <= packageURI.length()){
 						if (SSCAEProfileValidation.appendSeparator(packageURI).startsWith(SSCAEProfileValidation.appendSeparator(URI))){
 							if (!MD_EXCLUDE_URI_CHECK_PROFILES_AND_PACKAGES.contains(pack.getQualifiedName())){
@@ -917,7 +1104,7 @@ public class SSCAEProjectUsageGraph {
 						}
 					}
 				}
-				
+
 				if (!packageURI.equals("")){
 					packageURIs.put(packageURI, pack);
 				} else {
@@ -925,8 +1112,8 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
-		
+
+
 		if (performanceLoggingEnabled){ 
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check uniqueness of packages: " + (currentTime-previousTime) + " (ms)"); 
@@ -979,7 +1166,7 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 		}
-		
+
 		if (performanceLoggingEnabled){
 			currentTime = System.currentTimeMillis();
 			pluginLog.info("PUIC -- Check for unloaded projects: " + (currentTime-previousTime) + " (ms)"); 
@@ -1008,7 +1195,7 @@ public class SSCAEProjectUsageGraph {
 				gMessages.append(String.format("\nlocal module with teamwork ID: %s", localModuleWithTeamworkID.getName()));
 			}
 		}
-		
+
 		if (missingDirectAttachments.isEmpty()) {
 			gDiagnostic.append(String.format("\n   OK: no missing direct ProjectUsage mount attachments"));
 		} else {
@@ -1082,7 +1269,7 @@ public class SSCAEProjectUsageGraph {
 				gMessages.append(String.format("\n missing Standard/System Profile flag for module in MD's install folder: %s", shouldBeSSP.getName()));
 			}
 		}
-		
+
 		if (nonUniqueNamesSSPProfiles.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all SSP profiles have unique names"));
 
@@ -1092,7 +1279,7 @@ public class SSCAEProjectUsageGraph {
 				gMessages.append(String.format("\n SSP profile with non-unique name: %s", p.getQualifiedName()));
 			}
 		}
-		
+
 		if (nonUniqueNamesUserProfiles.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all user profiles have unique names"));
 
@@ -1102,7 +1289,7 @@ public class SSCAEProjectUsageGraph {
 				gMessages.append(String.format("\n user profile with non-unique name: %s", p.getQualifiedName()));
 			}
 		}
-		
+
 		if (nonUniqueURIProfiles.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all profiles have unique URIs"));
 		} else {
@@ -1111,7 +1298,7 @@ public class SSCAEProjectUsageGraph {
 				gMessages.append(String.format("\n profile with non-unique URI: %s (URI=%s)", p.getQualifiedName(), p.getURI()));
 			}
 		}
-		
+
 		if (nonUniqueURIPackages.isEmpty()){
 			gDiagnostic.append(String.format("\n   OK: all packages have unique URIs"));
 		} else {
@@ -1147,8 +1334,83 @@ public class SSCAEProjectUsageGraph {
 			gDiagnostic.append(String.format("\nERROR: %d project usage mount relationships are invalid",  invalidUsageEdges.size()));
 		}
 
-		notifySSCAE = createSerialization(allSortedProjects, notifySSCAE);
+		if (noSharedPackage_constrainedAs_WARNING_fromUsages) {
+			gDiagnostic.append(String.format("\n   OK: no WARNING shared package usage constraints"));
+		} else {
+			gDiagnostic.append(String.format("\n WARN: %d shared packages have WARNING usage constraints",  sharedPackages_constrainedAs_WARNING_fromUsages.size()));
+			for (Package p : sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
+				Set<Usage> usages = sharedPackages_constrainedAs_WARNING_fromUsages.get(p);
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} has %d WARNING usage constraints from other shared packages", 
+						p.getQualifiedName(), p.getURI(), usages.size()));
+			}		}
+	
+		if (noSharedPackage_constrainedAs_ERROR_fromUsages) {
+			gDiagnostic.append(String.format("\n   OK: no ERROR shared package usage constraints"));
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d shared packages have ERROR usage constraints",  sharedPackages_constrainedAs_ERROR_fromUsages.size()));
+			for (Package p : sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
+				Set<Usage> usages = sharedPackages_constrainedAs_ERROR_fromUsages.get(p);
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} has %d ERROR usage constraints from other shared packages", 
+						p.getQualifiedName(), p.getURI(), usages.size()));
+			}
+		}
 		
+		if (no_DEPRECATED_WARNING_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for DEPRECATED shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\n WARN: %d DEPRECATED shared packages violate WARNING constraints", sharedPackages_classified_DEPRECATED.size()));
+			for (Package p : sharedPackages_classified_DEPRECATED) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+
+		if (no_DEPRECATED_ERROR_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for DEPRECATED shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d DEPRECATED shared packages violate ERROR constraints", sharedPackages_classified_DEPRECATED.size()));
+			for (Package p : sharedPackages_classified_DEPRECATED) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+
+		if (no_INCUBATOR_WARNING_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for INCUBATOR shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\n WARN: %d INCUBATOR shared packages violate WARNING constraints", sharedPackages_classified_INCUBATOR.size()));
+			for (Package p : sharedPackages_classified_INCUBATOR) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+
+		if (no_INCUBATOR_ERROR_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for INCUBATOR shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d INCUBATOR shared packages violate ERROR constraints", sharedPackages_classified_INCUBATOR.size()));
+			for (Package p : sharedPackages_classified_INCUBATOR) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+
+		if (no_RECOMMENDED_WARNING_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for RECOMMENDED shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\n WARN: %d RECOMMENDED shared packages violate WARNING constraints", sharedPackages_classified_RECOMMENDED.size()));
+			for (Package p : sharedPackages_classified_RECOMMENDED) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+
+		if (no_RECOMMENDED_ERROR_constraintViolations) {
+			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for RECOMMENDED shared packages"));	
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d RECOMMENDED shared packages violate ERROR constraints", sharedPackages_classified_RECOMMENDED.size()));
+			for (Package p : sharedPackages_classified_RECOMMENDED) {
+				gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
+			}
+		}
+		
+		notifySSCAE = createSerialization(allSortedProjects, notifySSCAE);
+
 		if (notifySSCAE) {
 			pluginLog.error(String.format("*** Notify SECAE ***\n====Diagnostic:\n%s\n====\n\n====Serialization:\n%s\n====\n\n====Messages:\n%s\n====\n", 
 					gDiagnostic.toString(),
@@ -1203,7 +1465,7 @@ public class SSCAEProjectUsageGraph {
 							}
 
 						}));
-		
+
 		if (plugin.isShowAdvancedInformationProperty()) {
 			for (MDAbstractProject v : projectUsageDirectedMultigraph.vertexSet()) {
 				gSerialization.append(String.format("\nV: %s (isNew=%b)", v, v.isNew()));
@@ -1218,8 +1480,12 @@ public class SSCAEProjectUsageGraph {
 	}
 
 	protected SSCAEProjectDigest digest;
-	
+
 	public SSCAEProjectDigest getDigest() { return digest; }
+
+	public void showProblems() {
+		getDigest().showProblems(this);
+	}
 	
 	protected boolean createSerialization(final List<IProject> allSortedProjects, boolean notifySSCAE) {
 
@@ -1229,7 +1495,7 @@ public class SSCAEProjectUsageGraph {
 		digest.setClassification(projectClassification);
 		digest.setProxyCount(proxyCount);
 		digest.setDiagramCount(diagramCount);
-		
+
 		for (IProject aProject : allSortedProjects) {
 			MDAbstractProject p1 = lookupVertex(aProject);
 			digest.getAllSortedProjects().add(p1);
@@ -1304,7 +1570,7 @@ public class SSCAEProjectUsageGraph {
 				digest.getUserProfileNameConflicts().add(new ProfileNameConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID()));
 			}
 		}
-		
+
 		if (!nonUniqueNamesSSPProfiles.isEmpty()) {
 			for (Profile p : nonUniqueNamesSSPProfiles.keySet()) {
 				Profile c = nonUniqueNamesSSPProfiles.get(p);
@@ -1318,7 +1584,7 @@ public class SSCAEProjectUsageGraph {
 				digest.getPackageURIConflicts().add(new URIConflict(p.getQualifiedName(), p.getID(), c.getQualifiedName(), c.getID(), p.getURI()));
 			}
 		}
-		
+
 		if (!nonUniqueURIProfiles.isEmpty()) {
 			for (Package p : nonUniqueURIProfiles.keySet()) {
 				Profile c = nonUniqueURIProfiles.get(p);
@@ -1344,12 +1610,12 @@ public class SSCAEProjectUsageGraph {
 		for (MDAbstractProjectUsage e : invalidUsageEdges) {
 			digest.getInvalidUsageEdges().add(e);
 		}
-		
+
 		gSerialization.append(YamlDigestHelper.serialize(digest));
-		
+
 		return notifySSCAE;
 	}
-	
+
 	public static enum DOTImageFormat { png, jpg, gif, svg }
 
 	public static Map<DOTImageFormat, String> DOTImageFormatName = new HashMap<DOTImageFormat, String>();
@@ -1397,7 +1663,7 @@ public class SSCAEProjectUsageGraph {
 			pluginLog.info(String.format("%s - convertDOTFile - deleting previous image for '%s' : '%s'", pluginName, project.getName(), pugImage.getName()));
 			pugImage.delete();
 		}
-			
+
 		CommandLine cmdLine = new CommandLine(dotCommand);
 		cmdLine.addArgument("-Tpng");
 		cmdLine.addArgument("-o");
@@ -1429,7 +1695,7 @@ public class SSCAEProjectUsageGraph {
 
 		return null;
 	}
-	
+
 	/**
 	 * @param pugDOT gv file
 	 * @return true if the graphviz application was opened successfully for the gv file.
@@ -1443,9 +1709,9 @@ public class SSCAEProjectUsageGraph {
 			return false;
 
 		File pugTemp = pugDOT.getParentFile();
-			
+
 		CommandLine cmdLine;
-		
+
 		switch (SSCAEProjectUsageIntegrityOptions.getCurrentPlatform()) {
 		case LINUX:
 			cmdLine = new CommandLine(graphvizApp);
@@ -1483,10 +1749,10 @@ public class SSCAEProjectUsageGraph {
 
 		if (executor.isFailure(resultHandler.getExitValue())) {
 			pluginLog.error(String.format("%s - openDOTFileWithGraphViz - error while opening DOT file for project '%s' from: '%s'", pluginName, project.getName(), pugDOT.getAbsolutePath()),
-							resultHandler.getException());
+					resultHandler.getException());
 			return false;
 		}
-		
+
 		pluginLog.info(String.format("%s - openDOTFileWithGraphViz - opened DOT file for project '%s' from: '%s'", pluginName, project.getName(), pugDOT.getAbsolutePath()));
 		return true;
 	}
@@ -1511,20 +1777,20 @@ public class SSCAEProjectUsageGraph {
 		public String getVertexName(MDAbstractProject v) {
 			boolean isInconsistentlyUsed = SSCAEProjectUsageGraph.this.inconsistentlyUsedVertices.contains(v);
 			String usageLabel = SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v);
-			
+
 			String vNameLabel = (SSCAEProjectUsageGraph.this.useAnonymousVertexLabels) ? "" : v.getName();
-			
+
 			MDTeamworkProject tv = (v instanceof MDTeamworkProject) ? (MDTeamworkProject) v : null;
 			String tvAnonymizedVersion = (tv == null) ? "" : tv.getAnonymizedVersion();
 			String tvFullVersion = (tv == null) ? "" : tv.getFullVersion();
-			
+
 			if (v instanceof MDTeamworkPrimaryProject && primaryProject instanceof TeamworkPrimaryProject) {
 				TeamworkPrimaryProject primaryTProject = (TeamworkPrimaryProject) primaryProject;
-				
+
 				final IVersionDescriptor version = ProjectUtilities.getVersion(primaryTProject);
 				String versionFragment = "#" + version.getName();
 				tvAnonymizedVersion = v.getIndex() + versionFragment;
-				
+
 				final String teamworkRemoteId = ProjectUtilities.getTeamworkRemoteId(primaryTProject);
 				com.nomagic.magicdraw.core.project.ProjectDescriptor descriptor;
 				try {
@@ -1540,10 +1806,10 @@ public class SSCAEProjectUsageGraph {
 				}
 			}
 			String tvNameLabel = (tv == null) ? "" : ((SSCAEProjectUsageGraph.this.useAnonymousVertexLabels) ? tvAnonymizedVersion : tvFullVersion);
-			
+
 			StringBuffer vertexLabel = new StringBuffer();
 			vertexLabel.append("<<TABLE COLOR=\"none\" CELLBORDER=\"1\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
-			
+
 			String vName = (null == tv) ? vNameLabel : tvNameLabel;
 			if (v instanceof MDAttachedProject) {
 				MDAttachedProject av = (MDAttachedProject) v;
@@ -1564,22 +1830,22 @@ public class SSCAEProjectUsageGraph {
 					break;
 				}
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s {state=<FONT COLOR=\"%s\" FACE=\"bold\">%s </FONT>}</TD></TR>", 
-					v.getIndex(), vName, color, avs));
+						v.getIndex(), vName, color, avs));
 			} else {
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"center\">[%s] %s</TD></TR>", 
-					v.getIndex(), vName));
+						v.getIndex(), vName));
 			}
-			
+
 			if (v.getClassification() != null) {
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{classification=%s}</TD></TR>", 
-					ProjectClassificationShortLabel.get(v.getClassification())));
+						ProjectClassificationShortLabel.get(v.getClassification())));
 			}
-			
+
 			if (isInconsistentlyUsed) {
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
-					SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v)));
+						SSCAEProjectUsageGraph.this.vertexUsageConsistencyLabel.get(v)));
 			}
-			
+
 			if (v instanceof MDTeamworkProject) {
 				StringBuffer tagBuffer = new StringBuffer();
 				boolean first = true;
@@ -1592,9 +1858,9 @@ public class SSCAEProjectUsageGraph {
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">{%s}</TD></TR>", 
 						tagBuffer.toString()));
 			}
-			
+
 			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\">%s</TD></TR>", v.getMDInfo()));
-			
+
 			vertexLabel.append("\n</TABLE>>");
 			return vertexLabel.toString();
 		}
@@ -1635,7 +1901,7 @@ public class SSCAEProjectUsageGraph {
 					attribs.put("fillcolor", "pink");
 				} else if (pv != null) {
 					if (!(pv instanceof MDLocalProject) ||
-						!((MDLocalProject) pv).getMD5checksum().equals(lv.getMD5checksum())) {
+							!((MDLocalProject) pv).getMD5checksum().equals(lv.getMD5checksum())) {
 						attribs.put("style", "filled");
 						attribs.put("fillcolor", "yellow");
 					}
@@ -1643,9 +1909,9 @@ public class SSCAEProjectUsageGraph {
 			} else if (v instanceof MDTeamworkProject) {
 				MDTeamworkProject tv = (MDTeamworkProject) v;
 				if (!(pv instanceof MDTeamworkProject) ||
-					!((MDTeamworkProject) pv).getFullVersion().equals(tv.getFullVersion())) {
-						attribs.put("style", "filled");
-						attribs.put("fillcolor", "yellow");
+						!((MDTeamworkProject) pv).getFullVersion().equals(tv.getFullVersion())) {
+					attribs.put("style", "filled");
+					attribs.put("fillcolor", "yellow");
 				}
 				if (tv instanceof MDTeamworkPrimaryProject && primaryProject instanceof TeamworkPrimaryProject) {
 					TeamworkPrimaryProject primaryTProject = (TeamworkPrimaryProject) primaryProject;
@@ -1655,7 +1921,7 @@ public class SSCAEProjectUsageGraph {
 					}
 				}
 			}
-			
+
 			return attribs;
 		}
 	};
@@ -1712,7 +1978,7 @@ public class SSCAEProjectUsageGraph {
 		MDTeamworkProjectMissingUsage.configure(e, v1, v2);
 		return e;
 	}
-	
+
 	public MDAbstractProjectUsage createTeamworkEdge(MDAbstractProject v1, MDAbstractProject v2, ProjectUsage pu, TeamworkAttachedProject tap) throws RemoteException  {
 		if (edgeMap.containsKey(pu))					throw new IllegalArgumentException("No duplicate ProjectUsage edges<!");
 		MDTeamworkProjectUsage e = new MDTeamworkProjectUsage();
@@ -1738,10 +2004,10 @@ public class SSCAEProjectUsageGraph {
 
 		if (v instanceof MDLocalProject && ((MDLocalProject) v).hasTeamworkProjectID())
 			localModulesWithTeamworkIDs.add(v);
-		
+
 		return v;
 	}
-	
+
 	public static final URI INSTALL_ROOT_URI1 = URI.createFileURI(ApplicationEnvironment.getInstallRoot());
 	public static final URI INSTALL_ROOT_URI2 = URI.createURI("file:/%3Cinstall.root%3E/");
 	public static final URI MD_ROOT_URI = URI.createURI("md://install_root/");
@@ -1794,7 +2060,7 @@ public class SSCAEProjectUsageGraph {
 				fileURI = loc;
 			}
 		}
-		
+
 		URI mdRelativeLoc = fileURI.replacePrefix(INSTALL_ROOT_URI1, MD_ROOT_URI);
 		if (null == mdRelativeLoc)
 			mdRelativeLoc = fileURI.replacePrefix(INSTALL_ROOT_URI2, MD_ROOT_URI);
@@ -2070,9 +2336,9 @@ public class SSCAEProjectUsageGraph {
 
 		return this.getProjectUsageGraphSignature().equals(otherGraph.getProjectUsageGraphSignature());
 	}
-	
+
 	public Collection <Package> getPackages(Package root){
-		
+
 		Collection<Package> packages = new LinkedList<Package>(root.getNestedPackage());
 		Collection <Package> addPackages = new LinkedList<Package>();
 		for (Package pack : packages){
@@ -2089,23 +2355,23 @@ public class SSCAEProjectUsageGraph {
 		Set<MDAbstractProjectUsage> allEdges = new HashSet<MDAbstractProjectUsage>();
 		allEdges.addAll(projectUsageDirectedMultigraph.edgeSet());
 		projectUsageDirectedMultigraph.removeAllEdges(allEdges);
-		
+
 		Set<MDAbstractProject> allVertices = new HashSet<MDAbstractProject>();
 		allVertices.addAll(projectUsageDirectedMultigraph.vertexSet());
 		projectUsageDirectedMultigraph.removeAllVertices(allVertices);
-		
+
 		gSignature.setLength(0);
 		gMessages.setLength(0);
 		gSerialization.setLength(0);
 		gDiagnostic.setLength(0);
-		
+
 		proxyCount = 0;
 		proxyUnloadedOkCount = 0;
 		proxyUnloadedOtherCount.clear();
 		proxyGhostOkCount = 0;
 		proxyGhostOtherCount.clear();
 		diagramCount = 0;
-		
+
 		owner2proxiesMap.clear();
 		unloaded2proxiesMap.clear();
 		diagram2proxyUsages.clear();
@@ -2130,11 +2396,11 @@ public class SSCAEProjectUsageGraph {
 		nonUniqueNamesSSPProfiles.clear();
 		nonUniqueURIProfiles.clear();
 		nonUniqueURIPackages.clear();
-		
+
 		if (digest != null) {
 			digest.dispose();
 			digest = null;
 		}
-		
+
 	}
 }
