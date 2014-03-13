@@ -638,7 +638,8 @@ public class SSCAEProjectUsageGraph {
 				&& nonUniqueNamesUserProfiles.isEmpty()
 				&& nonUniqueURIProfiles.isEmpty()
 				&& nonUniqueURIPackages.isEmpty()
-				&& usageClassificationValid;
+				&& usageClassificationValid
+				&& moduleOrProjectWithInconsistentlyClassifiedSharedPackages.isEmpty();
 	}
 
 	protected boolean isTemplate;
@@ -1367,9 +1368,13 @@ public class SSCAEProjectUsageGraph {
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d project usage mount relationships are invalid",  invalidUsageEdges.size()));
 		}
-
+		
+		if (noSharedPackage_constrainedAs_WARNING_fromUsages && noSharedPackage_constrainedAs_ERROR_fromUsages)
+			gDiagnostic.append(String.format("\n   OK: all shared package usage constraints are consistent"));
+		
 		if (noSharedPackage_constrainedAs_WARNING_fromUsages) {
-			gDiagnostic.append(String.format("\n   OK: no WARNING shared package usage constraints"));
+			if (! noSharedPackage_constrainedAs_ERROR_fromUsages)
+				gDiagnostic.append(String.format("\n   OK: no shared package with WARNING usage constraints"));
 		} else {
 			int count = 0;
 			for (Package p : sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
@@ -1384,7 +1389,8 @@ public class SSCAEProjectUsageGraph {
 		}
 	
 		if (noSharedPackage_constrainedAs_ERROR_fromUsages) {
-			gDiagnostic.append(String.format("\n   OK: no ERROR shared package usage constraints"));
+			if (! noSharedPackage_constrainedAs_WARNING_fromUsages)
+				gDiagnostic.append(String.format("\n   OK: no shared package with ERROR usage constraints"));
 		} else {
 			int count = 0;
 			for (Package p : sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
@@ -1396,61 +1402,84 @@ public class SSCAEProjectUsageGraph {
 						p.getQualifiedName(), p.getURI(), usages.size()));
 			}
 			gDiagnostic.append(String.format("\nERROR: %d shared packages have ERROR usage constraints",  count));
-			
 		}
 		
-		if (no_DEPRECATED_WARNING_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for DEPRECATED shared packages"));	
-		} else {
-			gDiagnostic.append(String.format("\n WARN: %d DEPRECATED shared packages violate WARNING constraints", sharedPackages_classified_DEPRECATED.size()));
-			for (Package p : sharedPackages_classified_DEPRECATED) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
+		if (!sharedPackages_classified_DEPRECATED.isEmpty()) {
+			if (no_DEPRECATED_WARNING_constraintViolations && no_DEPRECATED_ERROR_constraintViolations)
+				gDiagnostic.append(String.format("\n   OK: all DEPRECATED shared packages are used consistently"));	
+				
+			if (no_DEPRECATED_WARNING_constraintViolations) {
+				if (!no_DEPRECATED_ERROR_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no DEPRECATED shared packages have WARNING usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\n WARN: %d DEPRECATED shared packages have WARNING usage constraints", sharedPackages_classified_DEPRECATED.size()));
+				for (Package p : sharedPackages_classified_DEPRECATED) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED with some usage constraint classified as WARNING", p.getQualifiedName(), p.getURI()));
+				}
+			}
+
+			if (no_DEPRECATED_ERROR_constraintViolations) {
+				if (!no_DEPRECATED_WARNING_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no DEPRECATED shared packages have ERROR usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\nERROR: %d DEPRECATED shared packages have ERROR usage constraints", sharedPackages_classified_DEPRECATED.size()));
+				for (Package p : sharedPackages_classified_DEPRECATED) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED with some usage constraint classified as ERROR", p.getQualifiedName(), p.getURI()));
+				}
 			}
 		}
+		
+		if (!sharedPackages_classified_INCUBATOR.isEmpty()) {
+			if (no_INCUBATOR_WARNING_constraintViolations) {
+				if (!no_INCUBATOR_ERROR_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no INCUBATOR shared packages have WARNING usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\n WARN: %d INCUBATOR shared packages have WARNING usage constraints", sharedPackages_classified_INCUBATOR.size()));
+				for (Package p : sharedPackages_classified_INCUBATOR) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR with some usage constraint classified as WARNING", p.getQualifiedName(), p.getURI()));
+				}
+			}
 
-		if (no_DEPRECATED_ERROR_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for DEPRECATED shared packages"));	
-		} else {
-			gDiagnostic.append(String.format("\nERROR: %d DEPRECATED shared packages violate ERROR constraints", sharedPackages_classified_DEPRECATED.size()));
-			for (Package p : sharedPackages_classified_DEPRECATED) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is DEPRECATED but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
+			if (no_INCUBATOR_ERROR_constraintViolations) {
+				if (!no_INCUBATOR_WARNING_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no INCUBATOR shared packages have ERROR usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\nERROR: %d INCUBATOR shared packages have ERROR usage constraints", sharedPackages_classified_INCUBATOR.size()));
+				for (Package p : sharedPackages_classified_INCUBATOR) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR with some usage constraint classified as ERROR", p.getQualifiedName(), p.getURI()));
+				}
 			}
 		}
+		
+		if (!sharedPackages_classified_RECOMMENDED.isEmpty()) {
+			if (no_RECOMMENDED_WARNING_constraintViolations) {
+				if (!no_RECOMMENDED_ERROR_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no RECOMMENDED shared packages have WARNING usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\n WARN: %d RECOMMENDED shared packages have WARNING usage constraints", sharedPackages_classified_RECOMMENDED.size()));
+				for (Package p : sharedPackages_classified_RECOMMENDED) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED with some usage constraint classified as WARNING", p.getQualifiedName(), p.getURI()));
+				}
+			}
 
-		if (no_INCUBATOR_WARNING_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for INCUBATOR shared packages"));	
-		} else {
-			gDiagnostic.append(String.format("\n WARN: %d INCUBATOR shared packages violate WARNING constraints", sharedPackages_classified_INCUBATOR.size()));
-			for (Package p : sharedPackages_classified_INCUBATOR) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
+			if (no_RECOMMENDED_ERROR_constraintViolations) {
+				if (!no_RECOMMENDED_WARNING_constraintViolations)
+					gDiagnostic.append(String.format("\n   OK: no RECOMMENDED shared packages have ERROR usage constraints"));	
+			} else {
+				gDiagnostic.append(String.format("\nERROR: %d RECOMMENDED shared packages have ERROR usage constraints", sharedPackages_classified_RECOMMENDED.size()));
+				for (Package p : sharedPackages_classified_RECOMMENDED) {
+					gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED with some usage constraint classified as ERROR", p.getQualifiedName(), p.getURI()));
+				}
 			}
 		}
-
-		if (no_INCUBATOR_ERROR_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for INCUBATOR shared packages"));	
+		
+		if (moduleOrProjectWithInconsistentlyClassifiedSharedPackages.isEmpty()) {
+			gDiagnostic.append(String.format("\n   OK: all modules & project have consistent shared package classifications"));	
 		} else {
-			gDiagnostic.append(String.format("\nERROR: %d INCUBATOR shared packages violate ERROR constraints", sharedPackages_classified_INCUBATOR.size()));
-			for (Package p : sharedPackages_classified_INCUBATOR) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is INCUBATOR but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
-			}
-		}
-
-		if (no_RECOMMENDED_WARNING_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no WARNING usage constraints for RECOMMENDED shared packages"));	
-		} else {
-			gDiagnostic.append(String.format("\n WARN: %d RECOMMENDED shared packages violate WARNING constraints", sharedPackages_classified_RECOMMENDED.size()));
-			for (Package p : sharedPackages_classified_RECOMMENDED) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED but violates WARNING constraints", p.getQualifiedName(), p.getURI()));
-			}
-		}
-
-		if (no_RECOMMENDED_ERROR_constraintViolations) {
-			gDiagnostic.append(String.format("\n   OK: no ERROR usage constraints for RECOMMENDED shared packages"));	
-		} else {
-			gDiagnostic.append(String.format("\nERROR: %d RECOMMENDED shared packages violate ERROR constraints", sharedPackages_classified_RECOMMENDED.size()));
-			for (Package p : sharedPackages_classified_RECOMMENDED) {
-				gMessages.append(String.format("\n shared package '%s' {URI=%s} is RECOMMENDED but violates ERROR constraints", p.getQualifiedName(), p.getURI()));
-			}
+			gDiagnostic.append(String.format("\nERROR: %d modules/project with shared packages inconsistently classified", moduleOrProjectWithInconsistentlyClassifiedSharedPackages.size()));
+			for (MDAbstractProject v : moduleOrProjectWithInconsistentlyClassifiedSharedPackages) {
+				gMessages.append(String.format("\n module/project '%s' has shared packages inconsistently classified", v.getName()));
+			}			
 		}
 		
 		notifySSCAE = createSerialization(allSortedProjects, notifySSCAE);
