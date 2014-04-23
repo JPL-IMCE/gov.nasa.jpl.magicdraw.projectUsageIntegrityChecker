@@ -48,7 +48,7 @@
 
 	<fileset id="plugin.modelLibraries" dir="${plugin.dir}/root/modelLibraries" excludes="**"/>
 
-	<fileset id="plugin.samples" dir="${plugin.dir}/root/samples" excludes="**"/>
+	<fileset id="plugin.samples" dir="${plugin.dir}/samples" includes="**/*.mdzip"/>
 
 	<target name="zip.plugin">
 		<md.plugin.zip
