@@ -33,8 +33,8 @@
 			plugin.dir="${plugin.dir}" 
 			plugin.jar="${plugin.jar}"
 			previous.name="${PREV_JOB.plugin.name}"
-			previous.version="${PREV_JOB.bundle.version.human.value}"
-			previous.internal="${PREV_JOB.bundle.version.internal.value}"/>
+			previous.version="${PREV_JOB.plugin.version.value}"
+			previous.internal="${PREV_JOB.plugin.internal.value}"/>
 		
 		<md.updatePluginDescriptor
 			plugin.dir="${plugin.dir}" 
@@ -48,7 +48,7 @@
 
 	<fileset id="plugin.modelLibraries" dir="${plugin.dir}/root/modelLibraries" excludes="**"/>
 
-	<fileset id="plugin.samples" dir="${plugin.dir}/root/samples" excludes="**"/>
+	<fileset id="plugin.samples" dir="${plugin.dir}/samples" includes="**/*.mdzip"/>
 
 	<target name="zip.plugin">
 		<md.plugin.zip

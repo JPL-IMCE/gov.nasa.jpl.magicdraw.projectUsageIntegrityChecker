@@ -40,5 +40,14 @@
 	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/icons/RECOMMENDED-WARNING.png" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/icons/RECOMMENDED-WARNING.png"/>
 	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/icons/RECOMMENDED-ERROR.png" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/icons/RECOMMENDED-ERROR.png"/>
 
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P1_DEPRECATED.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P1_DEPRECATED.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P2_DEPRECATED_constrains_INCUBATOR_as_ERROR.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P2_DEPRECATED_constrains_INCUBATOR_as_ERROR.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P3_INCUBATOR.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P3_INCUBATOR.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P4_excludes_P1.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P4_excludes_P1.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P5_uses_P1,P4.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/P5_uses_P1,P4.mdzip"/>
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Supplier-Client-Example.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Supplier-Client-Example.mdzip"/>	
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Use_P1_P3_with_P2.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Use_P1_P3_with_P2.mdzip"/>	
+	<file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Use_P1_P3.mdzip" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/samples/ProjectUsageIntegrityChecker/Use_P1_P3.mdzip"/>	
+
   </installation>
 </resourceDescriptor>
