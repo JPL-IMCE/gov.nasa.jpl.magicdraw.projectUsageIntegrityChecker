@@ -60,7 +60,10 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 	public static final String LOAD_DIAGRAMS_ID 			= "LOAD_DIAGRAMS_ID";
 	public static final String LOAD_DIAGRAMS_DEFAULT		= "LOAD_DIAGRAMS";
 
-
+	public static final String SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_GROUP 	= "SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_GROUP";
+	public static final String SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_DESC 		= "SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_DESCRIPTION";
+	public static final String SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_ID 		= "SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_ID";
+	public static final String SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_DEFAULT 	= "SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES";
 
 	public static enum Platform { LINUX, MACOSX, WINDOWS, UNKNOWN };
 
@@ -141,6 +144,7 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 		setShowPerformanceStatsProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(PERFORMANCE_INFORMATION_DEFAULT)));
 		setShowAdvancedInformationProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(ADVANCED_INFORMATION_DEFAULT)));
 		setLoadDiagramsProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(LOAD_DIAGRAMS_DEFAULT)));
+		setShowClassificationConstraintsAsEdgesProperty(Boolean.getBoolean(SSCAEProjectUsageIntegrityOptionsResources.getString(SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_DEFAULT)));
 
 	}
 
@@ -264,7 +268,21 @@ public class SSCAEProjectUsageIntegrityOptions extends AbstractPropertyOptionsGr
 		return ((BooleanProperty) p).getBoolean();
 	}
 
+	public void setShowClassificationConstraintsAsEdgesProperty(boolean value){
+		BooleanProperty p = new BooleanProperty(SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_ID, value);
+		p.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
+		p.setGroup(SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_GROUP);
+		addProperty(p, SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_DESC);
+	}
 
+	public boolean getShowClassificationConstraintsAsEdgesProperty(){
+		Property p = getProperty(SHOW_CLASSIFICATION_CONSTRAINTS_AS_EDGES_ID);
+		if (!(p instanceof BooleanProperty))
+			return false;
+
+		return ((BooleanProperty) p).getBoolean();
+	}
+	
 	@Override
 	public String getName() {
 		return SSCAEProjectUsageIntegrityOptionsResources.getString(NAME);

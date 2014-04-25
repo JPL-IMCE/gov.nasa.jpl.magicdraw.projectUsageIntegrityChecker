@@ -776,8 +776,13 @@ public class SSCAEProjectDigest {
 		}
 
 		if (!g.noSharedPackage_constrainedAs_WARNING_fromUsages) {
-			log.log(String.format(" WARN: %d shared packages have WARNING usage constraints\n",  g.sharedPackages_constrainedAs_WARNING_fromUsages.size()));
+			List<Package> warnings = new ArrayList<Package>();
 			for (Package p : g.sharedPackages_constrainedAs_WARNING_fromUsages.keySet()) {
+				if (!g.sharedPackages_constrainedAs_WARNING_fromUsages.get(p).isEmpty())
+					warnings.add(p);
+			}
+			log.log(String.format(" WARN: %d shared packages have some usage constraint classified as WARNING\n",  warnings.size()));
+			for (Package p : warnings) {
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
@@ -785,8 +790,13 @@ public class SSCAEProjectDigest {
 		}
 		
 		if (!g.noSharedPackage_constrainedAs_ERROR_fromUsages) {
-			log.log(String.format(" WARN: %d shared packages have ERROR usage constraints\n",  g.sharedPackages_constrainedAs_ERROR_fromUsages.size()));
+			List<Package> errors = new ArrayList<Package>();
 			for (Package p : g.sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
+				if (!g.sharedPackages_constrainedAs_ERROR_fromUsages.get(p).isEmpty())
+					errors.add(p);
+			}
+			log.log(String.format("ERROR: %d shared packages have some usage constraint classified as ERROR\n",  errors.size()));
+			for (Package p : errors) {
 				log.addHyperlinkedText(
 						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
@@ -794,57 +804,69 @@ public class SSCAEProjectDigest {
 		}
 		
 		if (!g.no_DEPRECATED_WARNING_constraintViolations) {
-			log.log(String.format(" WARN: %d DEPRECATED shared packages violate WARNING constraints", g.sharedPackages_classified_DEPRECATED.size()));
+			log.log(String.format(" WARN: %d DEPRECATED shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_DEPRECATED.size()));
 			for (Package p : g.sharedPackages_classified_DEPRECATED) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is DEPRECATED but violates WARNING constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
 		
 		if (!g.no_DEPRECATED_ERROR_constraintViolations) {
-			log.log(String.format(" WARN: %d DEPRECATED shared packages violate ERROR constraints", g.sharedPackages_classified_DEPRECATED.size()));
+			log.log(String.format("ERROR: %d DEPRECATED shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_DEPRECATED.size()));
 			for (Package p : g.sharedPackages_classified_DEPRECATED) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is DEPRECATED but violates ERROR constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
 		
 		if (!g.no_INCUBATOR_WARNING_constraintViolations) {
-			log.log(String.format(" WARN: %d INCUBATOR shared packages violate WARNING constraints", g.sharedPackages_classified_INCUBATOR.size()));
+			log.log(String.format(" WARN: %d INCUBATOR shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_INCUBATOR.size()));
 			for (Package p : g.sharedPackages_classified_INCUBATOR) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is INCUBATOR but violates WARNING constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
 		
 		if (!g.no_INCUBATOR_ERROR_constraintViolations) {
-			log.log(String.format(" WARN: %d INCUBATOR shared packages violate ERROR constraints", g.sharedPackages_classified_INCUBATOR.size()));
+			log.log(String.format("ERROR: %d INCUBATOR shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_INCUBATOR.size()));
 			for (Package p : g.sharedPackages_classified_INCUBATOR) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is INCUBATOR but violates ERROR constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
 		
 		if (!g.no_RECOMMENDED_WARNING_constraintViolations) {
-			log.log(String.format(" WARN: %d RECOMMENDED shared packages violate WARNING constraints", g.sharedPackages_classified_RECOMMENDED.size()));
+			log.log(String.format(" WARN: %d RECOMMENDED shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_RECOMMENDED.size()));
 			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is RECOMMENDED but violates WARNING constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
 		
 		if (!g.no_RECOMMENDED_ERROR_constraintViolations) {
-			log.log(String.format(" WARN: %d RECOMMENDED shared packages violate ERROR constraints", g.sharedPackages_classified_RECOMMENDED.size()));
+			log.log(String.format("ERROR: %d RECOMMENDED shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_RECOMMENDED.size()));
 			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
 				log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is RECOMMENDED but violates ERROR constraints\n", p.getQualifiedName()), 
+						String.format("=> <A>%s</A>\n", p.getQualifiedName()), 
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
+		}
+		
+		if (!g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages.isEmpty()) {
+			log.log(String.format("ERROR: %d modules/project with INCONSISTENT shared packages classifications", g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages.size()));
+			for (MDAbstractProject v : g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages) {
+				for (Package p : g.moduleOrProject2SharedPackages.get(v)) {
+					log.addHyperlinkedText(
+						String.format("=> <A>%s</A> is inconsistently classified within module/project '%s'\n", 
+								p.getQualifiedName(), v.getName()), 
+						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));					
+				}
+			}	
 		}
 		
 		log.log(String.format("===========================================\n"));
