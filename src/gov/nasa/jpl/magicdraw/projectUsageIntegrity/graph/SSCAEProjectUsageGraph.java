@@ -1396,6 +1396,7 @@ public class SSCAEProjectUsageGraph {
 						MDProjectUsageConstraint e = new MDProjectUsageConstraint(MDProjectUsageConstraint.UsageConstraintLevel.OK, p.getQualifiedName());
 						e.setSource(v1);
 						e.setTarget(v2);
+						e.setIndex(e.getLabel() + ":" + v1.getIndex() + "=>" + v2.getIndex());
 						projectUsageDirectedMultigraph.addEdge(v1, v2, e);
 					}
 				}
@@ -1428,6 +1429,7 @@ public class SSCAEProjectUsageGraph {
 							MDProjectUsageConstraint e = new MDProjectUsageConstraint(MDProjectUsageConstraint.UsageConstraintLevel.WARNING, p.getQualifiedName());
 							e.setSource(v1);
 							e.setTarget(v2);
+							e.setIndex(e.getLabel() + ":" + v1.getIndex() + "=>" + v2.getIndex());
 							projectUsageDirectedMultigraph.addEdge(v1, v2, e);
 						}
 					}
@@ -1462,6 +1464,7 @@ public class SSCAEProjectUsageGraph {
 							MDProjectUsageConstraint e = new MDProjectUsageConstraint(MDProjectUsageConstraint.UsageConstraintLevel.ERROR, p.getQualifiedName());
 							e.setSource(v1);
 							e.setTarget(v2);
+							e.setIndex(e.getLabel() + ":" + v1.getIndex() + "=>" + v2.getIndex());
 							projectUsageDirectedMultigraph.addEdge(v1, v2, e);
 						}
 					}
@@ -1573,6 +1576,7 @@ public class SSCAEProjectUsageGraph {
 						MDProjectClassificationConstraint e = new MDProjectClassificationConstraint(MDProjectClassificationConstraint.UsageConstraintLevel.OK, MDProjectClassificationConstraint.ClassificationLevel.DEPRECATED, p2.getQualifiedName());
 						e.setSource(v1);
 						e.setTarget(v2);
+						e.setIndex(e.getLabel() + ":" + v1.getIndex() + "=>" + v2.getIndex());
 						projectUsageDirectedMultigraph.addEdge(v1, v2, e);
 					}
 				}
@@ -1590,6 +1594,7 @@ public class SSCAEProjectUsageGraph {
 						MDProjectClassificationConstraint e = new MDProjectClassificationConstraint(MDProjectClassificationConstraint.UsageConstraintLevel.WARNING, MDProjectClassificationConstraint.ClassificationLevel.DEPRECATED, p2.getQualifiedName());
 						e.setSource(v1);
 						e.setTarget(v2);
+						e.setIndex(e.getLabel() + ":" + v1.getIndex() + "=>" + v2.getIndex());
 						projectUsageDirectedMultigraph.addEdge(v1, v2, e);
 					}
 				}
