@@ -18,11 +18,11 @@
     <minVersion human="17.0" internal="169010"/>
   </requiredResource>
   <installation>
-    <file from="lib/jgrapht-0.8.3-jdk1.6.jar" to="lib/jgrapht-0.8.3-jdk1.6.jar"/>
     <file from="logTraceContracts/diagramProxyUsageMonitor.txt" to="logTraceContracts/diagramProxyUsageMonitor.txt"/>
     <file from="runOpenAuditTests.ant" to="runOpenAuditTests.ant"/>
     <file from="runOpenAuditTests.README.txt" to="runOpenAuditTests.README.txt"/>
-    <file from="root/profiles/MagicDrawProjectUsageIntegrityProfile.mdzip" to="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip"/>
+    <file from="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip" to="profiles/MagicDrawProjectUsageIntegrityProfile.mdzip"/>
+    <file from="testResources/test.properties" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/testResources/test.properties"/>
     <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/commons-exec-1.1.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/commons-exec-1.1.jar"/>
     <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/jgrapht-0.8.3-jdk1.6.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/jgrapht-0.8.3-jdk1.6.jar"/>
     <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/projectUsageIntegrity.jar" to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/lib/projectUsageIntegrity.jar"/>

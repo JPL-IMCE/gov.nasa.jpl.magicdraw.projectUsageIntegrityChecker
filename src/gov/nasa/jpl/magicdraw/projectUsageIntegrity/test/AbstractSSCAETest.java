@@ -26,6 +26,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsage
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -61,6 +62,19 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 	protected ProjectUsageIntegrityHelper integrityHelper;
 	protected Logger testLog;
 
+	protected static List<String> REQUIRED_PLUGINS;
+	
+	static {
+		REQUIRED_PLUGINS = new ArrayList<String>();
+		REQUIRED_PLUGINS.add("AutomatonPlugin");
+		REQUIRED_PLUGINS.add("com.nomagic.magicdraw.qvt");
+		REQUIRED_PLUGINS.add("gov.nasa.jpl.magicdraw.qvto.library");
+		REQUIRED_PLUGINS.add(ProjectUsageIntegrityPlugin.PLUGIN_ID);
+	}
+	
+	@Override
+	protected List<String> getRequiredPlugins() { return REQUIRED_PLUGINS; }
+	
 	protected static String getTestMethodNameFromTestProjectFile(@Nonnull File testProjectFile) {
 		String filename = testProjectFile.getName();
 		int i1 = filename.indexOf(".mdzip");

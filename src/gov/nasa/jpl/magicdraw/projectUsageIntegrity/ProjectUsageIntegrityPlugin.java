@@ -124,6 +124,17 @@ implements ResourceDependentPlugin {
 	public boolean showLabelsOnGraph() { return toggleGraphLabelAction.getState(); }
 	public boolean isThreadedMode(){ return toggleThreadedAction.getState(); }
 	
+	/**
+	 * If MD is started, use:
+	 * 
+	 * ProjectUsageIntegrityPlugin.getInstance().getPluginID()
+	 * 
+	 * For MD unit test required plugins, use:
+	 * 
+	 * ProjectUsageIntegrityPlugin.PLUGIN_ID
+	 */
+	public static String PLUGIN_ID = "gov.nasa.jpl.magicdraw.projectUsageIntegrity";
+	
 	public static String PLUGIN_NAME = "SSCAE Project Usage Integrity Checker";
 	
 	private static ProjectUsageIntegrityPlugin INSTANCE = null;

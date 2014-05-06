@@ -65,6 +65,7 @@
 				<include name="logTraceContracts/**/*.txt"/>
 				<include name="runOpenAuditTests.ant"/>
 				<include name="runOpenAuditTests.README.txt"/>
+				<include name="testResources/test.properties"/>
 			</other-includes>
 		</md.plugin.zip>
 	</target>
