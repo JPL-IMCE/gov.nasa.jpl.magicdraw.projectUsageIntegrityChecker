@@ -21,6 +21,7 @@
 				
 			<isset property="test.dir"/>
 			<available type="dir" file="${test.dir}"/>
+			<available type="dir" file="${test.dir}/testResources"/>
 			<or>
 				<os family="mac"/>
 				<and>
@@ -102,16 +103,16 @@
 		<echo message="test.dir=${test.dir}"/>
 			
 		<delete dir="${test.dir}/tmp" failonerror="false"/>
-		<mkdir dir="${test.dir}/tmp/data"/>
-		<copy todir="${test.dir}/tmp">
+		<mkdir dir="${test.dir}/tmp"/>
+		<mkdir dir="${test.dir}/data"/>
+		<copy todir="${test.dir}">
 			<fileset dir="${md.install.dir}/">
 				<include name="mdmain.ini"/>
 			</fileset>
 		</copy>
-		<copy todir="${test.dir}/tmp/data">
+		<copy todir="${test.dir}/data">
 			<fileset dir="${md.install.dir}/data/">
 				<include name="global.opt"/>
-				<include name="test.properties"/>
 			</fileset>
 		</copy>
 		
@@ -131,8 +132,8 @@
 			<jvmarg value="${JDWP.DEBUG}"/>
 			<syspropertyset refid="md.developer.property"/>
 
-			<sysproperty key="project.root"	 				value="${test.dir}/tmp" />
-			<sysproperty key="tests.resources" 				value="${test.dir}" />
+			<sysproperty key="project.root"	 				value="${test.dir}" />
+			<sysproperty key="tests.resources" 				value="${test.dir}/testResources" />
 			<sysproperty key="install.root" 					value="${md.install.dir}" />
 			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
 			
