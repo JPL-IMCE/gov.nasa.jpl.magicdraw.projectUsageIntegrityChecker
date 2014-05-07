@@ -65,18 +65,19 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 	protected ProjectUsageIntegrityHelper integrityHelper;
 	protected Logger testLog;
 
-	protected static List<String> REQUIRED_PLUGINS;
-	
-	static {
-		REQUIRED_PLUGINS = new ArrayList<String>();
-		REQUIRED_PLUGINS.add("AutomatonPlugin");
-		REQUIRED_PLUGINS.add("com.nomagic.magicdraw.qvt");
-		REQUIRED_PLUGINS.add("gov.nasa.jpl.magicdraw.qvto.library");
-		REQUIRED_PLUGINS.add(ProjectUsageIntegrityPlugin.PLUGIN_ID);
-	}
+	private List<String> required_plugins;
 	
 	@Override
-	protected List<String> getRequiredPlugins() { return REQUIRED_PLUGINS; }
+	protected List<String> getRequiredPlugins() { 
+		if (required_plugins == null) {
+			required_plugins = new ArrayList<String>();
+			required_plugins.add("AutomatonPlugin");
+			required_plugins.add("com.nomagic.magicdraw.qvt");
+			required_plugins.add("gov.nasa.jpl.magicdraw.qvto.library");
+			required_plugins.add(ProjectUsageIntegrityPlugin.PLUGIN_ID);
+		}
+		return required_plugins; 
+	}
 
 	@Override
 	protected void setUpTest() throws Exception {
