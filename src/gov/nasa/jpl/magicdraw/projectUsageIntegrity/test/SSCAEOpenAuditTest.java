@@ -78,10 +78,10 @@ public class SSCAEOpenAuditTest extends AbstractSSCAETest {
 	public void test_OpenAuditModelFromDirectory() {
 		if (integrityHelper.resolvedSSCAEProfileAndStereotypes()) {
 			StringBuffer buff = new StringBuffer();
-			boolean check1 = checkEmptyAnnotationsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEValidProjectUsageGraphRule());
-			boolean check2 = checkEmptyAnnotationsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectMD5ChecksumMismatchRule());
-			boolean check3 = checkEmptyAnnotationsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectStereotypeValidationRule());
-			boolean check4 = checkEmptyAnnotationsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectUsageRelationshipRule());
+			boolean check1 = checkEmptyAnnotationsExceptProjectModelMD5ChecksumsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEValidProjectUsageGraphRule());
+			boolean check2 = checkEmptyAnnotationsExceptProjectModelMD5ChecksumsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectMD5ChecksumMismatchRule());
+			boolean check3 = checkEmptyAnnotationsExceptProjectModelMD5ChecksumsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectStereotypeValidationRule());
+			boolean check4 = checkEmptyAnnotationsExceptProjectModelMD5ChecksumsOrDescribeThem(buff, "UNEXPECTED", integrityHelper.runSSCAEProjectUsageRelationshipRule());
 			assertTrue(buff.toString(), check1 && check2 && check3 && check4);
 		} else {
 			assertNotNull(integrityHelper.latestProjectUsageGraph);

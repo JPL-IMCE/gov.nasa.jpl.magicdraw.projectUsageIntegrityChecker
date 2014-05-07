@@ -46,9 +46,11 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.YamlDigestHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEAnnotation;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectModelMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectMD5ChecksumMismatchValidation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectStereotypeValidation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectUsageRelationshipValidation;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAESharedPackageMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEValidProjectUsageGraphValidation;
 
@@ -794,7 +796,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		
 		EnumerationLiteral errorLevel = getValidationWarningLevel();
 		
-		Annotation a = new Annotation(errorLevel, "SSCAE MD5", mismatch, m);
+		Annotation a = new SSCAEProjectModelMD5ChecksumMismatchAnnotation(expected, actual, errorLevel, "SSCAE MD5", mismatch, m);
 		annotations.add(a);
 	}
 
@@ -1177,7 +1179,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		
 		EnumerationLiteral errorLevel = getValidationWarningLevel();
 		
-		Annotation a = new Annotation(errorLevel, "SSCAE MD5", mismatch, p);
+		Annotation a = new SSCAESharedPackageMD5ChecksumMismatchAnnotation(expected, actual, errorLevel, "SSCAE MD5", mismatch, p);
 		annotations.add(a);
 	}
 

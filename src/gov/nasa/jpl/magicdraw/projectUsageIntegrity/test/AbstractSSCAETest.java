@@ -23,6 +23,8 @@ import gov.nasa.jpl.logfire.RunnableSessionWrapperWithResult;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectMD5ChecksumMismatchValidation;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectModelMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
 import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
@@ -199,6 +201,20 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 		}
 	};
 
+	protected boolean checkEmptyAnnotationsExceptProjectModelMD5ChecksumsOrDescribeThem(StringBuffer buff, String prefix, Set<Annotation> annotations) {
+		if (annotations.isEmpty())
+			return true;
+
+		boolean ok = true;
+		for(Annotation a : annotations) {
+			if (a instanceof SSCAEProjectModelMD5ChecksumMismatchAnnotation)
+				continue;
+			ok = false;
+			buff.append(String.format("\n%s: %s", prefix, describe(a)));
+		}
+		return ok;
+	}
+	
 	protected boolean checkEmptyAnnotationsOrDescribeThem(StringBuffer buff, String prefix, Set<Annotation> annotations) {
 		if (annotations.isEmpty())
 			return true;
