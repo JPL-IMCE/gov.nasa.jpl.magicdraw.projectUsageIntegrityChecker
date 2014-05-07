@@ -10,3 +10,28 @@ ant \
 	-Daudit.dir=${open.audit.dir} \
 	-Dtest.dir=${result.dir} \
 	-Daudit.report=serialization
+
+This is equivalent to:
+
+ant \
+	-f ${md.install.dir}/plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.ant \
+	-Dmd.install.dir=${md.install.dir} \
+	-Daudit.dir=${open.audit.dir} \
+	-Dtest.dir=${result.dir} \
+	-Dtest.resources=${test.dir}/testResources \
+	-Daudit.report=serialization
+
+Or:
+	
+md.install.dir=... (the location of the SSCAE MD17.0.2 installation)
+open.audir.dir=... (the directory from which to audit each *.mdzip/*.mdxml/*.xmi file for ProjectUsage Integrity)
+result.dir=... (the directory where to save the JUnit XML result file and where a 'tmp' directory will be created for MD's temporary storage)
+resources.dir=... (the directory used as 'tests.resources' for MD unit test properties)
+
+ant \
+	-f ${md.install.dir}/plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/runOpenAuditTests.ant \
+	-Dmd.install.dir=${md.install.dir} \
+	-Daudit.dir=${open.audit.dir} \
+	-Dtest.dir=${result.dir} \
+	-Dtest.resources=${resources.dir} \
+	-Daudit.report=serialization

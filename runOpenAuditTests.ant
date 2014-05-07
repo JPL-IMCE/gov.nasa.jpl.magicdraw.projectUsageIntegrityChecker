@@ -6,7 +6,8 @@
 	<property name="audit.report" value="${env.audit.report}"/>
 	<property name="md.install.dir" value="${env.md.install.dir}"/>
 	<property name="test.dir" value="${env.test.dir}"/>
-		
+	<property name="test.resources" value="${test.dir}/testResources" />
+	
 	<condition property="all.precondition" value="true">
 		<and>
 			<isset property="audit.report"/>
@@ -21,7 +22,7 @@
 				
 			<isset property="test.dir"/>
 			<available type="dir" file="${test.dir}"/>
-			<available type="dir" file="${test.dir}/testResources"/>
+			<available type="dir" file="${test.resources}"/>
 			<or>
 				<os family="mac"/>
 				<and>
@@ -133,7 +134,7 @@
 			<syspropertyset refid="md.developer.property"/>
 
 			<sysproperty key="project.root"	 				value="${test.dir}" />
-			<sysproperty key="tests.resources" 				value="${test.dir}/testResources" />
+			<sysproperty key="tests.resources" 				value="${test.resources}" />
 			<sysproperty key="install.root" 					value="${md.install.dir}" />
 			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
 			
