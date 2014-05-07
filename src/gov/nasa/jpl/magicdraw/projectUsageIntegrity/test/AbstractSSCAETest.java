@@ -24,6 +24,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
+import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.ProjectUtilities;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.persistence.ProjectSaveService;
+import com.nomagic.magicdraw.plugins.Plugin;
+import com.nomagic.magicdraw.plugins.PluginDescriptor;
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.utils.MDLog;
@@ -74,6 +77,34 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 	
 	@Override
 	protected List<String> getRequiredPlugins() { return REQUIRED_PLUGINS; }
+
+	@Override
+	protected void setUpTest() throws Exception {
+		super.setUpTest();
+		
+		List<Plugin> startedPlugins = QVTOUtils.getStartedMDPlugins();
+		List<String> requiredPlugins = getRequiredPlugins();
+		StringBuffer missing = new StringBuffer();
+		for (String requiredPlugin : requiredPlugins) {
+			boolean started = false;
+			for (Plugin p : startedPlugins) {
+				PluginDescriptor pd = p.getDescriptor();
+				if (requiredPlugin.equals(pd.getID())) {
+					started = true;
+				}
+			}
+			if (!started) {
+				missing.append(String.format("\nRequired plugin has not been started yet: %s,", requiredPlugin));
+			}
+		}
+		
+		assertTrue(missing.toString(), missing.length() == 0);
+	}
+
+	@Override
+	protected void tearDownTest() throws Exception {
+		super.tearDownTest();
+	}
 	
 	protected static String getTestMethodNameFromTestProjectFile(@Nonnull File testProjectFile) {
 		String filename = testProjectFile.getName();
