@@ -48,6 +48,8 @@
 	<path id="md.classpath">
 		<fileset dir="${md.install.dir}">
 			<include name="lib/**/*.jar"/>
+			<include name="plugins/com.nomagic.magicdraw.qvt/**/*.jar"/>
+			<include name="plugins/gov.nasa.jpl.magicdraw.qvto.library/**/*.jar"/>
 			<include name="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrity/**/*.jar"/>
 		</fileset>
 	</path>
