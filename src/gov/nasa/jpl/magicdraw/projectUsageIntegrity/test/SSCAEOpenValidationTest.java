@@ -106,6 +106,7 @@ public class SSCAEOpenValidationTest extends AbstractSSCAETest {
 			boolean skipTest = false;
 			try {
 				skipTest = Boolean.parseBoolean(skipTests.getProperty(testProjectFile.getName(), "false"));
+				skipTest |= testProjectFile.getName().endsWith(".bak");
 			} catch (IllegalArgumentException e) {
 			} catch (NullPointerException e) {
 			}
