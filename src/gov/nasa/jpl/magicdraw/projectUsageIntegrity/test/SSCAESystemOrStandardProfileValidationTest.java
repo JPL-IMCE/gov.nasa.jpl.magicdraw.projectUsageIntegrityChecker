@@ -158,7 +158,7 @@ public class SSCAESystemOrStandardProfileValidationTest extends AbstractSSCAETes
 			}
 			try {	
 				skipTest = Boolean.parseBoolean(skipTests.getProperty(testKey, "false"));
-				skipTest |= testFile.getName().endsWith(".bak");
+				skipTest |= testKey.endsWith(".bak");
 			} catch (IllegalArgumentException e) {
 			} catch (NullPointerException e) {
 			}

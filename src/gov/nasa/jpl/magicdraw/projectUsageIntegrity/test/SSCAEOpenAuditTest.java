@@ -148,10 +148,11 @@ public class SSCAEOpenAuditTest extends AbstractSSCAETest {
 		List<File> allModels = TestEnvironment.getProjects(auditDir);
 		for (File model : allModels) {
 			String modelKey = model.getAbsolutePath().substring(auditPathPrefix);
-				
+			
 			boolean skipTest = false;
 			try {
 				skipTest = Boolean.parseBoolean(skipTests.getProperty(modelKey, "false"));
+				skipTest |= modelKey.endsWith(".bak");
 			} catch (IllegalArgumentException e) {
 			} catch (NullPointerException e) {
 			}
