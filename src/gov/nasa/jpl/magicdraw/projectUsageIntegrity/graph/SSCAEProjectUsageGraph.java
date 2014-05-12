@@ -1052,9 +1052,18 @@ public class SSCAEProjectUsageGraph {
 
 			for (Profile profile : projectProfiles) {
 				IProject iprofile = ProjectUtilities.getProject(profile);
+				boolean isStandardSystemProfile = false;
+				try {
+					isStandardSystemProfile = ProjectUtilities.isStandardSystemProfile(iprofile);
+				} catch (NullPointerException e){
+					// Can occur if iprofile is null?
+					
+					pluginLog.error("PUIC - Not able to find iprofile " +  profile.getName() + ", cannot determine isStandardSystemProfile()");
+				}
+				
 				String profileURI = profile.getURI();
 
-				if (ProjectUtilities.isStandardSystemProfile(iprofile)) {
+				if (isStandardSystemProfile) {
 					if (sspProfileNames.containsKey(profile.getName())){
 						nonUniqueNamesSSPProfiles.put(profile, sspProfileNames.get(profile.getName()));
 					}
