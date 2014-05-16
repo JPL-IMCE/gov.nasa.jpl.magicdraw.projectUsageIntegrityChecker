@@ -37,6 +37,7 @@ public class MDProjectClassificationConstraint extends MDAbstractProjectUsage {
 		this.classificationLevel = classificationLevel;
 		this.usageConstraintLevel = usageConstraintLevel;
 		this.label = String.format("%s => %s: %s", classificationLevel, usageConstraintLevel, containedPackageQName);
+		setIndex(containedPackageQName);
 	}
 	
 	public ClassificationLevel getClassificationLevel() { return classificationLevel; }
