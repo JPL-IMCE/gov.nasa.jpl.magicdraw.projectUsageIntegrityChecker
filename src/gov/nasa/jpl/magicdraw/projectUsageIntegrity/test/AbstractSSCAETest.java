@@ -23,7 +23,6 @@ import gov.nasa.jpl.logfire.RunnableSessionWrapperWithResult;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectMD5ChecksumMismatchValidation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectModelMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEUnloadedModuleAnnotation;
 import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
@@ -76,6 +75,7 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 			required_plugins.add("AutomatonPlugin");
 			required_plugins.add("com.nomagic.magicdraw.qvt");
 			required_plugins.add("gov.nasa.jpl.magicdraw.qvto.library");
+			required_plugins.add("gov.nasa.jpl.magicdraw.log");
 			required_plugins.add(ProjectUsageIntegrityPlugin.PLUGIN_ID);
 		}
 		return required_plugins; 
