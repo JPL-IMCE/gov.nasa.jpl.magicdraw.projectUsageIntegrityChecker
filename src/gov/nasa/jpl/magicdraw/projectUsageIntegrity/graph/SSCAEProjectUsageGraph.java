@@ -2245,15 +2245,14 @@ public class SSCAEProjectUsageGraph {
 						labelColSpan, vColor, v.getIndex(), vName, labelIconTD));
 			}
 
-			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"2\"><FONT COLOR=\"%s\">", vColor));
 			if (v.getClassification() != null) {
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"2\"><FONT COLOR=\"%s\">", vColor));
+
 				vertexLabel.append(String.format("{classification=%s}", 
 						ProjectClassificationShortLabel.get(v.getClassification())));
-			} else {
-				vertexLabel.append(" ");
+				vertexLabel.append("</FONT></TD></TR>");
+
 			}
-			vertexLabel.append("</FONT></TD></TR>");
-			
 
 			if (isInconsistentlyUsed) {
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\"><FONT COLOR=\"%s\">{%s}</FONT></TD></TR>", 
@@ -2264,17 +2263,19 @@ public class SSCAEProjectUsageGraph {
 				StringBuffer tagBuffer = new StringBuffer();
 				boolean first = true;
 				for (String tag : tv.getTags()) {
-					if (first) { first = false; tagBuffer.append("\\n"); } else { tagBuffer.append(", "); }
+					if (first) { first = false; tagBuffer.append(""); } else { tagBuffer.append(", "); }
 					Matcher match = ProjectUsageIntegrityPlugin.SSCAE_CLEAN_MD5_TAG_REPLACE.matcher(tag);
-					tag = match.matches() ? "<SSCAE Clean>" : tag;
+					tag = match.matches() ? "SSCAE Clean" : tag;
 					tagBuffer.append(String.format("[%s]", tag));
 				}
 				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\"><FONT COLOR=\"%s\">{%s}</FONT></TD></TR>", 
 					vColor, tagBuffer.toString()));
 			}
-
-			vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\"><FONT COLOR=\"%s\">%s</FONT></TD></TR>", vColor, v.getMDInfo()));
-
+			
+			if (v.getMDInfo() != null){
+				vertexLabel.append(String.format("\n<TR><TD ALIGN=\"left\" COLSPAN=\"3\"><FONT COLOR=\"%s\">%s</FONT></TD></TR>", vColor, v.getMDInfo()));
+			}
+			
 			vertexLabel.append("\n</TABLE>>");
 			return vertexLabel.toString();
 		}
