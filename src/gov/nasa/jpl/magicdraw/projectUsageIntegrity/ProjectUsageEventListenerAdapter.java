@@ -21,6 +21,8 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity;
 import gov.nasa.jpl.logfire.RunnableSessionWrapper;
 import gov.nasa.jpl.logfire.SessionCounter;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +47,7 @@ import com.nomagic.utils.Utilities;
 /**
  * @author Nicolas F. Rouquette (JPL)
  */
-public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapter {
+public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapter implements PropertyChangeListener {
 
 	protected final ProjectUsageIntegrityPlugin plugin;
 	
@@ -99,6 +101,7 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		// Prevents checker from running twice on project open
 		ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
 		helper.hasPostEventNotifications = true;	
+		project.addPropertyChangeListener(this);
 	}
 	
 	protected void handleProjectClosed(final Project project) {
@@ -106,6 +109,7 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 
 			@Override
 			public void run() {
+				project.removePropertyChangeListener(ProjectUsageEventListenerAdapter.this);
 				ProjectUsageIntegrityHelper helper = mProject2Profile.remove(project);
 				if (helper != null){
 					helper.dispose();
@@ -114,6 +118,18 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		};
 	}
 	
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent ev) {
+		String name = ev.getPropertyName();
+		Object source = ev.getSource();
+		if ("project activated".equals(name) && source instanceof Project) {
+			Project project = (Project) source;
+			ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
+			helper.flushAttachedProjectInfoCache();
+		}
+	}
+
 	private boolean doSecondCommitAfterCleanCommit = false;
 	
 	protected void handleProjectSaved(final Project project, final boolean savedInServer) {
