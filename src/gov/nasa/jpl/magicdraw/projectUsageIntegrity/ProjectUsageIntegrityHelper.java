@@ -1598,6 +1598,11 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	private final WeakHashMap<IProject, MDAbstractProject> attachedProjectInfo = new WeakHashMap<IProject, MDAbstractProject>();
 	private final WeakHashMap<MDAbstractProject, List<Package>> attachedProjectMountedPackages = new WeakHashMap<MDAbstractProject, List<Package>>();
 	
+	public void flushAttachedProjectInfoCache() {
+		attachedProjectInfo.clear();
+		attachedProjectMountedPackages.clear();
+	}
+	
 	public MDAbstractProject createVertexInternal(IProject p, SSCAEProjectUsageGraph pug, int index, int width) throws RemoteException {
 		String idFormat = "%0" + width + "d";
 		String idString = String.format(idFormat, index);
