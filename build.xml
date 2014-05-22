@@ -25,6 +25,7 @@
 	</target>
 	<property name="md.build.tools.dir"	location="${md.install.dir}/data/eclipse/resource/SMDP-PackageB" />
 	<import file="${md.build.tools.dir}/build.md.plugin.xml"/>
+	<target name="include.sscaeProfile" depends="copySSCAE, copyProfilesIntoRoot, build, zip.plugin"/>
 	
 	<target name="build" depends="build.jar,build.plugin"/>
 		
