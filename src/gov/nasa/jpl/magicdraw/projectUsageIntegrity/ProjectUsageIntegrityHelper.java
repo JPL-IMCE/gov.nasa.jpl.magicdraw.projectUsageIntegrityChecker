@@ -1429,13 +1429,23 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 			return;
 		
 		ProjectEventType evType = ev.getEventType();
-		logger.info(String.format("ProjectUsageIntegrity.notify(%s)", evType.name()));
+		logger.info(String.format("*** ProjectUsageIntegrity.notify(%s)", evType.name()));
 		
 		if (evType.isPostEvent()) {
 			hasPostEventNotifications = true;
 		}
 		
 		switch (evType) {
+		
+		case POST_UPDATE: {
+			/**
+			 * @see https://support.nomagic.com/browse/MDUMLCS-13361
+			 * @see https://jira1.jpl.nasa.gov:8443/browse/SSCAES-995
+			 *
+			 * So far, Donatas' suggestion does not work.
+			 */
+			this.flushAttachedProjectInfoCache();
+		}
 		
 		case PRE_CLOSE: {
 			if (this.pProject.getProjectListeners().contains(this))
