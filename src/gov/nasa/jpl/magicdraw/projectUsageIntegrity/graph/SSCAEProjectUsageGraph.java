@@ -2630,6 +2630,7 @@ public class SSCAEProjectUsageGraph {
 			while ((nread = fis.read(dataBytes)) != -1) {
 				md5.update(dataBytes, 0, nread);
 			};
+			fis.close();
 			return getMD5Result();
 		}
 	}
