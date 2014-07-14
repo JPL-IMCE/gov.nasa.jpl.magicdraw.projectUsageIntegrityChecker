@@ -227,7 +227,7 @@ public class TeamworkTransactionMonitor implements TransactionCommitListener, Pr
 			if (p == null) return null;
 			ILockProjectService s = LockService.getLockService(p);
 			if (s == null) return null;
-			if (s.canBeLocked(e) && ! s.isLockedByMe(e))
+			if ((s.canBeLocked(e) || s.isLocked(e)) && ! s.isLockedByMe(e))
 				return new UnlockedModificationInfo(s, e, getElementName(e), new ModelValidationResult(e, "Modification of unlocked teamwork element"));
 			else
 				return null;
