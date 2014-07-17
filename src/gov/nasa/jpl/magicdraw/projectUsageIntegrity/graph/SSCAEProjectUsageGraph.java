@@ -626,7 +626,8 @@ public class SSCAEProjectUsageGraph {
 	}
 
 	public boolean isProjectUsageTopologyValid() { 
-		return projectClassification != ProjectClassification.INVALID 
+		return ! helper.collaborationIntegrityInvariantTransactionMonitor.illegalTransactionsDetected()
+				&& projectClassification != ProjectClassification.INVALID 
 				&& missingProjects.isEmpty()
 				&& moduleWithMissingShares.isEmpty()
 				&& stronglyConnectedVertices.isEmpty() 
@@ -1233,6 +1234,12 @@ public class SSCAEProjectUsageGraph {
 				projectUsageDirectedMultigraph.edgeSet().size(),
 				diagramCount));
 
+		if (helper.collaborationIntegrityInvariantTransactionMonitor.illegalTransactionsDetected()) {
+			gDiagnostic.append(String.format("\nERROR: model *may* be compromised due to illegal teamwork transactions"));
+		} else {
+			gDiagnostic.append(String.format("\n   OK: no illegal teamwork transactions detected"));
+		}
+		
 		if (isProjectMissingSystemOrStandardProfileFlag()) {
 			gDiagnostic.append(String.format("\nERROR: this project should have the System/Standard Profile flag set"));
 		}

@@ -45,7 +45,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassificationC
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.YamlDigestHelper;
-import gov.nasa.jpl.magicdraw.projectUsageIntegrity.teamwork.TeamworkTransactionMonitor;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.transactions.CollaborationIntegrityInvariantTransactionMonitor;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectModelMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectMD5ChecksumMismatchValidation;
@@ -214,7 +214,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 
 	public SSCAEProjectRepositoryListener prListener;
 	
-	public final TeamworkTransactionMonitor teamworkTransactionMonitor = new TeamworkTransactionMonitor();
+	public final CollaborationIntegrityInvariantTransactionMonitor collaborationIntegrityInvariantTransactionMonitor = new CollaborationIntegrityInvariantTransactionMonitor();
 			
 	public ProjectUsageIntegrityHelper(@Nonnull Project project, ToggleProjectUsageIntegrityCheckerAction checkerState) {
 		this.project = project;
@@ -228,9 +228,9 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		this.prListener = new SSCAEProjectRepositoryListener(this);
 		
 		IPrimaryProject pp = project.getPrimaryProject();
-		pp.addProjectListener(teamworkTransactionMonitor);
+		pp.addProjectListener(collaborationIntegrityInvariantTransactionMonitor);
 		for ( IAttachedProject attached : pp.getProjects() ) { 
-			attached.getProjectListeners().add( teamworkTransactionMonitor );
+			attached.getProjectListeners().add( collaborationIntegrityInvariantTransactionMonitor );
 		}
 		
 		URI uri = pp.getLocationURI();

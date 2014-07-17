@@ -102,7 +102,7 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
 		helper.hasPostEventNotifications = true;	
 		project.addPropertyChangeListener(this);
-		project.getRepository().getTransactionManager().addTransactionCommitListener(helper.teamworkTransactionMonitor);
+		project.getRepository().getTransactionManager().addTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
 	}
 	
 	protected void handleProjectClosed(final Project project) {
@@ -112,7 +112,7 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 			public void run() {
 				project.removePropertyChangeListener(ProjectUsageEventListenerAdapter.this);
 				ProjectUsageIntegrityHelper helper = mProject2Profile.remove(project);
-				project.getRepository().getTransactionManager().removeTransactionCommitListener(helper.teamworkTransactionMonitor);
+				project.getRepository().getTransactionManager().removeTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
 				if (helper != null){
 					helper.dispose();
 				}

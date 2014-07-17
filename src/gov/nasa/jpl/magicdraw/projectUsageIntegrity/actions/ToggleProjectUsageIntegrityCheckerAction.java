@@ -42,15 +42,15 @@ import com.nomagic.magicdraw.core.Project;
 public class ToggleProjectUsageIntegrityCheckerAction extends NMStateAction {
 
 	private static final long serialVersionUID = -6170433837284995161L;
-	
+
 	public static final Icon ENABLED_ICON = new OnIcon();
 	public static final Icon DISABLED_ICON = new OffIcon();
-	
+
 	public static final String ENABLED_DESCRIPTION = "JPL SSCAE ProjectUsage Integrity Checker Enabled";
 	public static final String DISABLED_DESCRIPTION = "JPL SSCAE ProjectUsage Integrity Checker Disabled";
-	
+
 	private boolean iAmSelected = true;
-	
+
 	public ToggleProjectUsageIntegrityCheckerAction() {
 		super("TOGGLE_PROJECT_USAGE_INTEGRITY_CHECKER_ACTION", "", 0);
 	}
@@ -58,21 +58,21 @@ public class ToggleProjectUsageIntegrityCheckerAction extends NMStateAction {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// changing state
-        iAmSelected = !iAmSelected;
-        // showing changes
-        updateState();
-        
-        if (iAmSelected) {
-        		Project p = Application.getInstance().getProject();
-        		if (null != p) {
-        			ProjectUsageIntegrityHelper helper = ProjectUsageIntegrityPlugin.getInstance().getSSCAEProjectUsageIntegrityProfileForProject(p);
-        			if (null != helper) {
-        				helper.runSSCAEValidationAndShowResultsIfCheckerEnabled(true);
-        			}
-        		}
-        }
+		iAmSelected = !iAmSelected;
+		// showing changes
+		updateState();
+
+		if (iAmSelected) {
+			Project p = Application.getInstance().getProject();
+			if (null != p) {
+				ProjectUsageIntegrityHelper helper = ProjectUsageIntegrityPlugin.getInstance().getSSCAEProjectUsageIntegrityProfileForProject(p);
+				if (null != helper) {
+					helper.runSSCAEValidationAndShowResultsIfCheckerEnabled(true);
+				}
+			}
+		}
 	}
-	
+
 	/**
 	 * Must be called in on the Swing event thread.
 	 */
@@ -81,23 +81,21 @@ public class ToggleProjectUsageIntegrityCheckerAction extends NMStateAction {
 		this.iAmSelected = newState;
 		super.setState(newState);
 	}
-	
+
 	/**
 	 * Must be called in on the Swing event thread.
 	 */
 	@Override
 	public void updateState() {
 		setState( iAmSelected );
-		
+
 		setDescription((iAmSelected ? ENABLED_DESCRIPTION : DISABLED_DESCRIPTION));
 		setSmallIcon((iAmSelected ? ENABLED_ICON : DISABLED_ICON));
-		
+
 		ProjectUsageIntegrityPlugin.getInstance().checkCurrentProjectStatusAction.updateState();
 		ProjectUsageIntegrityPlugin.getInstance().showCurrentProjectUsageGraphAction.updateState();
 		ProjectUsageIntegrityPlugin.getInstance().toggleTeamworkOrAllGraphAction.updateState();
 		ProjectUsageIntegrityPlugin.getInstance().toggleGraphLabelAction.updateState();
 		ProjectUsageIntegrityPlugin.getInstance().toggleThreadedAction.updateState();
-
-
 	}
 }
