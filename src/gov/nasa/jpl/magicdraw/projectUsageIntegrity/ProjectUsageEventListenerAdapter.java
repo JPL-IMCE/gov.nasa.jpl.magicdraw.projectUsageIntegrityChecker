@@ -33,6 +33,8 @@ import javax.annotation.Nonnull;
 
 import org.apache.log4j.Logger;
 
+import com.nomagic.ci.persistence.IAttachedProject;
+import com.nomagic.ci.persistence.IPrimaryProject;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectDescriptor;
@@ -102,6 +104,10 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
 		helper.hasPostEventNotifications = true;	
 		project.addPropertyChangeListener(this);
+		IPrimaryProject primary = project.getPrimaryProject();
+		for (IAttachedProject iAttachedProject : primary.getProjects()) {
+			iAttachedProject.getProjectListeners().add(helper);
+		}
 		project.getRepository().getTransactionManager().addTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
 	}
 	
