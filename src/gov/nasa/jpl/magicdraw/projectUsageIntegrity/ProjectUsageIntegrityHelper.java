@@ -1538,7 +1538,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	
 	protected void checkPostAttachProject(DecompositionEvent ev) {
 		IProject attached = ev.getAttachedProject();
-		
+		attached.addProjectListener(this);
 		checkIProjectResources(attached);
 	}
 	
