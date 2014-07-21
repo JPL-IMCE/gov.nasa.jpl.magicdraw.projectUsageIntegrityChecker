@@ -90,6 +90,9 @@ public class ElementPath implements Expression {
 		}
 
 		EStructuralFeature f = e.eContainingFeature();
+		if (f == null)
+			return path;
+		
 		EObject c = e.eContainer();
 		assert (c instanceof Element);
 		Element ce = (Element) c;
