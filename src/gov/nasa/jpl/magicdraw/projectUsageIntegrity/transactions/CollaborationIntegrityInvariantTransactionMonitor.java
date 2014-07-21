@@ -286,7 +286,8 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		}
 		if ( ApplicationEnvironment.isDeveloper() )
 			log.info( String.format("### TeamworkEvent? %b : %s old=%s, new=%s",
-					(verdict != null), property, getDescription(oldValue), getDescription(newValue)));
+					(verdict != null), property, getDescription(property, oldValue), getDescription(property, newValue)));
+		
 		return verdict;
 	}
 
@@ -389,14 +390,23 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		return true;
 	}
 
-	public String getDescription(Object o) {
+	public static final int MAX_DESCRIPTION_LENGTH = 60;
+	
+	public String getDescription(String propertyName, Object o) {
 		if (o == null)
 			return "<null>";
 
 		if (o instanceof Element)
 			return getElementName((Element) o);
 
-		return o.toString();
+		String description = o.toString();
+		if (description.length() < MAX_DESCRIPTION_LENGTH)
+			return description;
+		
+		if ("ID" == propertyName)
+			return description;
+		
+		return String.format("...(%d characters)", description.length());
 	}
 
 	public String getElementName(Element e) {
