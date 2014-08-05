@@ -24,6 +24,7 @@ import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
 import java.io.File;
 import java.util.List;
+import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -81,7 +82,7 @@ public class Copy_SSCAEProjectUsageIntegrity_profile extends AbstractSSCAETest {
 	 * Copied from the QVTOLib plugin's QVTOUtils to avoid a plugin dependency.
 	 * @return
 	 */
-	public static List<Plugin> getStartedMDPlugins() {
+	public static Collection<Plugin> getStartedMDPlugins() {
 		return QVTOUtils.getStartedMDPlugins();
 	}
 	
@@ -89,7 +90,7 @@ public class Copy_SSCAEProjectUsageIntegrity_profile extends AbstractSSCAETest {
 	protected void setUpTest() throws Exception {
 		super.setUpTest();
 		
-		List<Plugin> startedPlugins = getStartedMDPlugins();
+		Collection<Plugin> startedPlugins = getStartedMDPlugins();
 		Plugin puiPlugin = null;
 		PluginDescriptor puiPD = null;
 		
