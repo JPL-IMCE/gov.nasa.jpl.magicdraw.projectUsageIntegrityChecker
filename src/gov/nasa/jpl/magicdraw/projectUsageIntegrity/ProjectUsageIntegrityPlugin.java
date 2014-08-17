@@ -194,9 +194,9 @@ implements ResourceDependentPlugin {
 				
 		try {
 			String javaSpecificationVersion = System.getProperty("java.specification.version");
-			if (!"1.6".equals(javaSpecificationVersion) && !"1.7".equals(javaSpecificationVersion)) {
+			if (!"1.6".equals(javaSpecificationVersion) && !"1.7".equals(javaSpecificationVersion) && !"1.8".equals(javaSpecificationVersion)) {
 				StringBuffer buff = new StringBuffer();
-				buff.append("*** SSCAE supports running MagicDraw with Java 1.6 (recommended) or 1.7 at JPL ***\n");
+				buff.append("*** SSCAE supports running MagicDraw with Java 1.6 (recommended), 1.7 or 1.8 at JPL ***\n");
 				for (String property : JAVA_PROPERTIES) {
 					buff.append(String.format(PROPERTY_NAME_VALUE_FORMAT, property, System.getProperty(property)));
 				}
