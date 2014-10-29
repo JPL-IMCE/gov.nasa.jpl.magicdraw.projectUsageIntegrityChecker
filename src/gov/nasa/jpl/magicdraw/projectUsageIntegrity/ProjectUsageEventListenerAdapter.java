@@ -46,6 +46,8 @@ import com.nomagic.magicdraw.core.project.RemoteProjectDescriptor;
 import com.nomagic.magicdraw.teamwork.application.TeamworkUtils;
 import com.nomagic.magicdraw.teamwork.application.storage.TeamworkPrimaryProject;
 import com.nomagic.magicdraw.utils.MDLog;
+import com.nomagic.uml2.ext.jmi.reflect.AbstractRepository;
+import com.nomagic.uml2.transaction.TransactionManager;
 import com.nomagic.utils.Utilities;
 
 /**
@@ -123,8 +125,14 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 			public void run() {
 				project.removePropertyChangeListener(ProjectUsageEventListenerAdapter.this);
 				ProjectUsageIntegrityHelper helper = mProject2Profile.remove(project);
-				project.getRepository().getTransactionManager().removeTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
-				if (helper != null){
+				if (helper != null) {
+					AbstractRepository repo = project.getRepository();
+					if (repo != null) {
+						TransactionManager tm = repo.getTransactionManager();
+						if (tm != null) {
+							tm.removeTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
+						}
+					}
 					helper.dispose();
 				}
 			}
