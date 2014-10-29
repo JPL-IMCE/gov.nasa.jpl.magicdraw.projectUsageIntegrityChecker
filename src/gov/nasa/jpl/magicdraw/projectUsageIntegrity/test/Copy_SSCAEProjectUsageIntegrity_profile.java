@@ -25,6 +25,7 @@ import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
+import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
