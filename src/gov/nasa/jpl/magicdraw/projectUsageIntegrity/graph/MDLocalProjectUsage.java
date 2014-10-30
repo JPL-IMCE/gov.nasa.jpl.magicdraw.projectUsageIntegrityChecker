@@ -27,6 +27,7 @@ public class MDLocalProjectUsage extends MDAbstractProjectUsage {
 	private String label;
 	private String signature;
 	private boolean reShared;
+	private boolean ssp;
 
 	public MDLocalProjectUsage() {
 		super();

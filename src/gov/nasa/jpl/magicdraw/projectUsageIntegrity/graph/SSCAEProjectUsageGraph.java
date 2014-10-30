@@ -90,6 +90,7 @@ import com.nomagic.ci.persistence.local.spi.AbstractProject;
 import com.nomagic.ci.persistence.local.spi.decomposition.IDecompositionModel;
 import com.nomagic.ci.persistence.local.spi.decomposition.IProjectUsageManager;
 import com.nomagic.ci.persistence.local.spi.localproject.LocalAttachedProject;
+import com.nomagic.ci.persistence.local.spi.localproject.LocalPrimaryProject;
 import com.nomagic.ci.persistence.versioning.IVersionDescriptor;
 import com.nomagic.magicdraw.core.ApplicationEnvironment;
 import com.nomagic.magicdraw.core.Project;
@@ -542,6 +543,11 @@ public class SSCAEProjectUsageGraph {
 	 * read-only
 	 */
 	public final SortedSet<MDAbstractProject> missingProjects = new TreeSet<MDAbstractProject>(PROJECT_VERTEX_COMPARATOR);
+	
+	/**
+	 * read-only
+	 */
+	public final SortedSet<MDAbstractProject> missingSSPProjects = new TreeSet<MDAbstractProject>(PROJECT_VERTEX_COMPARATOR);
 
 	/**
 	 * read-only
@@ -629,6 +635,7 @@ public class SSCAEProjectUsageGraph {
 		return ! helper.collaborationIntegrityInvariantTransactionMonitor.illegalTransactionsDetected()
 				&& projectClassification != ProjectClassification.INVALID 
 				&& missingProjects.isEmpty()
+				&& missingSSPProjects.isEmpty()
 				&& moduleWithMissingShares.isEmpty()
 				&& stronglyConnectedVertices.isEmpty() 
 				&& stronglyConnectedEdges.isEmpty() 
@@ -848,6 +855,22 @@ public class SSCAEProjectUsageGraph {
 			MDAbstractProject p2 = lookupVertex(aProject);
 			if (p2.isProjectMissing() && !(p2 instanceof MDLocalPrimaryProject))
 				missingProjects.add(p2);
+			
+			// TODO root project needs to a tws project
+			if (!(this.primaryProject instanceof LocalPrimaryProject) && p2 instanceof MDLocalProject && !(p2 instanceof MDLocalPrimaryProject)) {
+	
+				boolean isStandardSystemProfile = false;
+				try {
+					isStandardSystemProfile = ProjectUtilities.isStandardSystemProfile(aProject);
+				} catch (NullPointerException e){
+					// Can occur if iprofile is null?
+					
+					pluginLog.error("PUIC - Not able to find project " +  aProject.getName() + ", cannot determine isStandardSystemProfile()");
+				}
+				
+				if (!isStandardSystemProfile)
+					missingSSPProjects.add(p2);
+			}
 
 			List<MDAbstractProjectUsage> p2UsedBy = vertexUsedByEdges.get(p2);
 			Collections.sort(p2UsedBy, PROJECT_USAGE_EDGE_COMPARATOR);
@@ -1305,6 +1328,16 @@ public class SSCAEProjectUsageGraph {
 					missingProjects.size()));
 			for (MDAbstractProject missingProject : missingProjects) {
 				gMessages.append(String.format("\n missing project: %s", missingProject.getName()));
+			}
+		}
+		
+		if (missingSSPProjects.isEmpty()) {
+			gDiagnostic.append(String.format("\n   OK: all local projects have SSP flag"));
+		} else {
+			gDiagnostic.append(String.format("\nERROR: %d projects are missing the SSP flag",
+					missingSSPProjects.size()));
+			for (MDAbstractProject missingProject : missingSSPProjects) {
+				gMessages.append(String.format("\n project missing SSP flag: %s", missingProject.getName()));
 			}
 		}
 
@@ -2997,6 +3030,7 @@ public class SSCAEProjectUsageGraph {
 		localModulesWithTeamworkIDs.clear();
 		moduleWithMissingShares.clear();
 		missingProjects.clear();
+		missingSSPProjects.clear();
 		vertexMap.clear();
 		edgeMap.clear();
 		vertexUsageEdges.clear();
