@@ -26,10 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
-import org.jruby.util.unsafe.GeneratedUnsafe;
 
 import com.nomagic.ci.persistence.IProject;
 import com.nomagic.ci.persistence.ProjectEvent;
@@ -43,13 +40,10 @@ import com.nomagic.magicdraw.core.proxy.ProxyManager;
 import com.nomagic.magicdraw.teamwork2.locks.ILockProjectService;
 import com.nomagic.magicdraw.teamwork2.locks.LockInfo;
 import com.nomagic.magicdraw.teamwork2.locks.LockService;
-import com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider;
-import com.nomagic.magicdraw.uml.actions.SelectInContainmentTreeRunnable;
 import com.nomagic.magicdraw.utils.MDLog;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.transaction.ModelValidationResult;
-import com.nomagic.uml2.transaction.RollbackException;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 
 /**
