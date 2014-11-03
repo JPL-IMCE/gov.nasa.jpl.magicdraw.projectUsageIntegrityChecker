@@ -80,9 +80,9 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 	}
 
 	private volatile boolean illegalTransactionsDetected = false;
-	
+
 	public boolean illegalTransactionsDetected() { return illegalTransactionsDetected; }
-	
+
 	protected boolean between_pre_post_update = false;
 
 	@Override
@@ -114,158 +114,45 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 	}
 
 	public void monitor(final Collection<PropertyChangeEvent> events) {
-		Logger log = MDLog.getPluginsLog();
+		if (ProjectUsageIntegrityPlugin.getInstance().isProjectUsageIntegrityCheckerEnabled() ) {
 
-		if ( between_pre_post_update ) {
-			log.info( String.format("### TeamworkTransactionMonitor(%d events) between pre/post update", events.size()));
-			return;
-		}
+			Logger log = MDLog.getPluginsLog();
 
-		final List<UnlockedModificationInfo> canBeLockedModifications = new ArrayList<UnlockedModificationInfo>();
-		final List<UnlockedModificationInfo> alreadyLockedModifications = new ArrayList<UnlockedModificationInfo>();
-		for (PropertyChangeEvent event : events) {
-			UnlockedModificationInfo change = unlockedModification(event.getPropertyName(), event.getOldValue(), event.getNewValue());
-			if (change != null) {
-				if (change.canBeLocked)
-					canBeLockedModifications.add(change);
-				else
-					alreadyLockedModifications.add(change);
+			if ( between_pre_post_update ) {
+				log.info( String.format("### TeamworkTransactionMonitor(%d events) between pre/post update", events.size()));
+				return;
 			}
-		}
 
-		if (canBeLockedModifications.isEmpty() && alreadyLockedModifications.isEmpty()) {
-			log.info( String.format("### TeamworkTransactionMonitor(%d events) => invariants OK", events.size())); 
-			return;
-		}
+			final List<UnlockedModificationInfo> canBeLockedModifications = new ArrayList<UnlockedModificationInfo>();
+			final List<UnlockedModificationInfo> alreadyLockedModifications = new ArrayList<UnlockedModificationInfo>();
+			for (PropertyChangeEvent event : events) {
+				UnlockedModificationInfo change = unlockedModification(event.getPropertyName(), event.getOldValue(), event.getNewValue());
+				if (change != null) {
+					if (change.canBeLocked)
+						canBeLockedModifications.add(change);
+					else
+						alreadyLockedModifications.add(change);
+				}
+			}
 
-		log.info( String.format("### TeamworkTransactionMonitor(%d events) => %d modifications of unlocked elements, %d modifications of elements locked by someone else", 
-				events.size(), canBeLockedModifications.size(), alreadyLockedModifications.size()) );
+			if (canBeLockedModifications.isEmpty() && alreadyLockedModifications.isEmpty()) {
+				log.info( String.format("### TeamworkTransactionMonitor(%d events) => invariants OK", events.size())); 
+				return;
+			}
 
-		final GUILog guiLog = Application.getInstance().getGUILog();
+			log.info( String.format("### TeamworkTransactionMonitor(%d events) => %d modifications of unlocked elements, %d modifications of elements locked by someone else", 
+					events.size(), canBeLockedModifications.size(), alreadyLockedModifications.size()) );
 
-		if (! ProjectUsageIntegrityPlugin.getInstance().isProjectUsageIntegrityCheckerEnabled() ) {
-			illegalTransactionsDetected = true;
-			guiLog.log("*** ERROR: ILLEGAL TRANSACTIONS DETECTED (PUIC is OFF) ***-------------------------------------------------------------");
+			final GUILog guiLog = Application.getInstance().getGUILog();
+
 			for (UnlockedModificationInfo change : canBeLockedModifications) {
 				guiLog.log(change.result.getReason());
 			}
 			for (UnlockedModificationInfo change : alreadyLockedModifications) {
 				guiLog.log(change.result.getReason());
 			}
-			guiLog.log("*** ERROR: MODEL INTEGRITY MAY BE COMPROMISED (PUIC is OFF) ***---------------------------------------------------------");
-			return;
-		}
-		
-		String buff = String.format("Lock the %d elements?", canBeLockedModifications.size());
-		for (UnlockedModificationInfo change : canBeLockedModifications) {
-			buff = buff + "\n" + change.result.getReason();
-		}
-		final String message = buff;
-
-		if (alreadyLockedModifications.isEmpty()) {
-			guiLog.log("*** WARNING: ILLEGAL TRANSACTIONS DETECTED (PUIC is ON) ***-------------------------------------------------------------");
-			guiLog.log( String.format("WARNING: Illegal modification of %d unlocked teamwork model elements!", canBeLockedModifications.size()) );
-			switch (JOptionPane.showConfirmDialog(
-					MDDialogParentProvider.getProvider().getDialogParent(),
-					message, String.format("Illegal modifications of %d unlocked teamwork elements detected!", canBeLockedModifications.size()),
-					JOptionPane.OK_CANCEL_OPTION)) {
-					case JOptionPane.OK_OPTION: 
-						if (lock(canBeLockedModifications))	{
-							guiLog.log("*** OK: AVOIDED ILLEGAL TRANSACTIONS (PUIC is ON) ***-------------------------------------------------------------------");								
-							guiLog.log("------------------------------------------------------------------------------------------------------------------------");
-							return;
-						}
-						break;
-					default: break;
-			}
 		}
 
-		List<ModelValidationResult> results = new ArrayList<ModelValidationResult>();
-		for (UnlockedModificationInfo change : canBeLockedModifications) {
-			guiLog.addHyperlinkedText( String.format("=> <A>%s</A>\n", change.result.getReason()), java.util.Collections.singletonMap( change.result.getReason(), (Runnable) new SelectInContainmentTreeRunnable( change.element ) ) );
-			results.add(change.result);
-		}
-		for (UnlockedModificationInfo change : alreadyLockedModifications) {
-			guiLog.addHyperlinkedText( String.format("=> <A>%s</A>\n", change.result.getReason()), java.util.Collections.singletonMap( change.result.getReason(), (Runnable) new SelectInContainmentTreeRunnable( change.element ) ) );
-			results.add(change.result);
-		}
-
-		if (alreadyLockedModifications.isEmpty()) {
-			final Runnable r = new Runnable() {
-				@Override
-				public void run() {
-					switch (JOptionPane.showConfirmDialog(
-							MDDialogParentProvider.getProvider().getDialogParent(),
-							message, 
-							String.format("Illegal modifications of %d unlocked teamwork elements detected!", canBeLockedModifications.size()),
-							JOptionPane.OK_CANCEL_OPTION )) {
-							case JOptionPane.OK_OPTION:
-								if (lock( canBeLockedModifications )) 
-									guiLog.log(String.format("Locked %d teamwork elements", canBeLockedModifications.size()));
-								else
-									guiLog.log(String.format("*** ERROR *** Failed to lock %d teamwork elements", canBeLockedModifications.size())); 
-								break;
-
-							default:
-								guiLog.log(String.format("Cancelled locking %d teamwork elements", canBeLockedModifications.size())); 
-								break;
-					}
-				}
-			};
-			guiLog.addHyperlinkedText( String.format("Consider: <A>%s</A>", message), java.util.Collections.singletonMap( message, r));
-		}
-		guiLog.log("------------------------------------------------------------------------------------------------------------------------");
-			
-		RollbackException re = new RollbackException(results);
-
-		// Since com.nomagic.uml2.transaction.RollbackException is a "checked" exception, 
-		// the Java compiler does not allow writing:
-		//
-		// throw re;
-
-		// Some techniques involve Java reflection to access sun.misc.Unsafe
-		// However, Java 1.6 prevents accessing sun.misc.Unsafe in user code.
-		// Using reflection may fail in some versions of Java.
-
-		//				try {
-		//					Class<?> unsafe = java.lang.Class.forName("sun.misc.Unsafe");
-		//					Field theUnsafe = unsafe.getDeclaredField("theUnsafe");
-		//					Method throwException = unsafe.getDeclaredMethod("throwException", Throwable.class);
-		//					theUnsafe.setAccessible(true);
-		//					Object u = theUnsafe.get(null);
-		//					throwException.invoke(u, re);
-		//				} catch (NoSuchFieldException e) {
-		//					log.error("NoSuchFieldException -- Unsafe.theUnsafe", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (SecurityException e) {
-		//					log.error("SecurityException", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (IllegalArgumentException e) {
-		//					log.error("IllegalArgumentException", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (IllegalAccessException e) {
-		//					log.error("IllegalAccessException", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (ClassNotFoundException e) {
-		//					log.error("ClassNotFoundException -- sun.misc.Unsafe", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (NoSuchMethodException e) {
-		//					log.error("NoSuchMethodException -- Unsafe.throwException(Throwable)", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				} catch (InvocationTargetException e) {
-		//					log.error("InvocationTargetException -- Unsafe.throwException(Throwable)", e);
-		//					invariants_violated = true;
-		//					throw new RuntimeException(re);
-		//				}
-
-		// This is a scala-like workaround thanks to JRuby!
-		new GeneratedUnsafe().throwException(re);
 	}
 
 	public UnlockedModificationInfo unlockedModification( String property, Object oldValue, Object newValue ) {
@@ -287,7 +174,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		if ( ApplicationEnvironment.isDeveloper() )
 			log.info( String.format("### TeamworkEvent? %b : %s old=%s, new=%s",
 					(verdict != null), property, getDescription(property, oldValue), getDescription(property, newValue)));
-		
+
 		return verdict;
 	}
 
@@ -391,7 +278,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 	}
 
 	public static final int MAX_DESCRIPTION_LENGTH = 60;
-	
+
 	public String getDescription(String propertyName, Object o) {
 		if (o == null)
 			return "<null>";
@@ -402,10 +289,10 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		String description = o.toString();
 		if (description.length() < MAX_DESCRIPTION_LENGTH)
 			return description;
-		
+
 		if ("ID" == propertyName)
 			return description;
-		
+
 		return String.format("...(%d characters)", description.length());
 	}
 
