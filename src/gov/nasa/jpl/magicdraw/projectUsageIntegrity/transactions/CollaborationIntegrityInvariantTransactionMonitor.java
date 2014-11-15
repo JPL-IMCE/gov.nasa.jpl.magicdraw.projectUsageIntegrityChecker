@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import com.nomagic.ci.persistence.IProject;
 import com.nomagic.ci.persistence.ProjectEvent;
@@ -64,12 +65,14 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		public final Element lockable;
 		public final ModelValidationResult result;
 		public final boolean canBeLocked;
-		public UnlockedModificationInfo(ILockProjectService s, Element element, Element lockable, ModelValidationResult result, boolean canBeLocked) {
+		public final boolean isDeletion;
+		public UnlockedModificationInfo(ILockProjectService s, Element element, Element lockable, ModelValidationResult result, boolean canBeLocked, boolean isDeletion) {
 			this.s = s;
 			this.element = element;
 			this.lockable = lockable;
 			this.result = result;
 			this.canBeLocked = canBeLocked;
+			this.isDeletion = isDeletion;
 		}	
 	}
 
@@ -140,10 +143,16 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 			final GUILog guiLog = Application.getInstance().getGUILog();
 
 			for (UnlockedModificationInfo change : canBeLockedModifications) {
-				guiLog.log(change.result.getReason());
+				if (change.isDeletion)
+					guiLog.log(change.result.getReason());
+				else
+					MDLog.getPluginsLog().log(Priority.WARN, change.result.getReason());
 			}
 			for (UnlockedModificationInfo change : alreadyLockedModifications) {
-				guiLog.log(change.result.getReason());
+				if (change.isDeletion)
+					guiLog.log(change.result.getReason());
+				else
+					MDLog.getPluginsLog().log(Priority.WARN, change.result.getReason());
 			}
 		}
 
@@ -153,17 +162,17 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 		Logger log = MDLog.getPluginsLog();
 		UnlockedModificationInfo verdict = null;
 		if ("INSTANCE_DELETED".equals(property) && oldValue instanceof Element && newValue == null) {
-			verdict = checkIfUnlocked( (Element) oldValue );
+			verdict = checkIfUnlocked( (Element) oldValue, true );
 		} else if (oldValue == null && newValue instanceof Element) {
 			Element e = (Element) newValue;
 			SortedSet<String> containmentPropertyNames = MetamodelTransactionPropertyNameCache.getModifiablePropertyNamesForMetaclassOfElement(e);
 			if (containmentPropertyNames.contains(property))
-				verdict = checkIfUnlocked( e );
+				verdict = checkIfUnlocked( e , false);
 		} else if (oldValue instanceof Element && newValue == null) {
 			Element e = (Element) oldValue;
 			SortedSet<String> containmentPropertyNames = MetamodelTransactionPropertyNameCache.getModifiablePropertyNamesForMetaclassOfElement(e);
 			if (containmentPropertyNames.contains(property))
-				verdict = checkIfUnlocked( e );
+				verdict = checkIfUnlocked( e , false);
 		}
 		if ( ApplicationEnvironment.isDeveloper() )
 			log.info( String.format("### TeamworkEvent? %b : %s old=%s, new=%s",
@@ -186,7 +195,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 			return getLockRelevantSelfOrAncestor(s, e.getOwner());
 	}
 
-	public UnlockedModificationInfo checkIfUnlocked(Element e) {
+	public UnlockedModificationInfo checkIfUnlocked(Element e, boolean isDeletion) {
 		Project p = Project.getProject(e);
 		if (p == null) return null;
 
@@ -208,7 +217,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 				log.info( String.format("### LOCKED: canBeLocked=%b, isLockedByMe=%b, isLocked=%b -- %s",
 						s.canBeLocked(le), s.isLockedByMe(le), s.isLocked(le), message));
 			}
-			return new UnlockedModificationInfo(s, e, le, new ModelValidationResult(e, String.format("Illegal modification of %s", message)), false);
+			return new UnlockedModificationInfo(s, e, le, new ModelValidationResult(e, String.format("Illegal modification of %s", message)), false, isDeletion);
 		}
 
 		if (s.canBeLocked(le) && ! s.isLockedByMe(le) && info == null) {
@@ -220,7 +229,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 				log.info( String.format("### UNLOCKED: canBeLocked=%b, isLockedByMe=%b, isLocked=%b -- %s",
 						s.canBeLocked(le), s.isLockedByMe(le), s.isLocked(le), message));
 			}
-			return new UnlockedModificationInfo(s, e, le, new ModelValidationResult(e, String.format("Illegal modification of %s", message)), true);
+			return new UnlockedModificationInfo(s, e, le, new ModelValidationResult(e, String.format("Illegal modification of %s", message)), true, isDeletion);
 		}
 
 		if ( ApplicationEnvironment.isDeveloper() ) {
