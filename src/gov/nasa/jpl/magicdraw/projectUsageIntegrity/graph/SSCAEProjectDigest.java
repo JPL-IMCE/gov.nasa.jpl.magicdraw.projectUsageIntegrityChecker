@@ -60,7 +60,7 @@ public class SSCAEProjectDigest {
 	private List<URIConflict> packageURIConflicts;
 	private List<URIConflict> profileURIConflicts;
 
-	
+
 	public void dispose() {
 		classification = ProjectClassification.INVALID;
 		proxyCount = 0;
@@ -114,7 +114,7 @@ public class SSCAEProjectDigest {
 			profileURIConflicts = null;
 		}
 	}
-	
+
 	/**
 	 * should be false
 	 */
@@ -761,7 +761,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(conflict.getP2ID(), (Runnable) new SelectInContainmentTreeRunnable(project.getElementByID(conflict.getP2ID()))));
 			}
 		}
-		
+
 		if (!getSSPProfileNameConflicts().isEmpty()) {
 			log.log(String.format("WARNING: %d S/SP profile name conflicts\n", getSSPProfileNameConflicts().size()));
 			for (ProfileNameConflict conflict : getSSPProfileNameConflicts()) {
@@ -788,7 +788,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.noSharedPackage_constrainedAs_ERROR_fromUsages) {
 			List<Package> errors = new ArrayList<Package>();
 			for (Package p : g.sharedPackages_constrainedAs_ERROR_fromUsages.keySet()) {
@@ -802,7 +802,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_DEPRECATED_WARNING_constraintViolations) {
 			log.log(String.format(" WARN: %d DEPRECATED shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_DEPRECATED.size()));
 			for (Package p : g.sharedPackages_classified_DEPRECATED) {
@@ -811,7 +811,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_DEPRECATED_ERROR_constraintViolations) {
 			log.log(String.format("ERROR: %d DEPRECATED shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_DEPRECATED.size()));
 			for (Package p : g.sharedPackages_classified_DEPRECATED) {
@@ -820,7 +820,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_INCUBATOR_WARNING_constraintViolations) {
 			log.log(String.format(" WARN: %d INCUBATOR shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_INCUBATOR.size()));
 			for (Package p : g.sharedPackages_classified_INCUBATOR) {
@@ -829,7 +829,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_INCUBATOR_ERROR_constraintViolations) {
 			log.log(String.format("ERROR: %d INCUBATOR shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_INCUBATOR.size()));
 			for (Package p : g.sharedPackages_classified_INCUBATOR) {
@@ -838,7 +838,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_RECOMMENDED_WARNING_constraintViolations) {
 			log.log(String.format(" WARN: %d RECOMMENDED shared packages have some usage constraint classified as WARNING", g.sharedPackages_classified_RECOMMENDED.size()));
 			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
@@ -847,7 +847,7 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.no_RECOMMENDED_ERROR_constraintViolations) {
 			log.log(String.format("ERROR: %d RECOMMENDED shared packages have some usage constraint classified as ERROR", g.sharedPackages_classified_RECOMMENDED.size()));
 			for (Package p : g.sharedPackages_classified_RECOMMENDED) {
@@ -856,19 +856,27 @@ public class SSCAEProjectDigest {
 						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));
 			}
 		}
-		
+
 		if (!g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages.isEmpty()) {
 			log.log(String.format("ERROR: %d modules/project with INCONSISTENT shared packages classifications", g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages.size()));
 			for (MDAbstractProject v : g.moduleOrProjectWithInconsistentlyClassifiedSharedPackages) {
 				for (Package p : g.moduleOrProject2SharedPackages.get(v)) {
 					log.addHyperlinkedText(
-						String.format("=> <A>%s</A> is inconsistently classified within module/project '%s'\n", 
-								p.getQualifiedName(), v.getName()), 
-						Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));					
+							String.format("=> <A>%s</A> is inconsistently classified within module/project '%s'\n", 
+									p.getQualifiedName(), v.getName()), 
+									Collections.singletonMap(p.getQualifiedName(), (Runnable) new SelectInContainmentTreeRunnable(p)));					
 				}
 			}	
 		}
-		
+
+		if (!g.missingSSPProjects.isEmpty()){
+
+			for (MDAbstractProject missingProject : g.missingSSPProjects) {
+				log.log(String.format("\n project missing SSP flag: %s", missingProject.getName()));
+			}
+		}
+
+
 		log.log(String.format("===========================================\n"));
 	}
 

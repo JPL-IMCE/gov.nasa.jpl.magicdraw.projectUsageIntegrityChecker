@@ -857,7 +857,7 @@ public class SSCAEProjectUsageGraph {
 				missingProjects.add(p2);
 			
 			// TODO root project needs to a tws project
-			if (!(this.primaryProject instanceof LocalPrimaryProject) && p2 instanceof MDLocalProject && !(p2 instanceof MDLocalPrimaryProject)) {
+			if ((this.primaryProject instanceof TeamworkPrimaryProject) && p2 instanceof MDLocalAttachedProject && !(p2.equals(this.primaryProject))) {
 	
 				boolean isStandardSystemProfile = false;
 				try {
@@ -1335,7 +1335,11 @@ public class SSCAEProjectUsageGraph {
 			gDiagnostic.append(String.format("\n   OK: all local projects have SSP flag"));
 		} else {
 			gDiagnostic.append(String.format("\nERROR: %d projects are missing the SSP flag",
+
+
 					missingSSPProjects.size()));
+			gMessages.append(String.format("\nERROR: %d projects are missing the SS flag",					missingSSPProjects.size()));
+
 			for (MDAbstractProject missingProject : missingSSPProjects) {
 				gMessages.append(String.format("\n project missing SSP flag: %s", missingProject.getName()));
 			}
