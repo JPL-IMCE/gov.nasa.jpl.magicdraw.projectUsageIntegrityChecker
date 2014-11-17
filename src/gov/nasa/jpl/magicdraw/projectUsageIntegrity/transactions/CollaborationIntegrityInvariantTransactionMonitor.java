@@ -150,7 +150,7 @@ public class CollaborationIntegrityInvariantTransactionMonitor implements Transa
 			}
 			for (UnlockedModificationInfo change : alreadyLockedModifications) {
 				if (change.isDeletion)
-					guiLog.log(change.result.getReason());
+					MDLog.getPluginsLog().log(Priority.WARN, change.result.getReason());
 				else
 					MDLog.getPluginsLog().log(Priority.WARN, change.result.getReason());
 			}
