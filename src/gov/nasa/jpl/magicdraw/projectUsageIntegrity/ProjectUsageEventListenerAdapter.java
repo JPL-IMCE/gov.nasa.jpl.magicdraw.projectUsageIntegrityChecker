@@ -33,6 +33,10 @@ import javax.annotation.Nonnull;
 
 import org.apache.log4j.Logger;
 
+import com.nomagic.ci.persistence.IAttachedProject;
+import com.nomagic.ci.persistence.IPrimaryProject;
+import com.nomagic.ci.persistence.ProjectListener;
+import com.nomagic.ci.persistence.local.util.ProjectUtil;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectDescriptor;
@@ -42,6 +46,8 @@ import com.nomagic.magicdraw.core.project.RemoteProjectDescriptor;
 import com.nomagic.magicdraw.teamwork.application.TeamworkUtils;
 import com.nomagic.magicdraw.teamwork.application.storage.TeamworkPrimaryProject;
 import com.nomagic.magicdraw.utils.MDLog;
+import com.nomagic.uml2.ext.jmi.reflect.AbstractRepository;
+import com.nomagic.uml2.transaction.TransactionManager;
 import com.nomagic.utils.Utilities;
 
 /**
@@ -101,7 +107,15 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		// Prevents checker from running twice on project open
 		ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
 		helper.hasPostEventNotifications = true;	
+		
 		project.addPropertyChangeListener(this);
+
+		IPrimaryProject primary = project.getPrimaryProject();
+		for (IAttachedProject iAttachedProject : primary.getProjects()) {
+			iAttachedProject.getProjectListeners().add(helper);
+		}
+
+		project.getRepository().getTransactionManager().addTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
 	}
 	
 	protected void handleProjectClosed(final Project project) {
@@ -111,7 +125,14 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 			public void run() {
 				project.removePropertyChangeListener(ProjectUsageEventListenerAdapter.this);
 				ProjectUsageIntegrityHelper helper = mProject2Profile.remove(project);
-				if (helper != null){
+				if (helper != null) {
+					AbstractRepository repo = project.getRepository();
+					if (repo != null) {
+						TransactionManager tm = repo.getTransactionManager();
+						if (tm != null) {
+							tm.removeTransactionCommitListener(helper.collaborationIntegrityInvariantTransactionMonitor);
+						}
+					}
 					helper.dispose();
 				}
 			}
@@ -124,9 +145,20 @@ public class ProjectUsageEventListenerAdapter extends ProjectEventListenerAdapte
 		String name = ev.getPropertyName();
 		Object source = ev.getSource();
 		if ("project activated".equals(name) && source instanceof Project) {
+			/**
+			 * @see https://support.nomagic.com/browse/MDUMLCS-13361
+			 * @see https://jira1.jpl.nasa.gov:8443/browse/SSCAES-995
+			 *
+			 * A workaround to Donatas' suggestion, which does not work.
+			 * This workaround is not optimal -- there are lots of propertyChange() notifications!
+			 * Without a working POST_UPDATE notification, this is the best we can do for now.
+			 */
 			Project project = (Project) source;
 			ProjectUsageIntegrityHelper helper = getSSCAEProjectUsageIntegrityProfileForProject(project);
 			helper.flushAttachedProjectInfoCache();
+			final @Nonnull Logger logger = MDLog.getPluginsLog();
+			logger.info(String.format("*** ProjectUsageIntegrity.propertyChange(%s)", name));
+		
 		}
 	}
 

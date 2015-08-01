@@ -25,6 +25,22 @@
 	</target>
 	<property name="md.build.tools.dir"	location="${md.install.dir}/data/eclipse/resource/SMDP-PackageB" />
 	<import file="${md.build.tools.dir}/build.md.plugin.xml"/>
+	<target name="include.sscaeProfile" depends="copySSCAE, copyProfilesIntoRoot, build, zip.plugin"/>
+	
+	<target name="copyProfilesIntoRoot">
+			<copy todir="root/profiles/">
+				<fileset dir="profiles/">
+					<include name="SSCAEProjectUsageIntegrityProfile.mdzip"/>
+				</fileset>
+			</copy>
+			
+			<copy todir="root/profiles/">
+				<fileset dir="${md.install.dir}/profiles">
+					<include name="UML_Standard_Profile.mdzip"/>
+				</fileset>
+			</copy>
+		</target>
+		
 	
 	<target name="build" depends="build.jar,build.plugin"/>
 		

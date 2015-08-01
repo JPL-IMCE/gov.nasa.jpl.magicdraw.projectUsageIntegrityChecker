@@ -51,3 +51,8 @@ https://jira1.jpl.nasa.gov:8443/browse/SSCAES-909
 
 SSCAES-924: Provide support for classifying MD modules and specifying policies about using classified MD modules
 https://jira1.jpl.nasa.gov:8443/browse/SSCAES-924
+
+17050.1.9 (July 15, 2014)
+
+SSCAES-1039: PUIC transaction commit monitor to detect modification of locked elements
+https://jira1.jpl.nasa.gov:8443/browse/SSCAES-1039

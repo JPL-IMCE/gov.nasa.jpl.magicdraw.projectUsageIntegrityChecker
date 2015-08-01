@@ -45,6 +45,7 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassificationC
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectDigest;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.YamlDigestHelper;
+import gov.nasa.jpl.magicdraw.projectUsageIntegrity.transactions.CollaborationIntegrityInvariantTransactionMonitor;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectModelMD5ChecksumMismatchAnnotation;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.validation.SSCAEProjectMD5ChecksumMismatchValidation;
@@ -212,6 +213,8 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	}
 
 	public SSCAEProjectRepositoryListener prListener;
+	
+	public final CollaborationIntegrityInvariantTransactionMonitor collaborationIntegrityInvariantTransactionMonitor = new CollaborationIntegrityInvariantTransactionMonitor();
 			
 	public ProjectUsageIntegrityHelper(@Nonnull Project project, ToggleProjectUsageIntegrityCheckerAction checkerState) {
 		this.project = project;
@@ -224,9 +227,14 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 		this.pProject.addProjectListener(this);
 		this.prListener = new SSCAEProjectRepositoryListener(this);
 		
-		ProjectRepositoryRegistry prr = ProjectRepositoryRegistry.getInstance();
 		IPrimaryProject pp = project.getPrimaryProject();
+		pp.addProjectListener(collaborationIntegrityInvariantTransactionMonitor);
+		for ( IAttachedProject attached : pp.getProjects() ) { 
+			attached.getProjectListeners().add( collaborationIntegrityInvariantTransactionMonitor );
+		}
+		
 		URI uri = pp.getLocationURI();
+		ProjectRepositoryRegistry prr = ProjectRepositoryRegistry.getInstance();
 		IProjectRepository pr = prr.getProjectRepository(uri);
 		if (pr != null)
 			pr.addListener(prListener);
@@ -1429,13 +1437,23 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 			return;
 		
 		ProjectEventType evType = ev.getEventType();
-		logger.info(String.format("ProjectUsageIntegrity.notify(%s)", evType.name()));
+		logger.info(String.format("*** ProjectUsageIntegrity.notify(%s)", evType.name()));
 		
 		if (evType.isPostEvent()) {
 			hasPostEventNotifications = true;
 		}
 		
 		switch (evType) {
+		
+		case POST_UPDATE: {
+			/**
+			 * @see https://support.nomagic.com/browse/MDUMLCS-13361
+			 * @see https://jira1.jpl.nasa.gov:8443/browse/SSCAES-995
+			 *
+			 * So far, Donatas' suggestion does not work.
+			 */
+			this.flushAttachedProjectInfoCache();
+		}
 		
 		case PRE_CLOSE: {
 			if (this.pProject.getProjectListeners().contains(this))
@@ -1528,7 +1546,7 @@ public class ProjectUsageIntegrityHelper implements ProjectListener {
 	
 	protected void checkPostAttachProject(DecompositionEvent ev) {
 		IProject attached = ev.getAttachedProject();
-		
+		attached.addProjectListener(this);
 		checkIProjectResources(attached);
 	}
 	

@@ -29,8 +29,10 @@ import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -85,7 +87,7 @@ public abstract class AbstractSSCAETest extends MagicDrawTestCase {
 	protected void setUpTest() throws Exception {
 		super.setUpTest();
 		
-		List<Plugin> startedPlugins = QVTOUtils.getStartedMDPlugins();
+		Collection<Plugin> startedPlugins = QVTOUtils.getStartedMDPlugins();
 		List<String> requiredPlugins = getRequiredPlugins();
 		StringBuffer missing = new StringBuffer();
 		for (String requiredPlugin : requiredPlugins) {
