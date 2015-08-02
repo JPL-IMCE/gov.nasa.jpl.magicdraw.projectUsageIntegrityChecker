@@ -10,7 +10,6 @@ lazy val jpl_omg_oti_magicdraw_dynamicscripts = Project("gov-nasa-jpl-magicdraw-
   settings(
     MBEEKeys.mbeeLicenseYearOrRange := "2013-2015",
     MBEEKeys.mbeeOrganizationInfo := MBEEPlugin.MBEEOrganizations.secae,
-
     javaSource in Compile := baseDirectory.value / "src",
 
     classDirectory in Compile := baseDirectory.value / "bin"
