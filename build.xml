@@ -21,7 +21,8 @@
 	<property name="plugin.jar" 		value="lib/projectUsageIntegrity.jar"/>
 		
 	<target name="all.ok" if="all.precondition.md" depends="build,zip.plugin,install,zip.bundle">
-		<save.job.properties/>
+		<!-- do not inject dependency on 05 (qvto libs), but previous: 04 (qvt) -->
+		<save.prev.properties/>
 	</target>
 	<property name="md.build.tools.dir"	location="${md.install.dir}/data/eclipse/resource/SMDP-PackageB" />
 	<import file="${md.build.tools.dir}/build.md.plugin.xml"/>

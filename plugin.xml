@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="gov.nasa.jpl.magicdraw.projectUsageIntegrity" name="SSCAE Project Usage Integrity Checker" version="0" internalVersion="0" provider-name="JPL" class="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin">
+<plugin id="gov.nasa.jpl.magicdraw.projectUsageIntegrity" name="SSCAE Project Usage Integrity Checker" version="180" internalVersion="0" provider-name="JPL" class="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin">
   <requires>
     <api version="1.0"></api>
   </requires>
