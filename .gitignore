@@ -1,5 +1,8 @@
 */.DS_Store
 bin
+.idea
 *.svn*
 artifacts
 lib/projectUsageIntegrity.jar
+project/target
+target

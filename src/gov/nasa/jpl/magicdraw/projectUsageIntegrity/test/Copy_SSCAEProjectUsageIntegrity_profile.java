@@ -20,7 +20,6 @@ package gov.nasa.jpl.magicdraw.projectUsageIntegrity.test;
 
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin;
-import gov.nasa.jpl.magicdraw.qvto.QVTOUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -36,6 +35,7 @@ import com.nomagic.magicdraw.core.project.ProjectDescriptor;
 import com.nomagic.magicdraw.core.project.ProjectDescriptorsFactory;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.plugins.PluginDescriptor;
+import com.nomagic.magicdraw.plugins.PluginUtils;
 
 /**
  * @author Nicolas F. Rouquette (JPL)
@@ -84,7 +84,7 @@ public class Copy_SSCAEProjectUsageIntegrity_profile extends AbstractSSCAETest {
 	 * @return
 	 */
 	public static Collection<Plugin> getStartedMDPlugins() {
-		return QVTOUtils.getStartedMDPlugins();
+		return PluginUtils.getPlugins();
 	}
 	
 	@Override
