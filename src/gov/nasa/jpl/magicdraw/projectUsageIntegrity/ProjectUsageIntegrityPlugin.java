@@ -30,12 +30,10 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.SSCAEProjectUsageInt
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.resources.SSCAEProjectUsageIntegrityOptionsResources;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.transactions.MetamodelTransactionPropertyNameCache;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -47,7 +45,6 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.google.common.io.CharStreams;
 import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
@@ -88,7 +85,8 @@ implements ResourceDependentPlugin {
 	public boolean isDotDefault(){
 		Object defaultSelection = options.getDefaultCommandProperty();
 		
-		if (defaultSelection.equals(SSCAEProjectUsageIntegrityOptionsResources.getString(SSCAEProjectUsageIntegrityOptions.DEFAULT_DOT))){
+		if (defaultSelection.equals(
+                SSCAEProjectUsageIntegrityOptionsResources.getString(SSCAEProjectUsageIntegrityOptions.DEFAULT_DOT))) {
 			return true;
 		}
 		return false;
@@ -113,12 +111,23 @@ implements ResourceDependentPlugin {
 		return this.mProjectEventListener.getSSCAEProjectUsageIntegrityProfileForProject(project);
 	}
 
-	public final ToggleProjectUsageIntegrityCheckerAction projectUsageIntegrityToggleAction = new ToggleProjectUsageIntegrityCheckerAction();
-	public final ShowCurrentProjectUsageGraphAction showCurrentProjectUsageGraphAction = new ShowCurrentProjectUsageGraphAction();
-	public final CheckCurrentProjectUsageStatusAction checkCurrentProjectStatusAction = new CheckCurrentProjectUsageStatusAction();
-	public final ToggleProjectUsageTeamworkOrAllGraphAction toggleTeamworkOrAllGraphAction = new ToggleProjectUsageTeamworkOrAllGraphAction();
-	public final ToggleGraphLabelAction toggleGraphLabelAction = new ToggleGraphLabelAction();
-	public final ToggleThreadedAction toggleThreadedAction = new ToggleThreadedAction();
+	public final ToggleProjectUsageIntegrityCheckerAction projectUsageIntegrityToggleAction =
+            new ToggleProjectUsageIntegrityCheckerAction();
+
+	public final ShowCurrentProjectUsageGraphAction showCurrentProjectUsageGraphAction =
+            new ShowCurrentProjectUsageGraphAction();
+
+	public final CheckCurrentProjectUsageStatusAction checkCurrentProjectStatusAction =
+            new CheckCurrentProjectUsageStatusAction();
+
+	public final ToggleProjectUsageTeamworkOrAllGraphAction toggleTeamworkOrAllGraphAction =
+            new ToggleProjectUsageTeamworkOrAllGraphAction();
+
+	public final ToggleGraphLabelAction toggleGraphLabelAction =
+            new ToggleGraphLabelAction();
+
+	public final ToggleThreadedAction toggleThreadedAction =
+            new ToggleThreadedAction();
 
 	public boolean isProjectUsageIntegrityCheckerEnabled() { return projectUsageIntegrityToggleAction.getState(); }
 	public boolean showLabelsOnGraph() { return toggleGraphLabelAction.getState(); }
@@ -190,20 +199,29 @@ implements ResourceDependentPlugin {
 
 		File pluginDir = pluginDescriptor.getPluginDirectory();
 		
-		sscaeProjectUsageIntegrityIconsFolderPath = pluginDir.getAbsolutePath() + File.separator + "icons" + File.separator;
+		sscaeProjectUsageIntegrityIconsFolderPath =
+                pluginDir.getAbsolutePath() + File.separator + "icons" + File.separator;
 				
 		try {
 			String javaSpecificationVersion = System.getProperty("java.specification.version");
-			if (!"1.6".equals(javaSpecificationVersion) && !"1.7".equals(javaSpecificationVersion) && !"1.8".equals(javaSpecificationVersion)) {
+			if (!"1.6".equals(javaSpecificationVersion) &&
+                    !"1.7".equals(javaSpecificationVersion) &&
+                    !"1.8".equals(javaSpecificationVersion)) {
 				StringBuffer buff = new StringBuffer();
-				buff.append("*** SSCAE supports running MagicDraw with Java 1.6 (recommended), 1.7 or 1.8 at JPL ***\n");
+				buff.append(
+                        "*** SSCAE supports running MagicDraw with Java 1.6 (recommended), 1.7 or 1.8 at JPL ***\n");
 				for (String property : JAVA_PROPERTIES) {
 					buff.append(String.format(PROPERTY_NAME_VALUE_FORMAT, property, System.getProperty(property)));
 				}
 				
 				buff.append("\n\nFor questions, contact SSCAE: https://sscae-help.jpl.nasa.gov/contacts.php");
 				buff.append("\n\n*** OK to exit?");
-				int okToExit = JOptionPane.showConfirmDialog(null, buff.toString(), "Java Version Mismatch", JOptionPane.OK_CANCEL_OPTION);
+				int okToExit =
+                        JOptionPane.showConfirmDialog(
+                                null,
+                                buff.toString(),
+                                "Java Version Mismatch",
+                                JOptionPane.OK_CANCEL_OPTION);
 				if (okToExit == JOptionPane.OK_OPTION) {
 					System.exit(-1);
 				}
@@ -229,7 +247,8 @@ implements ResourceDependentPlugin {
 			this.mSaveParticipant = new ProjectUsageSaveParticipant();
 			a.addSaveParticipant(this.mSaveParticipant);
 			
-			EvaluationConfigurator.getInstance().registerBinaryImplementers(ProjectUsageIntegrityPlugin.class.getClassLoader());
+			EvaluationConfigurator.getInstance().registerBinaryImplementers(
+                    ProjectUsageIntegrityPlugin.class.getClassLoader());
 			
 			ActionsConfiguratorsManager manager = ActionsConfiguratorsManager.getInstance();
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.projectUsageIntegrityToggleAction));
@@ -239,9 +258,12 @@ implements ResourceDependentPlugin {
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleGraphLabelAction));
 			manager.addMainToolbarConfigurator(new ToolbarConfigurator(this.toggleThreadedAction));
 
-			final String logTraceContractsDir = pluginDescriptor.getPluginDirectory() + File.separator + "logTraceContracts" + File.separator;
+			final String logTraceContractsDir =
+                    pluginDescriptor.getPluginDirectory() + File.separator + "logTraceContracts" + File.separator;
 			logTraceContractsFolder = new File(logTraceContractsDir);
-			if (!logTraceContractsFolder.exists() || !logTraceContractsFolder.isDirectory() || !logTraceContractsFolder.canRead()) {
+			if (!logTraceContractsFolder.exists() ||
+                    !logTraceContractsFolder.isDirectory() ||
+                    !logTraceContractsFolder.canRead()) {
 				MDLog.getPluginsLog().error(String.format(
 						"INIT: -- %s - cannot find the 'logTraceContracts' folder in: %s",
 						getPluginName(), logTraceContractsDir));
@@ -255,14 +277,17 @@ implements ResourceDependentPlugin {
 			logTraceContractsAppender = new Appender();
 			
 			Logger.getRootLogger().addAppender(logTraceContractsAppender);
-			System.setErr(new PrintStream(new AppendingOutputStream(System.err, logTraceContractsAppender, MDLog.getPluginsLog(), Level.ERROR)));	
+			System.setErr(new PrintStream(new AppendingOutputStream(
+                    System.err, logTraceContractsAppender, MDLog.getPluginsLog(), Level.ERROR)));
 			
-			File suffixFile = new File(pluginDir.getAbsolutePath() + File.separator + MD_TEAMWORK_PROJECT_ID_SUFFIXES_FILE);
+			File suffixFile = new File(pluginDir.getAbsolutePath() +
+                    File.separator + MD_TEAMWORK_PROJECT_ID_SUFFIXES_FILE);
 			if (suffixFile.exists() && suffixFile.canRead()) {
 				try {
-					InputStream is = suffixFile.toURI().toURL().openStream();
-					List<String> lines = CharStreams.readLines( new InputStreamReader( is ));
-					for (String line : lines) {
+                    Charset charset = Charset.forName("US-ASCII");
+                    BufferedReader reader = Files.newBufferedReader(suffixFile.toPath(), charset);
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
 						if (line.startsWith("#"))
 							continue;
 						if (line.isEmpty())
@@ -271,10 +296,14 @@ implements ResourceDependentPlugin {
 						MDLog.getPluginsLog().info(String.format("MD teamwork project ID suffix: '%s'", line));
 					}
 				} catch (MalformedURLException e) {
-					MDLog.getPluginsLog().error(String.format("Error reading the MD teamwork project ID suffix file: %s: %s", suffixFile, e.getMessage()), e);
+					MDLog.getPluginsLog().error(String.format(
+                            "Error reading the MD teamwork project ID suffix file: %s: %s",
+                            suffixFile, e.getMessage()), e);
 					MDTeamworkProjectIDSuffixes.clear();
 				} catch (IOException e) {
-					MDLog.getPluginsLog().error(String.format("Error reading the MD teamwork project ID suffix file: %s: %s", suffixFile, e.getMessage()), e);
+					MDLog.getPluginsLog().error(String.format(
+                            "Error reading the MD teamwork project ID suffix file: %s: %s",
+                            suffixFile, e.getMessage()), e);
 					MDTeamworkProjectIDSuffixes.clear();
 				}
 			}
