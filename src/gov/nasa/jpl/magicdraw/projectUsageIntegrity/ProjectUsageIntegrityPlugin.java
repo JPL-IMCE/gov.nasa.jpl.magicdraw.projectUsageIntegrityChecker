@@ -29,7 +29,6 @@ import gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleThreadedAction
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.SSCAEProjectUsageIntegrityOptions;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.options.resources.SSCAEProjectUsageIntegrityOptionsResources;
 import gov.nasa.jpl.magicdraw.projectUsageIntegrity.transactions.MetamodelTransactionPropertyNameCache;
-import gov.nasa.jpl.magicdraw.qvto.QVTOPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,11 +209,7 @@ implements ResourceDependentPlugin {
 				}
 			}
 			ProjectUsageIntegrityPlugin.INSTANCE = this;
-			
-			if (QVTOPlugin.getInstance() == null) {
-				MDLog.getPluginsLog().fatal("The QVTO Library plugin should have been initialized!");
-			}
-			
+
 			try {
 				SSCAE_CLEAN_MD5_TAG_REPLACE = Pattern.compile(SSCAE_CLEAN_MD5_TAG_PATTERN);
 			} catch (PatternSyntaxException e) {
