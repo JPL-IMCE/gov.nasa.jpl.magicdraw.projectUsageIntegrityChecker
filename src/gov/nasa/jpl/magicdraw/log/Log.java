@@ -36,31 +36,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package gov.nasa.jpl.magicdraw.log;
 
-package gov.nasa.jpl.magicdraw.projectUsageIntegrity.expression;
+import com.nomagic.magicdraw.core.Application;
 
-import java.lang.Object;
-import javax.jmi.reflect.RefObject;
+public class Log {
 
-import com.nomagic.magicdraw.uml.UUIDRegistry;
-import com.nomagic.uml2.ext.jmi.reflect.Expression;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+    public static void log(String string){
+        String[] logArray = string.split("\n");
+        for (String s : logArray){
+            Application.getInstance().getGUILog().log(s);
+        }
 
-/**
- * @author Nicolas.F.Rouquette@jpl.nasa.gov
- */
-public class ElementUUID implements Expression {
+    }
 
-	@Override
-	public Object getValue(RefObject ref) {
-	
-		if (ref instanceof Element) {
-			Element refObject = (Element) ref;
-			String uuid = UUIDRegistry.getUUID(refObject);
-			return uuid;
-		}
-		
-		return null;
-	}
-	
+    public static void log(Object obj){
+        String string = obj.toString();
+        String[] logArray = string.split("\n");
+        for (String s : logArray){
+            Application.getInstance().getGUILog().log(s);
+        }
+    }
+
 }
