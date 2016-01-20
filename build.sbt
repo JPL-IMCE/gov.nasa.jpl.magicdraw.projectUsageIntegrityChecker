@@ -261,8 +261,8 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
                 <minVersion human="17.0" internal="169010"/>
               </requiredResource>
               <installation>
-                <file from="profiles/PUIC/SSCAEProjectUsageIntegrityProfile.mdzip"
-                      to="profiles/PUIC/SSCAEProjectUsageIntegrityProfile.mdzip"/>
+                <file from="profiles/SSCAEProjectUsageIntegrityProfile.mdzip"
+                      to="profiles/SSCAEProjectUsageIntegrityProfile.mdzip"/>
 
                 <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/MDTeamworkProjectIDSuffixes.txt"
                         to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/MDTeamworkProjectIDSuffixes.txt"/>
