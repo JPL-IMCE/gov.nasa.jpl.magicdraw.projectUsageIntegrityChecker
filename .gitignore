@@ -4,6 +4,6 @@ bin
 .idea
 *.svn*
 *~
-package
+cae.md.package
 project/target
 target

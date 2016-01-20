@@ -38,15 +38,12 @@ developers := List(
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
 cleanFiles <+=
-  (baseDirectory in ThisBuild) { base => base / "package" / "cae.md.package" }
+  baseDirectory { base => base / "cae.md.package" }
 
 lazy val mdInstallDirectory = SettingKey[File]("md-install-directory", "MagicDraw Installation Directory")
 
-mdInstallDirectory in ThisBuild :=
-  (baseDirectory in ThisBuild).value / "package" / "cae.md.package" / ("cae.md18_0sp5.puic-" + Versions.version)
-
-cleanFiles <+=
-  (baseDirectory in ThisBuild) { base => base / "package" / "cae.md.package" }
+mdInstallDirectory in Global :=
+  baseDirectory.value / "cae.md.package" / ("cae.md18_0sp5.puic-" + Versions.version)
 
 lazy val artifactZipFile = taskKey[File]("Location of the zip artifact file")
 
@@ -67,7 +64,7 @@ buildUTCDate in Global := {
   formatter.format(new Date)
 }
 
-lazy val puic = Project("projectUsageIntegrityChecker", file("."))
+lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegrityChecker"))
   .enablePlugins(IMCEGitPlugin)
   .enablePlugins(IMCEReleasePlugin)
   .settings(IMCEReleasePlugin.libraryReleaseProcessSettings)
@@ -96,7 +93,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
         "compile" artifacts Artifact("cae_md18_0_sp5_aspectj_scala", "zip", "zip"),
 
     extractArchives <<= (baseDirectory, libraryDependencies, update, streams,
-      mdInstallDirectory in ThisBuild, scalaBinaryVersion) map {
+      mdInstallDirectory in Global, scalaBinaryVersion) map {
       (base, libs, up, s, mdInstallDir, sbV) =>
 
         if (!mdInstallDir.exists) {
@@ -177,7 +174,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
 
     zipInstall <<=
       (baseDirectory, update, streams,
-        mdInstallDirectory in ThisBuild,
+        mdInstallDirectory in Global,
         artifactZipFile,
         packageBin in Compile,
         packageSrc in Compile,
@@ -191,7 +188,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
           val root = base / "target" / "cae_md18_0_sp5_puic"
           s.log.info(s"\n*** top: $root")
 
-          IO.copyDirectory(base / "profiles", root, overwrite=true, preserveLastModified=true)
+          IO.copyDirectory(base / "profiles", root / "profiles/", overwrite=true, preserveLastModified=true)
 
           val pluginDir = root / "plugins" / "gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
           IO.createDirectory(pluginDir)
@@ -236,18 +233,18 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
           val resourceDescriptorInfo =
             <resourceDescriptor critical="false" date={d}
                                 description="CAE Project Usage Integrity Checker Plugin"
-                                group="IMCE Resource"
+                                group="CAE Resource"
                                 homePage="https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
                                 id="75319"
                                 mdVersionMax="higher"
                                 mdVersionMin="18.0"
-                                name="IMCEProfiles"
+                                name="CAE Project Usage Integrity Checker Plugin"
                                 product="CAE Project Usage Integrity Checker Plugin"
                                 restartMagicdraw="false" type="Plugin">
               <version human={Versions.version} internal={Versions.version} resource={Versions.version + "0"}/>
               <provider email="nicolas.f.rouquette@jpl.nasa.gov"
-                        homePage="https://github.jpl.nasa.gov/imce"
-                        name="IMCE"/>
+                        homePage="https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
+                        name="CAE"/>
               <edition>Reader</edition>
               <edition>Community</edition>
               <edition>Standard</edition>
@@ -264,7 +261,9 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
                 <minVersion human="17.0" internal="169010"/>
               </requiredResource>
               <installation>
-                <file from="profiles/SSCAEProjectUsageIntegrityProfile.mdzip" to="profiles/SSCAEProjectUsageIntegrityProfile.mdzip"/>
+                <file from="profiles/PUIC/SSCAEProjectUsageIntegrityProfile.mdzip"
+                      to="profiles/PUIC/SSCAEProjectUsageIntegrityProfile.mdzip"/>
+
                 <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/MDTeamworkProjectIDSuffixes.txt"
                         to="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/MDTeamworkProjectIDSuffixes.txt"/>
                 <file from="plugins/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/runOpenAuditTests.ant" 
@@ -335,7 +334,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
   )
   .settings(IMCEPlugin.strictScalacFatalWarningsSettings)
 
-lazy val root = Project("puic-package", file("package"))
+lazy val root = Project("puic-package", file("."))
   .enablePlugins(IMCEGitPlugin)
   .enablePlugins(IMCEReleasePlugin)
   .aggregate(puic)
@@ -347,9 +346,9 @@ lazy val root = Project("puic-package", file("package"))
     IMCEKeys.targetJDK := IMCEKeys.jdk18.value,
     git.baseVersion := Versions.version,
     
-    organization := "gov.nasa.jpl.imce.magicdraw.packages",
-    name := "imce_md18_0_sp5_profiles_libraries",
-    homepage := Some(url("https://github.jpl.nasa.gov/imce/imce.qvto.profileGenerator")),
+    organization := "gov.nasa.jpl.cae.magicdraw.packages",
+    name := "cae_md18_0_sp5_puic",
+    homepage := Some(url("https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker")),
 
     git.baseVersion := Versions.version,
 
@@ -358,7 +357,7 @@ lazy val root = Project("puic-package", file("package"))
       previous.extra("build.date.utc" -> buildUTCDate.value)
     },
 
-    pomPostProcess <<= (pomPostProcess, mdInstallDirectory in ThisBuild) {
+    pomPostProcess <<= (pomPostProcess, mdInstallDirectory in Global) {
       (previousPostProcess, mdInstallDir) => { (node: XNode) =>
         val processedNode: XNode = previousPostProcess(node)
         val mdUpdateDir = UpdateProperties(mdInstallDir)
@@ -368,10 +367,10 @@ lazy val root = Project("puic-package", file("package"))
     },
 
     artifactZipFile := {
-      baseDirectory.value / "target" / "imce_md18_0_sp5_profiles_libraries_resource.zip"
+      baseDirectory.value / "target" / "cae_md18_0_sp5_puic.zip"
     },
 
-    addArtifact(Artifact("imce_md18_0_sp5_profiles_libraries_resource", "zip", "zip"), artifactZipFile),
+    addArtifact(Artifact("cae_md18_0_sp5_puic", "zip", "zip"), artifactZipFile),
 
     // disable publishing the main jar produced by `package`
     publishArtifact in(Compile, packageBin) := false,
@@ -407,7 +406,7 @@ lazy val root = Project("puic-package", file("package"))
 
     md5Install <<=
       ((baseDirectory, update, streams,
-        mdInstallDirectory in ThisBuild,
+        mdInstallDirectory in Global,
         version
         ) map {
         (base, up, s, mdInstallDir, buildVersion) =>
@@ -418,7 +417,7 @@ lazy val root = Project("puic-package", file("package"))
 
     updateInstall <<=
       (baseDirectory, update, streams,
-        mdInstallDirectory in ThisBuild,
+        mdInstallDirectory in Global,
         artifactZipFile in puic) map {
         (base, up, s, mdInstallDir, puicResource) =>
 
@@ -433,7 +432,7 @@ lazy val root = Project("puic-package", file("package"))
 
     zipInstall <<=
       (baseDirectory, update, streams,
-        mdInstallDirectory in ThisBuild,
+        mdInstallDirectory in Global,
         artifactZipFile,
         makePom, scalaBinaryVersion
         ) map {

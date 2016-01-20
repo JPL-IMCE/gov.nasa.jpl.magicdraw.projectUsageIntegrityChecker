@@ -1,3 +1,0 @@
-# Each non-blank line is a suffix for an MD teamwork project ID.
-# If a local module has an ID ending in one of these suffixes, this local module will be considered invalid.
-_sscae_cmr_137_78_160_100
