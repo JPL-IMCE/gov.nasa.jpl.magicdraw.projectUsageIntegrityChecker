@@ -89,6 +89,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
     resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
+    cleanFiles += (classDirectory in Compile).value,
     libraryDependencies +=
       "gov.nasa.jpl.cae.magicdraw.packages" %% "cae_md18_0_sp5_aspectj_scala" % Versions.aspectj_scala_package %
         "compile" artifacts Artifact("cae_md18_0_sp5_aspectj_scala", "zip", "zip"),
