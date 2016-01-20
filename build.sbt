@@ -86,6 +86,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
 
     addArtifact(Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip"), artifactZipFile),
 
+    resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
     libraryDependencies +=
