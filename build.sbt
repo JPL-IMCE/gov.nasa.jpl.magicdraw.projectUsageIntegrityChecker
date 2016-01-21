@@ -75,6 +75,10 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
     IMCEKeys.targetJDK := IMCEKeys.jdk18.value,
     git.baseVersion := Versions.version,
 
+    organization := "gov.nasa.jpl.cae.magicdraw.plugins",
+    name := "cae_md18_0_sp5_puic",
+    homepage := Some(url("https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker")),
+
     projectID := {
       val previous = projectID.value
       previous.extra("build.date.utc" -> buildUTCDate.value)
@@ -190,7 +194,9 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
           val root = base / "target" / "cae_md18_0_sp5_puic"
           s.log.info(s"\n*** top: $root")
 
+          IO.copyDirectory(base / "doc", root / "manual" / "ProjectUsageIntegrityChecker", overwrite=true, preserveLastModified=true)
           IO.copyDirectory(base / "profiles", root / "profiles/", overwrite=true, preserveLastModified=true)
+          IO.copyDirectory(base / "samples", root / "samples", overwrite=true, preserveLastModified=true)
 
           val pluginDir = root / "plugins" / "gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
           IO.createDirectory(pluginDir)
@@ -201,7 +207,6 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
 
           IO.copyDirectory(base / "icons", pluginDir / "icons", overwrite=true, preserveLastModified=true)
           IO.copyDirectory(base / "lib", pluginDir / "lib", overwrite=true, preserveLastModified=true)
-          IO.copyDirectory(base / "samples", pluginDir / "samples", overwrite=true, preserveLastModified=true)
 
           IO.copyFile(libJar, pluginDir / "lib" / libJar.getName)
           IO.copyFile(libSrc, pluginDir / "lib" / libSrc.getName)
@@ -263,6 +268,11 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
                 <minVersion human="17.0" internal="169010"/>
               </requiredResource>
               <installation>
+                <file from="manual/ProjectUsageIntegrityChecker/PUIC-May2013.pptx"
+                      to="manual/ProjectUsageIntegrityChecker/PUIC-May2013.pptx"/>
+                <file from="manual/ProjectUsageIntegrityChecker/PUICLocalMigrationSupport-Dec2014.pptx"
+                      to="manual/ProjectUsageIntegrityChecker/PUICLocalMigrationSupport-Dec2014.pptx"/>
+
                 <file from="profiles/SSCAEProjectUsageIntegrityProfile.mdzip"
                       to="profiles/SSCAEProjectUsageIntegrityProfile.mdzip"/>
 
@@ -351,8 +361,6 @@ lazy val root = Project("puic-package", file("."))
     organization := "gov.nasa.jpl.cae.magicdraw.packages",
     name := "cae_md18_0_sp5_puic",
     homepage := Some(url("https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker")),
-
-    git.baseVersion := Versions.version,
 
     projectID := {
       val previous = projectID.value
