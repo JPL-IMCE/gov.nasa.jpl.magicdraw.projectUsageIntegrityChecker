@@ -135,6 +135,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
               java.nio.file.StandardCopyOption.REPLACE_EXISTING)
           }
           IO.delete(mdRootFolder)
+
           val mdBinFolder = mdInstallDir / "bin"
           require(mdBinFolder.exists, "md bin: $mdBinFolder")
           val mdPropertiesFiles: Seq[File] = mdBinFolder.listFiles(new java.io.FilenameFilter() {
@@ -211,6 +212,10 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
           IO.copyFile(libJar, pluginDir / "lib" / libJar.getName)
           IO.copyFile(libSrc, pluginDir / "lib" / libSrc.getName)
           IO.copyFile(libDoc, pluginDir / "lib" / libDoc.getName)
+
+          val libDir = base / "projectUsageIntegrityChecker" / "lib"
+          val libs = (PathFinder(libDir).*** --- libDir) pair Path.rebase(libDir, pluginDir / "lib")
+          IO.copy(libs, overwrite=true, preserveLastModified=true)
 
           val pluginInfo =
             <plugin id="gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
