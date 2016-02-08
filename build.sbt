@@ -64,6 +64,20 @@ buildUTCDate in Global := {
   formatter.format(new Date)
 }
 
+def nativeUnzip(f: File, dir: File): Unit = {
+  IO.createDirectory(dir)
+  Process(Seq("unzip", "-q", f.getAbsolutePath, "-d", dir.getAbsolutePath), dir).! match {
+    case 0 => ()
+    case n => sys.error("Failed to run native unzip application!")
+  }
+}
+
+def singleMatch(up: UpdateReport, f: DependencyFilter): File = {
+  val files: Seq[File] = up.matching(f)
+  require(1 == files.size)
+  files.head
+}
+
 lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegrityChecker"))
   .enablePlugins(IMCEGitPlugin)
   .enablePlugins(IMCEReleasePlugin)
@@ -75,7 +89,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
     IMCEKeys.targetJDK := IMCEKeys.jdk18.value,
     git.baseVersion := Versions.version,
 
-    organization := "gov.nasa.jpl.cae.magicdraw.plugins",
+    organization := "gov.nasa.jpl.imce.magicdraw.plugins",
     name := "cae_md18_0_sp5_puic",
     homepage := Some(url("https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker")),
 
@@ -90,76 +104,31 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
 
     addArtifact(Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip"), artifactZipFile),
 
+    resolvers +=  new MavenRepository(
+      "cae ext-release-local",
+      "https://cae-artrepo.jpl.nasa.gov/artifactory/ext-release-local"),
+
     resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
     cleanFiles += (classDirectory in Compile).value,
     libraryDependencies +=
-      "gov.nasa.jpl.cae.magicdraw.packages" %% "cae_md18_0_sp5_aspectj_scala" % Versions.aspectj_scala_package %
-        "compile" artifacts Artifact("cae_md18_0_sp5_aspectj_scala", "zip", "zip"),
-
-    extractArchives <<= (baseDirectory, libraryDependencies, update, streams,
-      mdInstallDirectory in Global, scalaBinaryVersion) map {
-      (base, libs, up, s, mdInstallDir, sbV) =>
+      "gov.nasa.jpl.cae.magicdraw.packages" % "cae_md18_0_sp5_vendor" % Versions.vendor_package % "compile" artifacts
+        Artifact("cae_md18_0_sp5_vendor", "zip", "zip"),
+    extractArchives <<= (baseDirectory, update, streams,
+      mdInstallDirectory in ThisBuild) map {
+      (base, up, s, mdInstallDir) =>
 
         if (!mdInstallDir.exists) {
 
-          libs.foreach { dep: ModuleID =>
-            s.log.info(s"direct: $dep")
-          }
-          val filter: DependencyFilter = new DependencyFilter {
-            def apply(c: String, m: ModuleID, a: Artifact): Boolean = {
-              val ok1 = a.`type` == "zip" && a.extension == "zip"
-              val ok2 = libs.find { dep: ModuleID =>
-                ok1 && dep.organization == m.organization && m.name == dep.name + "_" + sbV
-              }
-              ok2.isDefined
-            }
-          }
-          val zips: Seq[File] = up.matching(filter)
-          zips.foreach { zip =>
-            val files = IO.unzip(zip, mdInstallDir)
-            s.log.info(
-              s"=> created md.install.dir=$mdInstallDir with ${files.size} " +
-                s"files extracted from zip: ${zip.getName}")
-          }
-          val mdRootFolder = mdInstallDir / s"cae.md18_0sp5.aspectj_scala-${Versions.aspectj_scala_package}"
-          require(
-            mdRootFolder.exists && mdRootFolder.canWrite,
-            s"mdRootFolder: $mdRootFolder")
-          IO.listFiles(mdRootFolder).foreach { f =>
-            val fp = f.toPath
-            Files.move(
-              fp,
-              mdInstallDir.toPath.resolve(fp.getFileName),
-              java.nio.file.StandardCopyOption.REPLACE_EXISTING)
-          }
-          IO.delete(mdRootFolder)
+          val vendorZip: File =
+            singleMatch(up, artifactFilter(name = "cae_md18_0_sp5_vendor", `type` = "zip", extension = "zip"))
+          s.log.info(s"=> Extracting CAE Vendor: $vendorZip")
+          nativeUnzip(vendorZip, mdInstallDir)
 
-          val mdBinFolder = mdInstallDir / "bin"
-          require(mdBinFolder.exists, "md bin: $mdBinFolder")
-          val mdPropertiesFiles: Seq[File] = mdBinFolder.listFiles(new java.io.FilenameFilter() {
-            override def accept(dir: File, name: String): Boolean =
-              name.endsWith(".properties")
-          })
-
-          mdPropertiesFiles.foreach { mdPropertyFile: File =>
-
-            val mdPropertyName = mdPropertyFile.name
-            val unpatchedContents: String = IO.read(mdPropertyFile)
-
-            // Remove "-Dlocal.config.dir.ext\=<value>" or "-Dlocal.config.dir.ext=<value>" regardless of what <value> is.
-            val patchedContents1 = unpatchedContents.replaceAll(
-              "-Dlocal.config.dir.ext\\\\?=[a-zA-Z0-9_.\\\\-]*",
-              "-Dlocal.config.dir.ext\\\\=-puic-" + Versions.version)
-
-            IO.write(file = mdPropertyFile, content = patchedContents1, append = false)
-          }
-
-        } else {
+        } else
           s.log.info(
             s"=> use existing md.install.dir=$mdInstallDir")
-        }
 
         val libPath = (mdInstallDir / "lib").toPath
         val mdJars = for {

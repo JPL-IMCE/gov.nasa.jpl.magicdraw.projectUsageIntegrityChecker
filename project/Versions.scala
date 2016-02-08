@@ -1,8 +1,8 @@
 object Versions {
 
   // this project
-  val version="1.12"
+  val version="1.13"
 
-  // https://github.jpl.nasa.gov/mbee-dev/cae.magicdraw.package.aspectj_scala/tree/cae_md18_0_sp5
-  val aspectj_scala_package="1.18"
+  // https://github.jpl.nasa.gov/mbee-dev/cae.magicdraw.packages.vendor/tree/sp5
+  val vendor_package = "1.6"
 }
