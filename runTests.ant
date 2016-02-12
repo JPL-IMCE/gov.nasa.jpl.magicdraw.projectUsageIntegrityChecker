@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project xmlns:qvto="http://www.eclipse.org/qvt/1.0.0/Operational" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity" basedir="..//" default="all">
+
+	<property environment="env"/>
+	
+	<property name="md.build.tools.dir" location="${md.install.dir}/data/eclipse/resource/gov.nasa.jpl.imce.md.qvt"/>
+
+	<tstamp>
+		<format property="now" pattern="yyyyMMdd"/>
+		<format property="date" pattern="yyyy-MM-dd"/>
+	</tstamp>
+		
+	<property name="plugin.dir" location="${basedir}"/>
+	<property name="plugin.project" value="${ant.project.name}"/>
+	<property name="plugin.resource" value="data/resourcemanager/MDR_Plugin_MagicDrawProjectUsageIntegrity_75319_descriptor.xml"/>
+	<property name="plugin.archive" value="ProjectUsageIntegrityPlugin"/>
+	<property name="plugin.jar" value="../lib/projectUsageIntegrity.jar"/>
+
+	<condition property="all.precondition" value="true">
+		<and>
+			<isset property="md.build.tools.dir"/>
+			<available type="dir" file="${md.build.tools.dir}"/>
+			<isset property="md.install.dir"/>
+			<available type="dir" file="${md.install.dir}"/>
+			<or>
+				<os family="mac"/>
+				<and>
+					<os family="unix"/>
+					<isset property="env.DISPLAY"/>
+				</and>
+			</or>
+		</and>
+	</condition>
+		
+	<target name="all" depends="all.error,all.ok"/>
+	
+	<target name="all.error" unless="all.precondition">
+		<echo message="Check the environment variables tested in the target 'all.precondition'"/>
+		<fail/>
+	</target>
+
+	<target name="all.ok" if="all.precondition"  depends="tests"/>
+		
+	<import file="${md.build.tools.dir}/build.md.plugin.xml"/>
+				
+	<path id="plugin.classpath">
+		<fileset dir="${plugin.dir}">
+			<include name="lib/*.jar"/>
+		</fileset>
+	</path>
+		
+	<target name="tests" depends="md.developer,md.mode">
+		<delete dir="${plugin.dir}/dependencies/tmp" failonerror="false"/>
+		<mkdir dir="${plugin.dir}/dependencies/tmp/data"/>
+		<copy todir="${plugin.dir}/dependencies/tmp">
+			<fileset dir="${md.install.dir}/">
+				<include name="mdmain.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${plugin.dir}/dependencies/tmp/data">
+			<fileset dir="${md.install.dir}/data/">
+				<include name="global.opt"/>
+				<include name="test.properties"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${plugin.dir}/generated/results" failonerror="false"/>		
+		<mkdir dir="${plugin.dir}/generated/results"/>
+		<echoproperties prefix="JDWP"/>
+		
+		<junit printsummary="yes" fork="true" 
+			showoutput="true" 
+			tempdir="${plugin.dir}/dependencies/tmp"
+			dir="${plugin.dir}/dependencies/tmp"
+			newenvironment="true">
+			<bootclasspath/>
+
+			<jvmarg value="-Xmx1280m" />
+			<jvmarg value="-XX:MaxPermSize=1024M" />
+			<jvmarg value="${JDWP.DEBUG}"/>
+			<syspropertyset refid="md.developer.property"/>
+
+			<sysproperty key="project.root"	 				value="${plugin.dir}" />
+			<sysproperty key="tests.resources" 				value="${plugin.dir}/testResources" />
+			<sysproperty key="install.root" 					value="${md.install.dir}" />
+			<sysproperty key="printSilentDialogStackTrace" 	value="true"/>
+
+			<sysproperty key="DISPLAY"						value="${env.DISPLAY}"/>
+			<sysproperty key="LOCALCONFIG"					value="true"/>
+			<sysproperty key="localconfig.location"			value="${plugin.dir}/dependencies/tmp"/>
+
+			<sysproperty key="force.skip.memtest.global" 	value="true" />
+
+			<sysproperty key="FL_SERVER_ADDRESS" 	value="cae-lic01.jpl.nasa.gov"/>
+			<sysproperty key="FL_SERVER_PORT" 		value="1101"/>
+			<sysproperty key="FL_EDITION" 			value="Enterprise"/>
+
+			<classpath>
+				<fileset refid="magicdraw.classpath"/>
+				<path refid="plugin.classpath"/>
+			</classpath>
+			
+			<!--
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAEOpenValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test> 
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAECreateValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test>
+			-->
+			
+			<test name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.test.SSCAESystemOrStandardProfileValidationTest"
+				todir="${plugin.dir}/generated/results">
+				<formatter type="xml" usefile="true" />
+			</test>
+		</junit>		
+	</target>
+	
+</project>
