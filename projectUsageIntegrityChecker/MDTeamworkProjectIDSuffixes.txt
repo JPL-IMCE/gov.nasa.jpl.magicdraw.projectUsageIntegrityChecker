@@ -1,3 +1,7 @@
 # Each non-blank line is a suffix for an MD teamwork project ID.
 # If a local module has an ID ending in one of these suffixes, this local module will be considered invalid.
-_sscae_cmr_137_78_160_100
+#
+# This matches the suffix of the "SysML Extensions.mdzip" profile that used to be on Teamwork.
+# According to CAE, the teamwork profile has been deleted so we can turn off
+# the local teamwork project ID for this suffix.
+# _sscae_cmr_137_78_160_100

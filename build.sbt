@@ -47,22 +47,11 @@ mdInstallDirectory in Global :=
 
 lazy val artifactZipFile = taskKey[File]("Location of the zip artifact file")
 
-lazy val extractArchives = TaskKey[Seq[Attributed[File]]]("extract-archives", "Extracts ZIP files")
-
 lazy val updateInstall = TaskKey[Unit]("update-install", "Update the MD Installation directory")
 
 lazy val md5Install = TaskKey[Unit]("md5-install", "Produce an MD5 report of the MD Installation directory")
 
 lazy val zipInstall = TaskKey[File]("zip-install", "Zip the MD Installation directory")
-
-lazy val buildUTCDate = SettingKey[String]("build-utc-date", "The UDC Date of the build")
-
-buildUTCDate in Global := {
-  import java.util.{ Date, TimeZone }
-  val formatter = new java.text.SimpleDateFormat("yyyy-MM-dd-HH:mm")
-  formatter.setTimeZone(TimeZone.getTimeZone("UTC"))
-  formatter.format(new Date)
-}
 
 def nativeUnzip(f: File, dir: File): Unit = {
   IO.createDirectory(dir)
@@ -115,6 +104,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
     libraryDependencies +=
       "gov.nasa.jpl.cae.magicdraw.packages" % "cae_md18_0_sp5_vendor" % Versions.vendor_package % "compile" artifacts
         Artifact("cae_md18_0_sp5_vendor", "zip", "zip"),
+
     extractArchives <<= (baseDirectory, update, streams,
       mdInstallDirectory in ThisBuild) map {
       (base, up, s, mdInstallDir) =>
@@ -129,16 +119,20 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("projectUsageIntegr
         } else
           s.log.info(
             s"=> use existing md.install.dir=$mdInstallDir")
-
-        val libPath = (mdInstallDir / "lib").toPath
-        val mdJars = for {
-          jar <- Files.walk(libPath).iterator().filter(_.toString.endsWith(".jar")).map(_.toFile)
-        } yield Attributed.blank(jar)
-
-        mdJars.toSeq
     },
 
-    unmanagedJars in Compile <++= extractArchives,
+    unmanagedJars in Compile <++= (baseDirectory, update, streams,
+      mdInstallDirectory in ThisBuild,
+      extractArchives) map {
+      (base, up, s, mdInstallDir, _) =>
+
+        val libJars = (mdInstallDir / "lib") ** "*.jar"
+        val mdJars = libJars.get.map(Attributed.blank(_))
+
+        s.log.info(s"=> Adding ${mdJars.size} unmanaged jars")
+
+        mdJars
+    },
 
     compile <<= (compile in Compile) dependsOn extractArchives,
 
