@@ -1,18 +1,9 @@
-import better.files.{File => BFile, _}
 import java.io.File
-import java.nio.file.Files
 
 import sbt.Keys._
 import sbt._
 
 import com.typesafe.sbt.pgp.PgpKeys
-import com.typesafe.sbt.SbtAspectj._
-import com.typesafe.sbt.SbtAspectj.AspectjKeys._
-
-import scala.xml.{Node => XNode}
-import scala.xml.transform._
-
-import scala.collection.JavaConversions._
 
 import gov.nasa.jpl.imce.sbt._
 
@@ -71,6 +62,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
   .enablePlugins(IMCEGitPlugin)
   .enablePlugins(IMCEReleasePlugin)
   .settings(IMCEReleasePlugin.libraryReleaseProcessSettings)
+  .settings(IMCEPlugin.strictScalacFatalWarningsSettings)
   .settings(addArtifact(Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip"), artifactZipFile).settings: _*)
   .settings(
     IMCEKeys.licenseYearOrRange := "2013-2016",
@@ -84,14 +76,21 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
 
     projectID := {
       val previous = projectID.value
-      previous.extra("build.date.utc" -> buildUTCDate.value)
+      previous.extra(
+        "build.date.utc" -> buildUTCDate.value,
+        "artifact.kind" -> "magicdraw.resource.plugin")
     },
+
+    // disable using the Scala version in output paths and artifacts
+    crossPaths := false,
 
     artifactZipFile := {
-      baseDirectory.value / "target" / "cae_md18_0_sp5_puic_resource.zip"
+      baseDirectory.value / "target" / s"cae_md18_0_sp5_puic-${version.value}-resource.zip"
     },
 
-    addArtifact(Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip"), artifactZipFile),
+    addArtifact(
+      Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip", Some("resource"), Seq(), None, Map()),
+      artifactZipFile),
 
     resolvers +=  new MavenRepository(
       "cae ext-release-local",
@@ -127,7 +126,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
       (base, up, s, mdInstallDir, _) =>
 
         val libJars = (mdInstallDir / "lib") ** "*.jar"
-        val mdJars = libJars.get.map(Attributed.blank(_))
+        val mdJars = libJars.get.map(Attributed.blank)
 
         s.log.info(s"=> Adding ${mdJars.size} unmanaged jars")
 
@@ -328,4 +327,3 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
           zip
       }
   )
-  .settings(IMCEPlugin.strictScalacFatalWarningsSettings)
