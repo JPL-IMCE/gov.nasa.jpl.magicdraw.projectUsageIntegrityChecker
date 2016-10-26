@@ -1,5 +1,8 @@
 # Project Usage Integrity Checker for MagicDraw 18
 
+[![Build Status](https://travis-ci.org/JPL-IMCE/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker.svg?branch=md18_0_sp6)](https://travis-ci.org/JPL-IMCE/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker)
+[ ![Download](https://api.bintray.com/packages/jpl-imce/gov.nasa.jpl.imce/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/images/download.svg) ](https://bintray.com/jpl-imce/gov.nasa.jpl.imce/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/_latestVersion)
+ 
 ## Documentation
 
 - [PUIC Presentation (May 2013)](https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker/blob/cae_md18_0_sp5/projectUsageIntegrityChecker/doc/PUIC-May2013.pptx)

@@ -8,7 +8,7 @@ set -ev
 # Get the tag for this commit
 t=$(git name-rev --tags --name-only $(git rev-parse HEAD))
 
-# Stop if the tag is anything but 'undefined'
+# Bypass the build if the tag is anything but 'undefined'.
 [ "undefined" != "$t" ] && exit 0;
 
 [ ${TRAVIS_SECURE_ENV_VARS} == false ] && exit -1;
@@ -18,4 +18,4 @@ openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in pubring.gpg.enc -out loc
 openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in credentials.sbt.enc -out local.credentials.sbt -d
 openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in deploy_key.enc -out local.deploy_key -d
 
-sbt -jvm-opts travis/jvmopts.compile compile test
+sbt -jvm-opts travis/jvmopts.compile compile
