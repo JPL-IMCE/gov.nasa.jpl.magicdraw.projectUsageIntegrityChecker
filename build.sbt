@@ -42,7 +42,6 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
   .enablePlugins(IMCEReleasePlugin)
   .settings(IMCEReleasePlugin.libraryReleaseProcessSettings)
   .settings(IMCEPlugin.strictScalacFatalWarningsSettings)
-  .settings(addArtifact(Artifact("imce_md18_0_sp6_puic_resource", "zip", "zip"), artifactZipFile).settings: _*)
   .settings(
     IMCEKeys.licenseYearOrRange := "2013-2016",
     IMCEKeys.organizationInfo := IMCEPlugin.Organizations.cae,
