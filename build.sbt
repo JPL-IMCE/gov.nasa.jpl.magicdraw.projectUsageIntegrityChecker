@@ -9,23 +9,6 @@ import gov.nasa.jpl.imce.sbt._
 
 useGpg := true
 
-developers := List(
-  Developer(
-    id="rouquett",
-    name="Nicolas F. Rouquette",
-    email="nicolas.f.rouquette@jpl.nasa.gov",
-    url=url("https://gateway.jpl.nasa.gov/personal/rouquett/default.aspx")),
-  Developer(
-    id="kerzhmer",
-    name="Aleksandr A. Kerzhner",
-    email="aleksandr.a.kerzhner@jpl.nasa.gov",
-    url=url("https://gateway.jpl.nasa.gov/personal/kerzhner/default.aspx")),
-  Developer(
-    id="khavelun",
-    name="Klaus Havelund",
-    email="klaus.havelund@jpl.nasa.gov",
-    url=url("https://gateway.jpl.nasa.gov/personal/khavelun/default.aspx")))
-
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
 lazy val mdInstallDirectory = SettingKey[File]("md-install-directory", "MagicDraw Installation Directory")
