@@ -28,13 +28,9 @@ developers := List(
 
 shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " }
 
-cleanFiles <+=
-  baseDirectory { base => base / "cae.md.package" }
-
 lazy val mdInstallDirectory = SettingKey[File]("md-install-directory", "MagicDraw Installation Directory")
 
-mdInstallDirectory in Global :=
-  baseDirectory.value / "cae.md.package" / ("cae.md18_0sp5.puic-" + Versions.version)
+mdInstallDirectory in Global := baseDirectory.value / "target" / "md.package"
 
 lazy val artifactZipFile = taskKey[File]("Location of the zip artifact file")
 
@@ -63,16 +59,12 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
   .enablePlugins(IMCEReleasePlugin)
   .settings(IMCEReleasePlugin.libraryReleaseProcessSettings)
   .settings(IMCEPlugin.strictScalacFatalWarningsSettings)
-  .settings(addArtifact(Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip"), artifactZipFile).settings: _*)
+  .settings(addArtifact(Artifact("imce_md18_0_sp6_puic_resource", "zip", "zip"), artifactZipFile).settings: _*)
   .settings(
     IMCEKeys.licenseYearOrRange := "2013-2016",
     IMCEKeys.organizationInfo := IMCEPlugin.Organizations.cae,
     IMCEKeys.targetJDK := IMCEKeys.jdk18.value,
     git.baseVersion := Versions.version,
-
-    organization := "gov.nasa.jpl.imce.magicdraw.plugins",
-    name := "cae_md18_0_sp5_puic",
-    homepage := Some(url("https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker")),
 
     projectID := {
       val previous = projectID.value
@@ -85,52 +77,89 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
     crossPaths := false,
 
     artifactZipFile := {
-      baseDirectory.value / "target" / s"cae_md18_0_sp5_puic-${version.value}-resource.zip"
+      baseDirectory.value / "target" / s"imce_md18_0_sp6_puic-${version.value}-resource.zip"
     },
 
     addArtifact(
-      Artifact("cae_md18_0_sp5_puic_resource", "zip", "zip", Some("resource"), Seq(), None, Map()),
+      Artifact("imce_md18_0_sp6_puic_resource", "zip", "zip", Some("resource"), Seq(), None, Map()),
       artifactZipFile),
 
-    resolvers +=  new MavenRepository(
-      "cae ext-release-local",
-      "https://cae-artrepo.jpl.nasa.gov/artifactory/ext-release-local"),
 
     resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
     cleanFiles += (classDirectory in Compile).value,
-    libraryDependencies +=
-      "gov.nasa.jpl.cae.magicdraw.packages" % "cae_md18_0_sp5_vendor" % Versions.vendor_package % "compile" artifacts
-        Artifact("cae_md18_0_sp5_vendor", "zip", "zip"),
 
-    extractArchives <<= (baseDirectory, update, streams,
-      mdInstallDirectory in ThisBuild) map {
-      (base, up, s, mdInstallDir) =>
 
-        if (!mdInstallDir.exists) {
+    libraryDependencies ++= Seq(
 
-          val vendorZip: File =
-            singleMatch(up, artifactFilter(name = "cae_md18_0_sp5_vendor", `type` = "zip", extension = "zip"))
-          s.log.info(s"=> Extracting CAE Vendor: $vendorZip")
-          nativeUnzip(vendorZip, mdInstallDir)
+      "org.omg.tiwg.vendor.nomagic"
+        % "com.nomagic.magicdraw.package"
+        % "18.0-sp6" artifacts Artifact("com.nomagic.magicdraw.package", "zip", "zip", Some("part1"), Seq(), None, Map()),
 
-        } else
-          s.log.info(
-            s"=> use existing md.install.dir=$mdInstallDir")
+      "org.omg.tiwg.vendor.nomagic"
+        % "com.nomagic.magicdraw.package"
+        % "18.0-sp6" artifacts Artifact("com.nomagic.magicdraw.package", "zip", "zip", Some("part2"), Seq(), None, Map())
+    ),
+
+    extractArchives := {
+      val base = baseDirectory.value
+      val up = update.value
+      val s = streams.value
+      val mdInstallDir = (mdInstallDirectory in ThisBuild).value
+
+      if (!mdInstallDir.exists) {
+
+        val parts = (for {
+          cReport <- up.configurations
+          if cReport.configuration == "compile"
+          mReport <- cReport.modules
+          if mReport.module.organization == "org.omg.tiwg.vendor.nomagic"
+          (artifact, archive) <- mReport.artifacts
+        } yield archive).sorted
+
+        s.log.info(s"Extracting MagicDraw from ${parts.size} parts:")
+        parts.foreach { p => s.log.info(p.getAbsolutePath) }
+
+        val merged = File.createTempFile("md_merged", ".zip")
+        println(s"merged: ${merged.getAbsolutePath}")
+
+        val zip = File.createTempFile("md_no_install", ".zip")
+        println(s"zip: ${zip.getAbsolutePath}")
+
+        val script = File.createTempFile("unzip_md", ".sh")
+        println(s"script: ${script.getAbsolutePath}")
+
+        val out = new java.io.PrintWriter(new java.io.FileOutputStream(script))
+        out.println("#!/bin/bash")
+        out.println(parts.map(_.getAbsolutePath).mkString("cat ", " ", s" > ${merged.getAbsolutePath}"))
+        out.println(s"zip -FF ${merged.getAbsolutePath} --out ${zip.getAbsolutePath}")
+        out.println(s"unzip -q ${zip.getAbsolutePath} -d ${mdInstallDir.getAbsolutePath}")
+        out.close()
+
+        val result = sbt.Process(command = "/bin/bash", arguments = Seq[String](script.getAbsolutePath)).!
+
+        require(0 <= result && result <= 2, s"Failed to execute script (exit=$result): ${script.getAbsolutePath}")
+
+      } else
+        s.log.info(
+          s"=> use existing md.install.dir=$mdInstallDir")
     },
 
-    unmanagedJars in Compile <++= (baseDirectory, update, streams,
-      mdInstallDirectory in ThisBuild,
-      extractArchives) map {
-      (base, up, s, mdInstallDir, _) =>
+    unmanagedJars in Compile := {
+      val base = baseDirectory.value
+      val up = update.value
+      val s = streams.value
+      val mdInstallDir = (mdInstallDirectory in ThisBuild).value
 
-        val libJars = (mdInstallDir / "lib") ** "*.jar"
-        val mdJars = libJars.get.map(Attributed.blank)
+      val depJars = ((base / "lib") ** "*.jar").get.map(Attributed.blank)
 
-        s.log.info(s"=> Adding ${mdJars.size} unmanaged jars")
+      val libJars = ((mdInstallDir / "lib") ** "*.jar").get.map(Attributed.blank)
+      val allJars = libJars ++ depJars
 
-        mdJars
+      s.log.info(s"=> Adding ${allJars.size} unmanaged jars")
+
+      allJars
     },
 
     compile <<= (compile in Compile) dependsOn extractArchives,
@@ -154,7 +183,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
 
           import com.typesafe.sbt.packager.universal._
 
-          val root = base / "target" / "cae_md18_0_sp5_puic"
+          val root = base / "target" / "imce_md18_0_sp6_puic"
           s.log.info(s"\n*** top: $root")
 
           IO.copyDirectory(base / "doc", root / "manual" / "ProjectUsageIntegrityChecker", overwrite=true, preserveLastModified=true)
@@ -181,7 +210,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
 
           val pluginInfo =
             <plugin id="gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
-                    name="CAE Project Usage Integrity Checker"
+                    name="IMCE Project Usage Integrity Checker"
                     version={Versions.version} internalVersion={Versions.version + "0"}
                     provider-name="JPL"
                     class="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityPlugin">
@@ -206,19 +235,19 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
           val resourceDescriptorFile = resourceManager / "MDR_Plugin_MagicDrawProjectUsageIntegrity_75319_descriptor.xml"
           val resourceDescriptorInfo =
             <resourceDescriptor critical="false" date={d}
-                                description="CAE Project Usage Integrity Checker Plugin"
-                                group="CAE Resource"
-                                homePage="https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
+                                description="IMCE Project Usage Integrity Checker Plugin"
+                                group="imce Resource"
+                                homePage="https://github.com/JPL-IMCE/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
                                 id="75319"
                                 mdVersionMax="higher"
                                 mdVersionMin="18.0"
-                                name="CAE Project Usage Integrity Checker Plugin"
-                                product="CAE Project Usage Integrity Checker Plugin"
+                                name="IMCE Project Usage Integrity Checker Plugin"
+                                product="IMCE Project Usage Integrity Checker Plugin"
                                 restartMagicdraw="false" type="Plugin">
               <version human={Versions.version} internal={Versions.version} resource={Versions.version + "0"}/>
               <provider email="nicolas.f.rouquette@jpl.nasa.gov"
-                        homePage="https://github.jpl.nasa.gov/secae/gov.nasa.jpl.magicdraw.projectUsageIntegrityChecker"
-                        name="CAE"/>
+                        homePage="https://github.com/NicolasRouquette"
+                        name="imce"/>
               <edition>Reader</edition>
               <edition>Community</edition>
               <edition>Standard</edition>
