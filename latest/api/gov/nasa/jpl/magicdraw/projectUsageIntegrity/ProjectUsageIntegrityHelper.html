@@ -1,0 +1,1747 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>ProjectUsageIntegrityHelper - gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper</title>
+          <meta name="description" content="ProjectUsageIntegrityHelper - gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper" />
+          <meta name="keywords" content="ProjectUsageIntegrityHelper gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../index.html';
+            var hash = 'gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img alt="Class" src="../../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../../package.html" class="extype" name="gov">gov</a>.<a href="../../../package.html" class="extype" name="gov.nasa">nasa</a>.<a href="../../package.html" class="extype" name="gov.nasa.jpl">jpl</a>.<a href="../package.html" class="extype" name="gov.nasa.jpl.magicdraw">magicdraw</a>.<a href="package.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity">projectUsageIntegrity</a></p>
+        <h1>ProjectUsageIntegrityHelper</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity">package projectUsageIntegrity</a>
+          </div></span></h3><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ProjectUsageIntegrityHelper</span><span class="result"> extends <span class="extype" name="com.nomagic.ci.persistence.ProjectListener">ProjectListener</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="com.nomagic.ci.persistence.ProjectListener">ProjectListener</span>, <span class="extype" name="com.nomagic.ci.event.Listener">Listener</span>[<span class="extype" name="com.nomagic.ci.persistence.ProjectEvent">ProjectEvent</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper"><span>ProjectUsageIntegrityHelper</span></li><li class="in" name="com.nomagic.ci.persistence.ProjectListener"><span>ProjectListener</span></li><li class="in" name="com.nomagic.ci.event.Listener"><span>Listener</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(project:com.nomagic.magicdraw.core.Project,checkerState:gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleProjectUsageIntegrityCheckerAction):gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper"></a>
+      <a id="&lt;init&gt;:ProjectUsageIntegrityHelper"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ProjectUsageIntegrityHelper</span><span class="params">(<span name="project">project: <span class="extype" name="com.nomagic.magicdraw.core.Project">Project</span></span>, <span name="checkerState">checkerState: <a href="actions/ToggleProjectUsageIntegrityCheckerAction.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleProjectUsageIntegrityCheckerAction">ToggleProjectUsageIntegrityCheckerAction</a></span>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@&lt;init&gt;(project:com.nomagic.magicdraw.core.Project,checkerState:gov.nasa.jpl.magicdraw.projectUsageIntegrity.actions.ToggleProjectUsageIntegrityCheckerAction):gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@##():Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#alreadyRanMD5Validation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="alreadyRanMD5Validation():Boolean"></a>
+      <a id="alreadyRanMD5Validation():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">alreadyRanMD5Validation</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@alreadyRanMD5Validation():Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#checkIProjectResources" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="checkIProjectResources(p:com.nomagic.ci.persistence.IProject):Boolean"></a>
+      <a id="checkIProjectResources(IProject):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">checkIProjectResources</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.ci.persistence.IProject">IProject</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@checkIProjectResources(p:com.nomagic.ci.persistence.IProject):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#checkPostAttachProject" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="checkPostAttachProject(ev:com.nomagic.ci.persistence.local.decomposition.DecompositionEvent):Unit"></a>
+      <a id="checkPostAttachProject(DecompositionEvent):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">checkPostAttachProject</span><span class="params">(<span name="ev">ev: <span class="extype" name="com.nomagic.ci.persistence.local.decomposition.DecompositionEvent">DecompositionEvent</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@checkPostAttachProject(ev:com.nomagic.ci.persistence.local.decomposition.DecompositionEvent):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="package.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity">gov.nasa.jpl.magicdraw.projectUsageIntegrity</a>] </dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@clone():Object" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#computeTeamworkProjectSSCAECleanCommitTag" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="computeTeamworkProjectSSCAECleanCommitTag():String"></a>
+      <a id="computeTeamworkProjectSSCAECleanCommitTag():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">computeTeamworkProjectSSCAECleanCommitTag</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@computeTeamworkProjectSSCAECleanCommitTag():String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEActionList" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="createSSCAEActionList(action:com.nomagic.actions.NMAction):java.util.List[com.nomagic.actions.NMAction]"></a>
+      <a id="createSSCAEActionList(NMAction):List[NMAction]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEActionList</span><span class="params">(<span name="action">action: <span class="extype" name="com.nomagic.actions.NMAction">NMAction</span></span>)</span><span class="result">: <span class="extype" name="java.util.List">List</span>[<span class="extype" name="com.nomagic.actions.NMAction">NMAction</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEActionList(action:com.nomagic.actions.NMAction):java.util.List[com.nomagic.actions.NMAction]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="package.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity">gov.nasa.jpl.magicdraw.projectUsageIntegrity</a>] </dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEMissingUsageRepairAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEMissingUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,targetP:com.nomagic.ci.persistence.IAttachedProject,config:com.nomagic.ci.persistence.decomposition.ProjectAttachmentConfiguration):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEMissingUsageRepairAnnotation(Model,IPrimaryProject,IAttachedProject,ProjectAttachmentConfiguration):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEMissingUsageRepairAnnotation</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="sourceP">sourceP: <span class="extype" name="com.nomagic.ci.persistence.IPrimaryProject">IPrimaryProject</span></span>, <span name="targetP">targetP: <span class="extype" name="com.nomagic.ci.persistence.IAttachedProject">IAttachedProject</span></span>, <span name="config">config: <span class="extype" name="com.nomagic.ci.persistence.decomposition.ProjectAttachmentConfiguration">ProjectAttachmentConfiguration</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEMissingUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,targetP:com.nomagic.ci.persistence.IAttachedProject,config:com.nomagic.ci.persistence.decomposition.ProjectAttachmentConfiguration):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEReSharedUsageRepairAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEReSharedUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEReSharedUsageRepairAnnotation(Model,IPrimaryProject,MDAbstractProject,MDAbstractProjectUsage,MDAbstractProject,IAttachedProject,ProjectUsage):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEReSharedUsageRepairAnnotation</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="sourceP">sourceP: <span class="extype" name="com.nomagic.ci.persistence.IPrimaryProject">IPrimaryProject</span></span>, <span name="u">u: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="u2v">u2v: <a href="graph/MDAbstractProjectUsage.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage">MDAbstractProjectUsage</a></span>, <span name="v">v: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="targetP">targetP: <span class="extype" name="com.nomagic.ci.persistence.IAttachedProject">IAttachedProject</span></span>, <span name="usageRelation">usageRelation: <span class="extype" name="com.nomagic.ci.metamodel.project.ProjectUsage">ProjectUsage</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEReSharedUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEReadOnlyUsageRepairAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEReadOnlyUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEReadOnlyUsageRepairAnnotation(Model,IPrimaryProject,MDAbstractProject,MDAbstractProjectUsage,MDAbstractProject,IAttachedProject,ProjectUsage):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEReadOnlyUsageRepairAnnotation</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="sourceP">sourceP: <span class="extype" name="com.nomagic.ci.persistence.IPrimaryProject">IPrimaryProject</span></span>, <span name="u">u: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="u2v">u2v: <a href="graph/MDAbstractProjectUsage.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage">MDAbstractProjectUsage</a></span>, <span name="v">v: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="targetP">targetP: <span class="extype" name="com.nomagic.ci.persistence.IAttachedProject">IAttachedProject</span></span>, <span name="usageRelation">usageRelation: <span class="extype" name="com.nomagic.ci.metamodel.project.ProjectUsage">ProjectUsage</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEReadOnlyUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAERepairSystemOrStandardProfileFlagAction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAERepairSystemOrStandardProfileFlagAction(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAERepairSystemOrStandardProfileFlagAction(Model,IPrimaryProject):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAERepairSystemOrStandardProfileFlagAction</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="sourceP">sourceP: <span class="extype" name="com.nomagic.ci.persistence.IPrimaryProject">IPrimaryProject</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAERepairSystemOrStandardProfileFlagAction(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEStereotypeApplicationAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEStereotypeApplicationAnnotation(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,c:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint,stereotype:com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEStereotypeApplicationAnnotation(Package,Constraint,Stereotype):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEStereotypeApplicationAnnotation</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>, <span name="c">c: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint">Constraint</span></span>, <span name="stereotype">stereotype: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEStereotypeApplicationAnnotation(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,c:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint,stereotype:com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEStereotypeUnapplicationAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEStereotypeUnapplicationAnnotation(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,c:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint,stereotype:com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEStereotypeUnapplicationAnnotation(Package,Constraint,Stereotype):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEStereotypeUnapplicationAnnotation</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>, <span name="c">c: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint">Constraint</span></span>, <span name="stereotype">stereotype: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEStereotypeUnapplicationAnnotation(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,c:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint,stereotype:com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEStickyVersionUsageRepairAnnotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEStickyVersionUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEStickyVersionUsageRepairAnnotation(Model,IPrimaryProject,MDAbstractProject,MDAbstractProjectUsage,MDAbstractProject,IAttachedProject,ProjectUsage):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEStickyVersionUsageRepairAnnotation</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="sourceP">sourceP: <span class="extype" name="com.nomagic.ci.persistence.IPrimaryProject">IPrimaryProject</span></span>, <span name="u">u: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="u2v">u2v: <a href="graph/MDAbstractProjectUsage.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage">MDAbstractProjectUsage</a></span>, <span name="v">v: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>, <span name="targetP">targetP: <span class="extype" name="com.nomagic.ci.persistence.IAttachedProject">IAttachedProject</span></span>, <span name="usageRelation">usageRelation: <span class="extype" name="com.nomagic.ci.metamodel.project.ProjectUsage">ProjectUsage</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEStickyVersionUsageRepairAnnotation(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,sourceP:com.nomagic.ci.persistence.IPrimaryProject,u:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,u2v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProjectUsage,v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject,targetP:com.nomagic.ci.persistence.IAttachedProject,usageRelation:com.nomagic.ci.metamodel.project.ProjectUsage):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEUnloadedModuleProxyRepairAction" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEUnloadedModuleProxyRepairAction(unloadedProject:com.nomagic.ci.persistence.IAttachedProject,unloadedProxies:java.util.Set[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element]):com.nomagic.magicdraw.annotation.Annotation"></a>
+      <a id="createSSCAEUnloadedModuleProxyRepairAction(IAttachedProject,Set[Element]):Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEUnloadedModuleProxyRepairAction</span><span class="params">(<span name="unloadedProject">unloadedProject: <span class="extype" name="com.nomagic.ci.persistence.IAttachedProject">IAttachedProject</span></span>, <span name="unloadedProxies">unloadedProxies: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element">Element</span>]</span>)</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEUnloadedModuleProxyRepairAction(unloadedProject:com.nomagic.ci.persistence.IAttachedProject,unloadedProxies:java.util.Set[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element]):com.nomagic.magicdraw.annotation.Annotation" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createSSCAEValidationRunData" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createSSCAEValidationRunData():com.nomagic.magicdraw.validation.ValidationRunData"></a>
+      <a id="createSSCAEValidationRunData():ValidationRunData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createSSCAEValidationRunData</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.validation.ValidationRunData">ValidationRunData</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createSSCAEValidationRunData():com.nomagic.magicdraw.validation.ValidationRunData" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#createVertexInternal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="createVertexInternal(p:com.nomagic.ci.persistence.IProject,pug:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph,index:Int,width:Int):gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject"></a>
+      <a id="createVertexInternal(IProject,SSCAEProjectUsageGraph,Int,Int):MDAbstractProject"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createVertexInternal</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.ci.persistence.IProject">IProject</span></span>, <span name="pug">pug: <a href="graph/SSCAEProjectUsageGraph.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph">SSCAEProjectUsageGraph</a></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>, <span name="width">width: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@createVertexInternal(p:com.nomagic.ci.persistence.IProject,pug:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.SSCAEProjectUsageGraph,index:Int,width:Int):gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#disable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="disable():Unit"></a>
+      <a id="disable():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">disable</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@disable():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#dispose" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dispose():Unit"></a>
+      <a id="dispose():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dispose</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@dispose():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#enable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="enable():Unit"></a>
+      <a id="enable():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enable</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@enable():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#flushAttachedProjectInfoCache" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="flushAttachedProjectInfoCache():Unit"></a>
+      <a id="flushAttachedProjectInfoCache():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">flushAttachedProjectInfoCache</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@flushAttachedProjectInfoCache():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getAbstractUsageStereotype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getAbstractUsageStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype"></a>
+      <a id="getAbstractUsageStereotype():Stereotype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAbstractUsageStereotype</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getAbstractUsageStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getAttachedProjectMountedPackages" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getAttachedProjectMountedPackages(ap:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject):java.util.List[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package]"></a>
+      <a id="getAttachedProjectMountedPackages(MDAbstractProject):List[Package]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAttachedProjectMountedPackages</span><span class="params">(<span name="ap">ap: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>)</span><span class="result">: <span class="extype" name="java.util.List">List</span>[<span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getAttachedProjectMountedPackages(ap:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject):java.util.List[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getPreviousProjectVertexMatching" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getPreviousProjectVertexMatching(v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject):gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject"></a>
+      <a id="getPreviousProjectVertexMatching(MDAbstractProject):MDAbstractProject"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getPreviousProjectVertexMatching</span><span class="params">(<span name="v">v: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>)</span><span class="result">: <a href="graph/MDAbstractProject.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject">MDAbstractProject</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getPreviousProjectVertexMatching(v:gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject):gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.MDAbstractProject" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getProjectClassification" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getProjectClassification():gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification"></a>
+      <a id="getProjectClassification():ProjectClassification"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getProjectClassification</span><span class="params">()</span><span class="result">: <a href="graph/ProjectClassification.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification">ProjectClassification</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getProjectClassification():gov.nasa.jpl.magicdraw.projectUsageIntegrity.graph.ProjectClassification" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getProjectModelStereotype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getProjectModelStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype"></a>
+      <a id="getProjectModelStereotype():Stereotype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getProjectModelStereotype</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getProjectModelStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEProjectMD5ChecksumMismatchRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEProjectMD5ChecksumMismatchRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl"></a>
+      <a id="getSSCAEProjectMD5ChecksumMismatchRule():ElementValidationRuleImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEProjectMD5ChecksumMismatchRule</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.validation.ElementValidationRuleImpl">ElementValidationRuleImpl</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEProjectMD5ChecksumMismatchRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEProjectModelGraphSerialization" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEProjectModelGraphSerialization(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):String"></a>
+      <a id="getSSCAEProjectModelGraphSerialization(Model):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEProjectModelGraphSerialization</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEProjectModelGraphSerialization(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEProjectModelVersion" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEProjectModelVersion(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):Int"></a>
+      <a id="getSSCAEProjectModelVersion(Model):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEProjectModelVersion</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEProjectModelVersion(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEProjectStereotypeValidationRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEProjectStereotypeValidationRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl"></a>
+      <a id="getSSCAEProjectStereotypeValidationRule():ElementValidationRuleImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEProjectStereotypeValidationRule</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.validation.ElementValidationRuleImpl">ElementValidationRuleImpl</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEProjectStereotypeValidationRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEProjectUsageRelationshipRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEProjectUsageRelationshipRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl"></a>
+      <a id="getSSCAEProjectUsageRelationshipRule():ElementValidationRuleImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEProjectUsageRelationshipRule</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.validation.ElementValidationRuleImpl">ElementValidationRuleImpl</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEProjectUsageRelationshipRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageClassification" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageClassification(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getSSCAESharedPackageClassification(Package):EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageClassification</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageClassification(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(Package):EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageConstraint_DEPRECATED_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(Package):EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageConstraint_INCUBATOR_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(Package):EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageConstraint_RECOMMENDED_UsageDependencies(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageGraphSerialization" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageGraphSerialization(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):String"></a>
+      <a id="getSSCAESharedPackageGraphSerialization(Package):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageGraphSerialization</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageGraphSerialization(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageReferenceID" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageReferenceID(is:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification):String"></a>
+      <a id="getSSCAESharedPackageReferenceID(InstanceSpecification):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageReferenceID</span><span class="params">(<span name="is">is: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification">InstanceSpecification</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageReferenceID(is:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification):String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageUsageConstraintLevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageUsageConstraintLevel(u:com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getSSCAESharedPackageUsageConstraintLevel(Usage):EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageUsageConstraintLevel</span><span class="params">(<span name="u">u: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage">Usage</span></span>)</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageUsageConstraintLevel(u:com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage):com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAESharedPackageVersion" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAESharedPackageVersion(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):Int"></a>
+      <a id="getSSCAESharedPackageVersion(Package):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAESharedPackageVersion</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAESharedPackageVersion(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEValidProjectUsageGraphRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEValidProjectUsageGraphRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl"></a>
+      <a id="getSSCAEValidProjectUsageGraphRule():ElementValidationRuleImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEValidProjectUsageGraphRule</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.magicdraw.validation.ElementValidationRuleImpl">ElementValidationRuleImpl</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEValidProjectUsageGraphRule():com.nomagic.magicdraw.validation.ElementValidationRuleImpl" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSSCAEValidationConstraints" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSSCAEValidationConstraints():java.util.Collection[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint]"></a>
+      <a id="getSSCAEValidationConstraints():Collection[Constraint]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSSCAEValidationConstraints</span><span class="params">()</span><span class="result">: <span class="extype" name="java.util.Collection">Collection</span>[<span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint">Constraint</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSSCAEValidationConstraints():java.util.Collection[com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Constraint]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageReferenceIDProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageReferenceIDProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackageReferenceIDProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageReferenceIDProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageReferenceIDProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageReferenceStereotype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageReferenceStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype"></a>
+      <a id="getSharedPackageReferenceStereotype():Stereotype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageReferenceStereotype</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageReferenceStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageStereotype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype"></a>
+      <a id="getSharedPackageStereotype():Stereotype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageStereotype</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageThisPackageUsageClassificationProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageThisPackageUsageClassificationProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackageThisPackageUsageClassificationProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageThisPackageUsageClassificationProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageThisPackageUsageClassificationProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageUsageConstraintLevelProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageUsageConstraintLevelProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackageUsageConstraintLevelProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageUsageConstraintLevelProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageUsageConstraintLevelProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackageUsageConstraintStereotype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackageUsageConstraintStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype"></a>
+      <a id="getSharedPackageUsageConstraintStereotype():Stereotype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackageUsageConstraintStereotype</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype">Stereotype</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackageUsageConstraintStereotype():com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackage_DEPRECATED_ConstraintProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackage_DEPRECATED_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackage_DEPRECATED_ConstraintProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackage_DEPRECATED_ConstraintProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackage_DEPRECATED_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackage_INCUBATOR_ConstraintProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackage_INCUBATOR_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackage_INCUBATOR_ConstraintProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackage_INCUBATOR_ConstraintProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackage_INCUBATOR_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getSharedPackage_RECOMMENDED_ConstraintProperty" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getSharedPackage_RECOMMENDED_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property"></a>
+      <a id="getSharedPackage_RECOMMENDED_ConstraintProperty():Property"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getSharedPackage_RECOMMENDED_ConstraintProperty</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property">Property</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getSharedPackage_RECOMMENDED_ConstraintProperty():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getValidationErrorLevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getValidationErrorLevel():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getValidationErrorLevel():EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getValidationErrorLevel</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getValidationErrorLevel():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#getValidationWarningLevel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getValidationWarningLevel():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral"></a>
+      <a id="getValidationWarningLevel():EnumerationLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getValidationWarningLevel</span><span class="params">()</span><span class="result">: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral">EnumerationLiteral</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@getValidationWarningLevel():com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#hasSSCAEProjectModelStereotypeApplied" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasSSCAEProjectModelStereotypeApplied(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):Boolean"></a>
+      <a id="hasSSCAEProjectModelStereotypeApplied(Model):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasSSCAEProjectModelStereotypeApplied</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hasSSCAEProjectModelStereotypeApplied(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#hasSSCAEProjectUsageIntegrityProfile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasSSCAEProjectUsageIntegrityProfile():Boolean"></a>
+      <a id="hasSSCAEProjectUsageIntegrityProfile():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasSSCAEProjectUsageIntegrityProfile</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hasSSCAEProjectUsageIntegrityProfile():Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#hasSSCAESharedPackageReferenceStereotypeApplied" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasSSCAESharedPackageReferenceStereotypeApplied(is:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification):Boolean"></a>
+      <a id="hasSSCAESharedPackageReferenceStereotypeApplied(InstanceSpecification):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasSSCAESharedPackageReferenceStereotypeApplied</span><span class="params">(<span name="is">is: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification">InstanceSpecification</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hasSSCAESharedPackageReferenceStereotypeApplied(is:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#hasSSCAESharedPackageStereotypeApplied" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasSSCAESharedPackageStereotypeApplied(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):Boolean"></a>
+      <a id="hasSSCAESharedPackageStereotypeApplied(Package):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasSSCAESharedPackageStereotypeApplied</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hasSSCAESharedPackageStereotypeApplied(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#hasSSCAESharedPackageUsageConstraintStereotypeApplied" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasSSCAESharedPackageUsageConstraintStereotypeApplied(u:com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage):Boolean"></a>
+      <a id="hasSSCAESharedPackageUsageConstraintStereotypeApplied(Usage):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasSSCAESharedPackageUsageConstraintStereotypeApplied</span><span class="params">(<span name="u">u: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage">Usage</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hasSSCAESharedPackageUsageConstraintStereotypeApplied(u:com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Usage):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#isEnabled" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isEnabled():Boolean"></a>
+      <a id="isEnabled():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isEnabled</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@isEnabled():Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify(ev:com.nomagic.ci.persistence.ProjectEvent):Unit"></a>
+      <a id="notify(ProjectEvent):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">(<span name="ev">ev: <span class="extype" name="com.nomagic.ci.persistence.ProjectEvent">ProjectEvent</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@notify(ev:com.nomagic.ci.persistence.ProjectEvent):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper">ProjectUsageIntegrityHelper</a> → Listener</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#resolvedSSCAEProfileAndStereotypes" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="resolvedSSCAEProfileAndStereotypes():Boolean"></a>
+      <a id="resolvedSSCAEProfileAndStereotypes():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">resolvedSSCAEProfileAndStereotypes</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@resolvedSSCAEProfileAndStereotypes():Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEProjectMD5ChecksumMismatchRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEProjectMD5ChecksumMismatchRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]"></a>
+      <a id="runSSCAEProjectMD5ChecksumMismatchRule():Set[Annotation]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEProjectMD5ChecksumMismatchRule</span><span class="params">()</span><span class="result">: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEProjectMD5ChecksumMismatchRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEProjectStereotypeValidationRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEProjectStereotypeValidationRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]"></a>
+      <a id="runSSCAEProjectStereotypeValidationRule():Set[Annotation]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEProjectStereotypeValidationRule</span><span class="params">()</span><span class="result">: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEProjectStereotypeValidationRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEProjectUsageRelationshipRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEProjectUsageRelationshipRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]"></a>
+      <a id="runSSCAEProjectUsageRelationshipRule():Set[Annotation]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEProjectUsageRelationshipRule</span><span class="params">()</span><span class="result">: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEProjectUsageRelationshipRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEValidProjectUsageGraphRule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEValidProjectUsageGraphRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]"></a>
+      <a id="runSSCAEValidProjectUsageGraphRule():Set[Annotation]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEValidProjectUsageGraphRule</span><span class="params">()</span><span class="result">: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEValidProjectUsageGraphRule():java.util.Set[com.nomagic.magicdraw.annotation.Annotation]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEValidationAndShowResults" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEValidationAndShowResults(sessionLabel:String):Unit"></a>
+      <a id="runSSCAEValidationAndShowResults(String):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEValidationAndShowResults</span><span class="params">(<span name="sessionLabel">sessionLabel: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEValidationAndShowResults(sessionLabel:String):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEValidationAndShowResultsIfCheckerEnabled" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEValidationAndShowResultsIfCheckerEnabled(anonymousVertexLabels:Boolean,includeLocalEdges:Boolean,excludedProjectNames:java.util.Set[String],showProjectUsageDiagnosticModalDialog:Boolean):gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand"></a>
+      <a id="runSSCAEValidationAndShowResultsIfCheckerEnabled(Boolean,Boolean,Set[String],Boolean):ComputeProjectUsageGraphCommand"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEValidationAndShowResultsIfCheckerEnabled</span><span class="params">(<span name="anonymousVertexLabels">anonymousVertexLabels: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="includeLocalEdges">includeLocalEdges: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="excludedProjectNames">excludedProjectNames: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="showProjectUsageDiagnosticModalDialog">showProjectUsageDiagnosticModalDialog: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="commands/ComputeProjectUsageGraphCommand.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand">ComputeProjectUsageGraphCommand</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEValidationAndShowResultsIfCheckerEnabled(anonymousVertexLabels:Boolean,includeLocalEdges:Boolean,excludedProjectNames:java.util.Set[String],showProjectUsageDiagnosticModalDialog:Boolean):gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#runSSCAEValidationAndShowResultsIfCheckerEnabled" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="runSSCAEValidationAndShowResultsIfCheckerEnabled(showProjectUsageDiagnosticModalDialog:Boolean):gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand"></a>
+      <a id="runSSCAEValidationAndShowResultsIfCheckerEnabled(Boolean):ComputeProjectUsageGraphCommand"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">runSSCAEValidationAndShowResultsIfCheckerEnabled</span><span class="params">(<span name="showProjectUsageDiagnosticModalDialog">showProjectUsageDiagnosticModalDialog: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="commands/ComputeProjectUsageGraphCommand.html" class="extype" name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand">ComputeProjectUsageGraphCommand</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@runSSCAEValidationAndShowResultsIfCheckerEnabled(showProjectUsageDiagnosticModalDialog:Boolean):gov.nasa.jpl.magicdraw.projectUsageIntegrity.commands.ComputeProjectUsageGraphCommand" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#setSSCAEProjectModelGraphSerialization" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="setSSCAEProjectModelGraphSerialization(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,serialization:String):Unit"></a>
+      <a id="setSSCAEProjectModelGraphSerialization(Model,String):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setSSCAEProjectModelGraphSerialization</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="serialization">serialization: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@setSSCAEProjectModelGraphSerialization(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,serialization:String):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#setSSCAEProjectModelVersion" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="setSSCAEProjectModelVersion(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,versionNumber:Int):Unit"></a>
+      <a id="setSSCAEProjectModelVersion(Model,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setSSCAEProjectModelVersion</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="versionNumber">versionNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@setSSCAEProjectModelVersion(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,versionNumber:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#setSSCAESharedPackageGraphSerialization" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="setSSCAESharedPackageGraphSerialization(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,serialization:String):Unit"></a>
+      <a id="setSSCAESharedPackageGraphSerialization(Package,String):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setSSCAESharedPackageGraphSerialization</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>, <span name="serialization">serialization: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@setSSCAESharedPackageGraphSerialization(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,serialization:String):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#setSSCAESharedPackageVersion" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="setSSCAESharedPackageVersion(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,versionNumber:Int):Unit"></a>
+      <a id="setSSCAESharedPackageVersion(Package,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setSSCAESharedPackageVersion</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>, <span name="versionNumber">versionNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@setSSCAESharedPackageVersion(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,versionNumber:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@toString():String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#validateSSCAEOtherModelProjectUsageRelationships" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="validateSSCAEOtherModelProjectUsageRelationships(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit"></a>
+      <a id="validateSSCAEOtherModelProjectUsageRelationships(Model,Set[Annotation]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateSSCAEOtherModelProjectUsageRelationships</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="annotations">annotations: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@validateSSCAEOtherModelProjectUsageRelationships(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#validateSSCAEProjectModelMD5" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="validateSSCAEProjectModelMD5(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit"></a>
+      <a id="validateSSCAEProjectModelMD5(Model,Set[Annotation]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateSSCAEProjectModelMD5</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="annotations">annotations: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@validateSSCAEProjectModelMD5(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#validateSSCAERootModelProjectUsageRelationships" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="validateSSCAERootModelProjectUsageRelationships(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit"></a>
+      <a id="validateSSCAERootModelProjectUsageRelationships(Model,Set[Annotation]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateSSCAERootModelProjectUsageRelationships</span><span class="params">(<span name="m">m: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model">Model</span></span>, <span name="annotations">annotations: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@validateSSCAERootModelProjectUsageRelationships(m:com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper#validateSSCAESharedPackageMD5" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="validateSSCAESharedPackageMD5(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit"></a>
+      <a id="validateSSCAESharedPackageMD5(Package,Set[Annotation]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">validateSSCAESharedPackageMD5</span><span class="params">(<span name="p">p: <span class="extype" name="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package">Package</span></span>, <span name="annotations">annotations: <span class="extype" name="java.util.Set">Set</span>[<span class="extype" name="com.nomagic.magicdraw.annotation.Annotation">Annotation</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@validateSSCAESharedPackageMD5(p:com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package,annotations:java.util.Set[com.nomagic.magicdraw.annotation.Annotation]):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#gov.nasa.jpl.magicdraw.projectUsageIntegrity.ProjectUsageIntegrityHelper@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="com.nomagic.ci.persistence.ProjectListener">
+              <h3>Inherited from <span class="extype" name="com.nomagic.ci.persistence.ProjectListener">ProjectListener</span></h3>
+            </div><div class="parent" name="com.nomagic.ci.event.Listener">
+              <h3>Inherited from <span class="extype" name="com.nomagic.ci.event.Listener">Listener</span>[<span class="extype" name="com.nomagic.ci.persistence.ProjectEvent">ProjectEvent</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
