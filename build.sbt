@@ -74,23 +74,12 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
       Artifact("imce_md18_0_sp6_puic_resource", "zip", "zip", Some("resource"), Seq(), None, Map()),
       artifactZipFile),
 
+    resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases",
 
     resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
     cleanFiles += (classDirectory in Compile).value,
-
-
-//    libraryDependencies ++= Seq(
-//
-//      "org.omg.tiwg.vendor.nomagic"
-//        % "com.nomagic.magicdraw.package"
-//        % "18.0-sp6" artifacts Artifact("com.nomagic.magicdraw.package", "zip", "zip", Some("part1"), Seq(), None, Map()),
-//
-//      "org.omg.tiwg.vendor.nomagic"
-//        % "com.nomagic.magicdraw.package"
-//        % "18.0-sp6" artifacts Artifact("com.nomagic.magicdraw.package", "zip", "zip", Some("part2"), Seq(), None, Map())
-//    ),
 
     libraryDependencies +=
       "org.omg.tiwg.vendor.nomagic"
