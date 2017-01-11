@@ -122,6 +122,7 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
     },
 
     unmanagedJars in Compile := {
+      val _ = extractArchives.value
       val base = baseDirectory.value
       val up = update.value
       val s = streams.value
@@ -135,11 +136,6 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
       s.log.info(s"=> Adding ${allJars.size} unmanaged jars")
 
       allJars
-    },
-
-    compile in Compile := {
-      val _ = extractArchives.value
-      (compile in Compile).value
     },
 
     publish := {
