@@ -76,6 +76,8 @@ lazy val puic = Project("projectUsageIntegrityChecker", file("."))
 
     resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases",
 
+    scalacOptions in (Compile, doc) += "-Xplugin-disable:artima-supersafe",
+
     resourceDirectory in Compile := baseDirectory.value / "resources",
     javaSource in Compile := baseDirectory.value / "src",
     classDirectory in Compile := baseDirectory.value / "bin",
